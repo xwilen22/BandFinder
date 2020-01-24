@@ -1,10 +1,10 @@
 {
-  "name": "web-application",
+  "name": "band-finder-web-application",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon src/app.js -L",
+    "start": "nodemon src/pl/app.js -L",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
