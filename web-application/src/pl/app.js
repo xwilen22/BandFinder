@@ -15,5 +15,4 @@ app.get("/", function(request, response) {
 })
 app.listen(listenPort, function() {
     console.log(`Listening on port ${listenPort}`)
-    //7dlkajflkeajfölkjfalkejgölkeajglk HEJ
 })
