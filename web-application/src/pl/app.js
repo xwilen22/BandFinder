@@ -4,6 +4,8 @@ const app = express()
 
 const listenPort = 8080
 
+app.use(express.static("public"))
+
 app.set("views", "src/pl/views")
 
 app.engine("hbs", handlebars({
@@ -13,7 +15,6 @@ app.engine("hbs", handlebars({
 app.get("/", function(request, response) {
     response.render("home.hbs")
 })
-//dsafsafas
 app.listen(listenPort, function() {
     console.log(`Listening on port ${listenPort}`)
 })
