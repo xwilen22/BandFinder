@@ -1,9 +1,9 @@
 version: '3'
 services:
-  "web-application":
-    build: "./web-application"
+  web-application:
+    build: web-application
     ports:
-      - "3000:8080"
+      - "8080:8080"
       - "9229:9229"
     volumes:
       - "./web-application/src:/web-application/src"
