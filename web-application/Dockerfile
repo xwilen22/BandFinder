@@ -2,7 +2,7 @@ FROM node:13.7.0
 
 EXPOSE 8080
 
-WORKDIR /.
+WORKDIR /web-application/
 
 COPY package*.json ./
 
