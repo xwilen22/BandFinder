@@ -7,3 +7,11 @@ main {
 footer {
     min-height: 5%;
 }
+.bandcard {
+    margin-top: 1rem;
+    max-width: 18rem;
+}
+.membercard {
+    margin-top: 1rem;
+    max-width: 12rem;
+}
