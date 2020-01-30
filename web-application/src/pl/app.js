@@ -4,7 +4,7 @@ const app = express()
 
 const listenPort = 8080
 
-app.use(express.static("public"))
+app.use(express.static(__dirname + "/public"))
 
 app.set("views", "src/pl/views")
 

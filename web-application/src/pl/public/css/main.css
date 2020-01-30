@@ -1,12 +1,9 @@
-header {
-
-}
 nav {
-
+    min-height: 5%;
 }
 main {
-    min-height: 70%;
+    min-height: 90%;
 }
 footer {
-    min-height: 20%;
+    min-height: 5%;
 }
