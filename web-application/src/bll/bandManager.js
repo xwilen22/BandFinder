@@ -1,10 +1,37 @@
-const express = require("express")
-const expressSessions = require("express-session")
+const sessionValidation = require("sesssionValidation")
 
 function createBand(accountname, bandName, bandInfo){
-    //callback(error, id)
-    if(accountname == sessionAccountSignedIn){
-        //callback(id)
+    if(sessionValidation.validateAccountnameInSession == true){
+        //callback(bandId)
+    }
+    else{
+        //callback(errorUnauthorized)
+    }
+}
+
+function getBandById(bandId, callback){
+    const bandId = parseInt(bandId)
+    if(isNaN(bandId) == false){
+        //callback(error,bandId)
+    }
+}
+
+function getAllBands(callback){
+    //callback(error,bands)
+}
+
+function updateBand(bandId,accountname, bandInfo, bandName){
+    if(sessionValidation.validateAccountnameInSession == true){
+        //callback(error, bandId)
+    }
+    else{
+        //callback(errorUnauthorized)
+    }
+}
+
+function deleteBand(bandId, accountname, bandInfo, bandName){
+    if(sessionValidation.validateAccountnameInSession == true){
+        //callback(error, id)
     }
     else{
         //callback(errorUnauthorized)

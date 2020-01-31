@@ -1,5 +1,3 @@
-const express = require("express")
-const expressSessions = require("express-session")
 const connectRedi = require("connect-redis")
 const bcrypt = require("bcrypt")
 const userValidation = require("userValidation")
@@ -38,8 +36,7 @@ function signInAccount(accountName, password, callback){
 }
 
 function updateAccount(accountName,password, callback){
-    //callback(error, session)
-    if(accountName == sessionSignedInAccount){
+    if(sessionValidation.validateAccountnameInSession == true){
         //callback(id)
     }
     else{
@@ -48,8 +45,7 @@ function updateAccount(accountName,password, callback){
 }
 
 function deleteAccount(accountName, password, callback){
-    //callback(error, session)
-    if(accountName == sessionSignedInAccount){
+    if(sessionValidation.validateAccountnameInSession == true){
         //callback(error, accountName)
     }
     else{
