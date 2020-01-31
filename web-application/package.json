@@ -2,7 +2,7 @@
   "name": "band-finder-web-application",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "start": "nodemon src/pl/app.js -L",
     "test": "echo \"Error: no test specified\" && exit 1"
