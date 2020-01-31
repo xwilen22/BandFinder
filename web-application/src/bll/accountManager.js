@@ -1,12 +1,12 @@
 const connectRedi = require("connect-redis")
 const bcrypt = require("bcrypt")
 const userValidation = require("userValidation")
-const HASHSALTROUNDS = 10
+const HASH_SALT_ROUNDS = 10
 
 function signUpAccount(accountName, password, callback){
    if(userValidation.accountNameValidation == true){
        if(userValidation.passwordValidation == true){
-           let hash = bcrypt.hash(password, HASHSALTROUNDS)
+           let hash = bcrypt.hash(password, HASH_SALT_ROUNDS)
            //callback(error, id)
        }
        else{

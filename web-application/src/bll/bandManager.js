@@ -20,6 +20,10 @@ function getAllBands(callback){
     //callback(error,bands)
 }
 
+function searchAndGetBandByTitleOrGenre(bandname, genre){
+    //callback(error,bands)
+}
+
 function updateBand(bandId,accountname, bandInfo, bandName){
     if(sessionValidation.validateAccountnameInSession == true){
         //callback(error, bandId)
