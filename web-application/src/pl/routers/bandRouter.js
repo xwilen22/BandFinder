@@ -12,12 +12,12 @@ router.post("delete/:bandname", function(request, response) {
     
 })
 router.get("update/:bandname", function(request, response) {
-    
+    response.render("manageband.hbs")
 })
 router.post("update/:bandname", function(request, response) {
 
 })
 router.post("create", function(request, response) {
-
+    response.render("manageband.hbs")
 })
 module.exports = router
