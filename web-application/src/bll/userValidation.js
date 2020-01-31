@@ -1,6 +1,6 @@
 const PASSWORDMINLENGTH = 6
 const ACCOUNTNAMEMINLENGTH = 4
-module.exports = {
+modules.exports = {
     passwordValidation: function(password) {
         if (password.length >= PASSWORDMINLENGTH) {
             return true
