@@ -30,6 +30,12 @@ app.get("/browse", function(request, response) {
 app.get("/noband", function(request, response) {
     response.render("noband.hbs")
 })
+app.get("/account/edit/?", function(request, response) {
+    response.render("edituser.hbs")
+})
+app.get("/band/edit/?", function(request, response) {
+    response.render("manageband.hbs")
+})
 
 app.listen(listenPort, function() {
     console.log(`Listening on port ${listenPort}`)

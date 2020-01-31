@@ -15,3 +15,7 @@ footer {
     margin-top: 1rem;
     max-width: 12rem;
 }
+.keepaspectratio {
+    width: 100%;
+    height: auto;
+}
