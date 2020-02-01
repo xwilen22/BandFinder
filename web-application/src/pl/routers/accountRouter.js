@@ -6,20 +6,24 @@ router.get("/", function(request, response) {
     let username = 0
 
     //if not logged in
-    response.render("signinup.hbs")
+    //response.redirect(`/signinup`)
     //else
-    response.redirect(`view/${username}`)
+    response.redirect(`account/view/${username}`)
 })
-router.get("view/:username", function(request, response) {
-
+router.get("/view/:username", function(request, response) {
+    let username = request.params.username
+    response.render("userdetail.hbs")
 })
-router.post("delete/:username", function(request, response) {
+router.get("/update/:username", function(request, response) {
+    response.render("edituser.hbs")
+})
+router.post("/delete/:username", function(request, response) {
     
 })
-router.post("update/:username", function(request, response) {
+router.post("/update/:username", function(request, response) {
 
 })
-router.post("create", function(request, response) {
+router.post("/create", function(request, response) {
 
 })
 module.exports = router
