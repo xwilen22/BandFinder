@@ -6,40 +6,62 @@ const db = mysql.createConnection({
     database: "bandFinderDatabase"
 })
 
-modules.exports = {
-    getAllFromBand: function(callback){
-        let query = `SELECT * FROM band`
-        db.query = (query, function(error,bands){
+modules.exports={
+    createNewUser: function(accountname, password, bio, picture,callback){
+        let query = `INSERT INTO user (accountname, password, bio, picture) VALUES ?`
+        let values=[accountname,password,bio,picture]
+        db.query(query,[values],function(error, user){
             if(error){
 
             }
             else{
-                callback(bands)
+                callback(user)
             }
         })
     },
 
-    getByIdFromTable: function(id, callback){
-        let query = `SELECT * FROM band WHERE id = ?`
-        db.query = (query,[id],function(error,band){
+    updateUserInfoById: function(accountname, bio, picture,callback){
+        let query = `UPDATE user SET (bio, picture) VALUES ? WHERE accountname = ?`
+        let values=[bio,picture,accountname]
+        db.query(query,[values],function(error,user){
             if(error){
 
             }
             else{
-                callback(band)
+                callback(user)
             }
         })
     },
 
-    updateBandById: function(id, bandname, bandbio, genre, callback){
-        let query = `UPDATE band SET bandname, bandbio, genre WHERE id = ?`
-        db.query = (query,[id],function(error,band){
+    updateUserPassword: function(accountname, password,callback){
+        let query = `UPDATE user SET password VALUES ? WHERE accountname = ? `
+        let values=[password,accountname]
+        db.query(query,[values], function(error,user){
             if(error){
 
             }
             else{
-                callback(band)
+                callback(user)
             }
+        })
+    },       
+    
+    getUserById: function(accountname,callback){
+        let query = `SELECT * FROM user WHERE accountname = ?`
+        db.query=(query,[accountname],function(error, user){
+            if(error){
+
+            }
+            else{
+                callback(user)
+            }
+        })
+    },
+
+    deleteUserById: function(accountname,callback){
+        let query = `DELETE FROM user WHERE accountname = ?`
+        db.query =(query,[accountname],function(error){
+            callback(error)
         })
     }
 }
