@@ -47,7 +47,7 @@ module.exports = {
                 }
                 else {
                     let retrievedPassword = userObject.password
-                    passwordManager.compareAndGeneratePassword(retrievedPassword, newPassword, function(error, hashedPassword) {
+                    passwordManager.compareAndGeneratePassword(oldPassword, retrievedPassword, newPassword, function(error, hashedPassword) {
                         if (error) {
                             callback(error)
                         }
