@@ -4,7 +4,9 @@ const HASH_SALT_ROUNDS = 10
 
 module.exports = {
     generatePasswordHash: function(plainPassword, callback) {
-
+        bcrypt.hash(plainPassword, function(error, hashedPassword){
+            callback(error, hashedPassword)
+        })
     },
     compareAndGeneratePassword: function(oldPassword, newPassword, callback) {
         bcrypt.compare(oldPassword, retrievedPassword, function(error, success) {

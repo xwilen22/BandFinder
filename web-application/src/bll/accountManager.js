@@ -6,22 +6,19 @@ const passwordManager = require("./passwordManager")
 
 const accountRepository = require("../dal/accountRepository")
 
-const HASH_SALT_ROUNDS = 10
-
 module.exports = {
     signUpAccount: function (username, password, callback) {
         if (accountValidation.accountNameValidation(username) && accountValidation.passwordValidation(password)) {
-                bcrypt.hash(password, HASH_SALT_ROUNDS, function(hashError, hashedPassword) {
-                    if (hashError) {
-                        callback(hashError)
-                    } 
-                    else {
-                        //DAL DB CALL TO CREATE USER WITH NAME & PASSWORD
-                        accountRepository.createNewUser(username, hashedPassword, "", "", function(error, createdUsername) {
-                            callback(error, createdUsername)
-                        })
-                    }
-                })
+            passwordManager.generatePasswordHash(password, function(error, hashedPassword) {
+                if (error) {
+                    callback(error)
+                } 
+                else {
+                    accountRepository.createNewUser(username, hashedPassword, "", "", function(error, createdUsername) {
+                        callback(error, createdUsername)
+                    })
+                }
+            })
         }
         else {
             let validationError = ["Failed to validate password or username"]
@@ -71,10 +68,13 @@ module.exports = {
 
     deleteAccount: function (username, password, callback) {
         if (sessionValidation.validateAccountnameInSession(username) == true) {
-            //callback(error, accountName)
+            accountRepository.deleteUserById(username, function(error) {
+                callback(error)
+            })
         }
         else {
-            //callback(errorUnauthorized)
+            let errorUnauthorized = "Unauthorized"
+            callback(errorUnauthorized)
         }
     }
 }
