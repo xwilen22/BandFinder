@@ -8,14 +8,14 @@ const db = mysql.createConnection({
 
 module.exports = {
     createBandMembership: function(username, bandId, isBandleader,callback){
-        let query = `INSERT INTO band_memebership (username,band_id,is_band_leader) VALUES ?`
+        let query = `INSERT INTO band_membership (username,band_id,is_band_leader) VALUES ?`
         let values = [username,bandId,isBandleader]
         db.query(query,[values],function(error){
             callback(error)
         })
     },
 
-    updateBandMemeberToLeader: function(username, bandId, isBandleader, callback){
+    updateBandMemberToLeader: function(username, bandId, isBandleader, callback){
         let query = `UPDATE band SET (is_band_leader) VALUES ? WHERE (username,band_id) = ? `
         let values = [isBandleader,username,bandId]
         db.query(query, [values], function(error){
@@ -24,10 +24,10 @@ module.exports = {
     },
     
     deleteBandMembership: function(username, bandId, callback){
-        let query = `DELETE FROM band_memebership WHERE (username, band_id) = ?`
+        let query = `DELETE FROM band_membership WHERE (username, band_id) = ?`
         let values = [username, bandId]
         db.query(query,[values],function(error){
             callback(error)
-        })
+        })n
     }
-}
+}git 
