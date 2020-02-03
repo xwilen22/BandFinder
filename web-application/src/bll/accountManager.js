@@ -1,4 +1,4 @@
-const connectRedi = require("connect-redis")
+//const connectRedi = require("connect-redis")
 
 const accountValidation = require("./accountValidation")
 const sessionValidation = require("./sessionValidation")
@@ -14,7 +14,7 @@ module.exports = {
                     callback(error)
                 } 
                 else {
-                    accountRepository.createNewUser(username, hashedPassword, "", "", function(error, createdUsername) {
+                    accountRepository.createNewUser(username, hashedPassword, function(error, createdUsername) {
                         callback(error, createdUsername)
                     })
                 }
