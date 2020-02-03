@@ -14,7 +14,7 @@ module.exports = {
                     callback(error)
                 } 
                 else {
-                    accountRepository.createNewUser(username, hashedPassword, "", "", function(error, createdUsername) {
+                    accountRepository.createNewUser(username, hashedPassword, function(error, createdUsername) {
                         callback(error, createdUsername)
                     })
                 }
