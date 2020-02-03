@@ -6,7 +6,7 @@ const db = mysql.createConnection({
     database: "bandFinderDatabase"
 })
 
-modules.exports = {
+module.exports = {
     getAllFromBand: function(callback){
         let query = `SELECT * FROM band`
         db.query = (query, function(error,bands){
