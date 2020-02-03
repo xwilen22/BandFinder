@@ -44,7 +44,7 @@ router.post("/create", function (request, response) {
 
     accountManager.signUpAccount(username, password, function (error, createdUsername) {
         if (error) {
-            response.send("Get fucked")
+            response.send(error)
         }
         else {
             response.redirect(`account/view/${createdUsername}`)
