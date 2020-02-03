@@ -8,6 +8,6 @@ module.exports = {
     },
     
     accountNameValidation: function(accountName) {
-        return (accountName >= ACCOUNTNAME_MIN_LENGTH && accountName <= ACCOUNTNAME_MAX_LENGTH)
+        return (accountName.length >= ACCOUNTNAME_MIN_LENGTH && accountName.length <= ACCOUNTNAME_MAX_LENGTH)
     }
 }
