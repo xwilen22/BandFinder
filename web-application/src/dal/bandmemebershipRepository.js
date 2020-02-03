@@ -16,7 +16,7 @@ module.exports = {
     },
 
     updateBandMemberToLeader: function(username, bandId, isBandleader, callback){
-        let query = `UPDATE band_memebership SET (is_band_leader) VALUES ? WHERE (username,band_id) = ? `
+        let query = `UPDATE band_membership SET (is_band_leader) VALUES ? WHERE (username,band_id) = ? `
         let values = [isBandleader,username,bandId]
         db.query(query, [values], function(error){
             callback(error)
