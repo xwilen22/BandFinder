@@ -15,7 +15,7 @@ module.exports={
                 callback(error)
             }
             else{
-                callback(user)
+                callback(user.username)
             }
         })
     },
@@ -41,7 +41,7 @@ module.exports={
 
             }
             else{
-                callback(user)
+                callback(user.password)
             }
         })
     },       
