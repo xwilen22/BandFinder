@@ -6,7 +6,7 @@ const db = mysql.createConnection({
     database: "bandFinderDatabase"
 })
 
-modules.exports={
+module.exports={
     createNewUser: function(accountname, password, bio, picture,callback){
         let query = `INSERT INTO user (accountname, password, bio, picture) VALUES ?`
         let values=[accountname,password,bio,picture]
