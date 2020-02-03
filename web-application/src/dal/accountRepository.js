@@ -8,60 +8,40 @@ const db = mysql.createConnection({
 })
 
 module.exports={
-    createNewUser: function(username, password, callback){
+    createNewUser: function(username, password, callback) {
         let query = `INSERT INTO user (username, password) VALUES ?`
-        let values=[username,password]
-        db.query(query,[values],function(error, user){
-            if(error){
-                callback(error)
-            }
-            else{
-                callback(user.username)
-            }
+        let values = [username,password]
+        db.query(query,[values],function(error, user) {
+            callback(error, user.username)
         })
     },
 
-    updateUserInfoById: function(username, bio, userPicture,callback){
+    updateUserInfoById: function(username, bio, userPicture,callback) {
         let query = `UPDATE user SET (biography, user_profile_picture) VALUES ? WHERE username = ?`
         let values=[bio,userPicture,username]
-        db.query(query,[values],function(error,user){
-            if(error){
-                callback(error)
-            }
-            else{
-                callback(user)
-            }
+        db.query(query,[values],function(error,user) {
+            callback(error, user.id)
         })
     },
 
-    updateUserPassword: function(username, password,callback){
+    updateUserPassword: function(username, password,callback) {
         let query = `UPDATE user SET password VALUES ? WHERE username = ? `
-        let values=[password,username]
-        db.query(query,[values], function(error,user){
-            if(error){
-
-            }
-            else{
-                callback(user.password)
-            }
+        let values = [password,username]
+        db.query(query,[values], function(error,user) {
+            callback(error)
         })
     },       
     
-    getUserById: function(username,callback){
+    getUserById: function(username,callback) {
         let query = `SELECT * FROM user WHERE username = ?`
-        db.query=(query,[username],function(error, user){
-            if(error){
-
-            }
-            else{
-                callback(user)
-            }
+        db.query = (query,[username],function(error, user) {
+            callback(error, user)
         })
     },
 
     deleteUserById: function(username,callback){
         let query = `DELETE FROM user WHERE username = ?`
-        db.query =(query,[username],function(error){
+        db.query = (query,[username],function(error) {
             callback(error)
         })
     }
