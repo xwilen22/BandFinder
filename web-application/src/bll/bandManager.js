@@ -1,39 +1,68 @@
-const sessionValidation = require("sesssionValidation")
+const sessionValidation = require("./sessionValidation")
+const bandRepository = require("../dal/bandRepository")
 
-function createBand(accountname, bandName, bandInfo){
-    if(sessionValidation.validateAccountnameInSession == true){
-        //callback(bandId)
-    }
-    else{
-        //callback(errorUnauthorized)
-    }
+const ERROR_MESSAGE_OBJECT = {
+    FORBIDDEN: "Forbidden",
+    VALIDATION: "Failed validation"
 }
 
-function getBandById(bandId, callback){
-    const bandId = parseInt(bandId)
-    if(isNaN(bandId) == false){
-        //callback(error,bandId)
-    }
-}
+module.exports = {
+    createBand: function (accountnameBandLeader, bandName, bandBio, genre, callback) {
+        if (sessionValidation.validateAccountnameInSession(accountname) == true) {
+            bandRepository.createBand(accountnameBandLeader, bandName, bandBio, genre, function(error, bandId) {
+                callback(error, bandId)
+            })
+        }
+        else {
+            callback(ERROR_MESSAGE_OBJECT.FORBIDDEN)
+        }
+    },
 
-function getAllBands(callback){
-    //callback(error,bands)
-}
+    getBandById: function (bandId, callback) {
+        const bandId = parseInt(bandId)
+        if (isNaN(bandId) == false) {
+            bandRepository.getBandById(bandId, function(error, bandObject) {
+                callback(error, bandObject)
+            })
+        } 
+        else {
+            callback(ERROR_MESSAGE_OBJECT.VALIDATION)
+        }
+    },
 
-function updateBand(bandId,accountname, bandInfo, bandName){
-    if(sessionValidation.validateAccountnameInSession == true){
-        //callback(error, bandId)
-    }
-    else{
-        //callback(errorUnauthorized)
-    }
-}
+    getAllBands: function (callback) {
+        bandRepository.getAllBands(function(error, allBands) {
+            callback(error, allBands)
+        })
+    },
 
-function deleteBand(bandId, accountname, bandInfo, bandName){
-    if(sessionValidation.validateAccountnameInSession == true){
-        //callback(error, id)
-    }
-    else{
-        //callback(errorUnauthorized)
+    searchAndGetBandByTitleOrGenre: function (bandname, genre) {
+        //TODO search and get genre & title in repo
+    },
+
+    updateBand: function (bandId, accountname, bandInfo, bandName, bandGenre) {
+        if (sessionValidation.validateAccountnameInSession(accountname) == true) {
+            //Get band membership for specific band id and check if accountname got privledge
+            //Then do this
+            bandRepository.updateBandById(bandId, bandName, bandBio, bandGenre, function(error) {
+                callback(error)
+            })
+        }
+        else {
+            callback(ERROR_MESSAGE_OBJECT.FORBIDDEN)
+        }
+    },
+
+    deleteBand: function (bandId, accountname, bandInfo, bandName) {
+        if (sessionValidation.validateAccountnameInSession(accountname) == true) {
+            //Get band membership for specific band id and check if accountname got privledge
+            //Then do this
+            //TODO implement deleteband in repo
+            //Membership repo also
+        }
+        else {
+            let errorUnauthorized = "Forbidden"
+            callback(errorUnauthorized)
+        }
     }
 }
