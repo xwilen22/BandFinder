@@ -2,6 +2,7 @@ const mysql =  require("mysql")
 const db = mysql.createConnection({
     host:"db",
     user:"root",
+    port:"3306",
     password:"DucTreHouHa",
     database: "bandFinderDatabase"
 })
@@ -15,7 +16,7 @@ module.exports={
                 callback(error)
             }
             else{
-                callback(user)
+                callback(user.username)
             }
         })
     },
@@ -41,7 +42,7 @@ module.exports={
 
             }
             else{
-                callback(user)
+                callback(user.password)
             }
         })
     },       
