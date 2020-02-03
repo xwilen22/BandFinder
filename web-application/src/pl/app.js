@@ -26,14 +26,11 @@ app.get("/", function(request, response) {
 app.get("/signinup", function(request, response) {
     response.render("signinup.hbs")
 })
-app.get("/account", function(request, response) {
-    response.render("userdetail.hbs")
-})
 app.get("/noband", function(request, response) {
     response.render("noband.hbs")
 })
 app.get("/admin", function(request, response) {
-
+//jfdlksafhkjsaf
 })
 app.listen(listenPort, function() {
     console.log(`Listening on port ${listenPort}`)
