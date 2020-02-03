@@ -54,7 +54,7 @@ module.exports = {
     },
 
     deleteBand: function (bandId, accountname, bandInfo, bandName) {
-        if (sessionValidation.validateAccountnameInSession == true) {
+        if (sessionValidation.validateAccountnameInSession(accountname) == true) {
             //Get band membership for specific band id and check if accountname got privledge
             //Then do this
             //TODO implement deleteband in repo
