@@ -76,5 +76,17 @@ module.exports = {
             let errorUnauthorized = "Unauthorized"
             callback(errorUnauthorized)
         }
+    },
+
+    getAccountByUsername: function(username, callback) {
+        if (accountValidation.accountNameValidation(username) == true) {
+            accountRepository.getUserById(username, function(error, userObject) {
+                callback(error, userObject)
+            })
+        }
+        else {
+            let validationError = "Validation error"
+            callback(validationError)
+        }
     }
 }
