@@ -26,7 +26,11 @@ module.exports = {
         let query = `DELETE FROM genre WHERE (genre_name, parent_genre) = ?`
         let values = [genreName,parentGenre]
         db.query(query, [values],function(error){
-            
+            callback(error)
         })
+    },
+
+    deleteGenre: function(genreName,parentGenre,callback){
+        //todo implement this so that it also deletes all children
     }
 }

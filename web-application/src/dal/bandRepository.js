@@ -7,7 +7,7 @@ const db = mysql.createConnection({
 })
 
 module.exports = {
-    getAllFromBand: function(callback){
+    getAllBands: function(callback){
         let query = `SELECT * FROM band`
         db.query = (query, function(error,bands){
             if(error){
