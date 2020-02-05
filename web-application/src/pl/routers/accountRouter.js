@@ -31,13 +31,29 @@ router.get("/view/:username", function (request, response) {
         }
     })
 })
+router.post("/signin", function(request, response) {
+    const username = request.body.username
+    const password = request.body.password
+    console.log("Went here")
+    AccountManager.signInAccount(username, password, function(error) {
+        if(error) {
+            response.send(error)
+        } else {
+            response.redirect(`/view/${username}`)
+        }
+    })
+})
 router.get("/logout", function (request, response) {
     request.session.loggedInUsername = null
     response.redirect("back")
 })
 router.get("/update/:username", function (request, response) {
     const username = request.params.username
-
+    //THIS SHOULD BE REMOVED ???
+    if(username != request.session.loggedInUsername) {
+        response.send("Go away")
+        return
+    }
     AccountManager.getAccountByUsername(username, function(error, userObjects){
         if (error) {
             response.send("ERRORE: Can't find requested user")

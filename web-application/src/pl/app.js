@@ -29,7 +29,7 @@ app.use(ExpressSession({
     saveUninitialized: false,
     resave: false
 }))
-
+//SESSION HANDLING
 app.use(function(request, response, next) {
     response.locals.loggedInUsername = request.session.loggedInUsername
     next()
