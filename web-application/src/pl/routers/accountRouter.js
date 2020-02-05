@@ -1,7 +1,7 @@
-const express = require("express")
-const router = express.Router()
+const Express = require("express")
+const router = Express.Router()
 
-const accountManager = require("./../../bll/accountManager")
+const AccountManager = require("./../../bll/accountManager")
 
 //Redirects to account detail or login screen
 router.get("/", function (request, response) {
@@ -15,9 +15,9 @@ router.get("/", function (request, response) {
 router.get("/view/:username", function (request, response) {
     let username = request.params.username
 
-    accountManager.getAccountByUsername(username, function (error, userObject) {
+    AccountManager.getAccountByUsername(username, function (error, userObject) {
         if (error) {
-            response.send("eror")
+            response.send(error)
         }
         else {
             const model = {
@@ -42,7 +42,7 @@ router.post("/create", function (request, response) {
     const username = request.body.username
     const password = request.body.password
 
-    accountManager.signUpAccount(username, password, function (error, createdUsername) {
+    AccountManager.signUpAccount(username, password, function (error, createdUsername) {
         if (error) {
             response.send(`Error! ${error}`)
         }
