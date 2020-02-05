@@ -1,6 +1,7 @@
 const Express = require("express")
 const Handlebars = require("express-handlebars")
 const ExpressSession = require("express-session")
+const ConnectSQLite3 = require("connect-sqlite3")
 
 const app = Express()
 
@@ -20,6 +21,19 @@ app.set("views", "src/pl/views")
 app.use(BodyParser.urlencoded({
     extended: false
 }))
+
+const SQLiteStore = ConnectSQLite3(ExpressSession)
+app.use(ExpressSession({
+    store: new SQLiteStore({db: "session-db.db"}),
+    secret: "16007340",
+    saveUninitialized: false,
+    resave: false
+}))
+
+app.use(function(request, response, next) {
+    response.locals.loggedInUsername = request.session.loggedInUsername
+    next()
+})
 
 app.engine("hbs", Handlebars({
     defaultLayout: "main.hbs"

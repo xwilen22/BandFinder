@@ -31,24 +31,37 @@ router.get("/view/:username", function (request, response) {
         }
     })
 })
+router.get("/logout", function (request, response) {
+    request.session.loggedInUsername = null
+    response.redirect("back")
+})
 router.get("/update/:username", function (request, response) {
     const username = request.params.username
 
     AccountManager.getAccountByUsername(username, function(error, userObjects){
-        const userObject = userObjects[0]
-        const model = {
-            username: userObject.username,
-            biography: userObject.biography,
-            profilePicture: userObject.user_profile_picture
-        }
-        response.render("edituser.hbs", model)  
+        if (error) {
+            response.send("ERRORE: Can't find requested user")
+        } else {
+            const userObject = userObjects[0]
+            const model = {
+                username: userObject.username,
+                biography: userObject.biography,
+                profilePicture: userObject.user_profile_picture
+            }
+            response.render("edituser.hbs", model)
+        }  
     })
 })
 router.post("/update/:username", function (request, response) {
-    //ADD UPDATE DETAILS
+    //ADD UPDATE DETAILS IN REPO AND BLL
 })
 router.post("/delete/:username", function (request, response) {
+    const username = request.params.username
+    const password = request.body.password
 
+    AccountManager.deleteAccount(username, password, function(error) {
+        //Do shit
+    })
 })
 router.post("/create", function (request, response) {
     const username = request.body.username
@@ -59,9 +72,9 @@ router.post("/create", function (request, response) {
             response.send(`Error! ${error}`)
         }
         else {
+            request.session.loggedInUsername = createdUsername
             response.redirect(`view/${createdUsername}`)
         }
     })
-
 })
 module.exports = router
