@@ -1,10 +1,13 @@
 const Express = require("express")
 const Handlebars = require("express-handlebars")
+const ExpressSession = require("express-session")
+
 const app = Express()
 
 const AccountRouter = require("./routers/accountRouter")
 const BandRouter = require("./routers/bandRouter")
 const InstrumentRouter = require("./routers/instrumentRouter")
+const VariousRouter = require("./routers/variousRouter")
 
 const BodyParser = require("body-parser")
 
@@ -22,22 +25,11 @@ app.engine("hbs", Handlebars({
     defaultLayout: "main.hbs"
 }))
 
+app.use("/", VariousRouter)
 app.use("/bands", BandRouter)
 app.use("/account", AccountRouter)
 app.use("/instrument", InstrumentRouter)
 
-app.get("/", function(request, response) {
-    response.render("home.hbs")
-})
-app.get("/signinup", function(request, response) {
-    response.render("signinup.hbs")
-})
-app.get("/noband", function(request, response) {
-    response.render("noband.hbs")
-})
-app.get("/admin", function(request, response) {
-
-})
 app.listen(listenPort, function() {
     console.log(`Listening on port ${listenPort}`)
 })

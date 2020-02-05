@@ -10,16 +10,18 @@ router.get("/", function (request, response) {
     //if not logged in
     //response.redirect(`/signinup`)
     //else
-    response.redirect(`account/view/${username}`)
+    response.redirect(`/view/${username}`)
 })
 router.get("/view/:username", function (request, response) {
-    let username = request.params.username
+    const username = request.params.username
 
-    AccountManager.getAccountByUsername(username, function (error, userObject) {
+    AccountManager.getAccountByUsername(username, function (error, userObjects) {
         if (error) {
             response.send(error)
         }
         else {
+            console.log(userObjects)
+            const userObject = userObjects[0]
             const model = {
                 username: userObject.username,
                 biography: userObject.biography,
@@ -30,12 +32,22 @@ router.get("/view/:username", function (request, response) {
     })
 })
 router.get("/update/:username", function (request, response) {
-    response.render("edituser.hbs")
-})
-router.post("/delete/:username", function (request, response) {
+    const username = request.params.username
 
+    AccountManager.getAccountByUsername(username, function(error, userObjects){
+        const userObject = userObjects[0]
+        const model = {
+            username: userObject.username,
+            biography: userObject.biography,
+            profilePicture: userObject.user_profile_picture
+        }
+        response.render("edituser.hbs", model)  
+    })
 })
 router.post("/update/:username", function (request, response) {
+    //ADD UPDATE DETAILS
+})
+router.post("/delete/:username", function (request, response) {
 
 })
 router.post("/create", function (request, response) {
@@ -47,7 +59,7 @@ router.post("/create", function (request, response) {
             response.send(`Error! ${error}`)
         }
         else {
-            response.redirect(`account/view/${createdUsername}`)
+            response.redirect(`view/${createdUsername}`)
         }
     })
 
