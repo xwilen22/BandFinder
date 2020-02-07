@@ -43,9 +43,6 @@ module.exports = {
                         callback([], true)
                     }
                 })
-                /*bcrypt.compare(password, retrievedHashValue, function (compareError, success) {
-                    callback(compareError, success)
-                })*/
             }
         })
     },
