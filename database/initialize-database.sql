@@ -23,10 +23,10 @@ CREATE TABLE IF NOT EXISTS band(
 CREATE TABLE IF NOT EXISTS instrument (
     instrument_name VARCHAR(20) PRIMARY KEY
 );
-CREATE TABLE IF NOT EXISTS user_proficency (
+CREATE TABLE IF NOT EXISTS user_proficiency (
     username VARCHAR(20),
     instrument_name VARCHAR(20),
-    proficency_level TINYINT UNSIGNED NOT NULL,
+    proficiency_level TINYINT UNSIGNED NOT NULL,
     CONSTRAINT FOREIGN KEY (username) REFERENCES user (username)
 );
 CREATE TABLE IF NOT EXISTS genre (
