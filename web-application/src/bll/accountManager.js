@@ -40,7 +40,7 @@ module.exports = {
                         callback(["WRONG PASSWORD"], false)
                     }
                     else {
-                        callback([], true)
+                        callback(null, true)
                     }
                 })
             }
