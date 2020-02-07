@@ -39,7 +39,7 @@ module.exports={
         })
     },
 
-    deleteUserById: function(username,callback){
+    deleteUserByUsername: function(username,callback){
         let query = `DELETE * FROM user WHERE (username) = (?)`
         db.query(query,[username],function(error) {
             callback(error)
