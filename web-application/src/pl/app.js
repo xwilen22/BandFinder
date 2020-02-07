@@ -1,29 +1,29 @@
-const Express = require("express")
-const Handlebars = require("express-handlebars")
-const ExpressSession = require("express-session")
-const ConnectSQLite3 = require("connect-sqlite3")
+const express = require("express")
+const handlebars = require("express-handlebars")
+const expressSession = require("express-session")
+const connectSQLite3 = require("connect-sqlite3")
 
-const app = Express()
+const app = express()
 
-const AccountRouter = require("./routers/accountRouter")
-const BandRouter = require("./routers/bandRouter")
-const InstrumentRouter = require("./routers/instrumentRouter")
-const VariousRouter = require("./routers/variousRouter")
+const accountRouter = require("./routers/accountRouter")
+const bandRouter = require("./routers/bandRouter")
+const instrumentRouter = require("./routers/instrumentRouter")
+const variousRouter = require("./routers/variousRouter")
 
-const BodyParser = require("body-parser")
+const bodyParser = require("body-parser")
 
 const listenPort = 8080
 
-app.use(Express.static(__dirname + "/public"))
+app.use(express.static(__dirname + "/public"))
 
 app.set("views", "src/pl/views")
 
-app.use(BodyParser.urlencoded({
+app.use(bodyParser.urlencoded({
     extended: false
 }))
 
-const SQLiteStore = ConnectSQLite3(ExpressSession)
-app.use(ExpressSession({
+const SQLiteStore = connectSQLite3(expressSession)
+app.use(expressSession({
     store: new SQLiteStore({db: "session-db.db"}),
     secret: "16007340",
     saveUninitialized: false,
@@ -35,14 +35,14 @@ app.use(function(request, response, next) {
     next()
 })
 
-app.engine("hbs", Handlebars({
+app.engine("hbs", handlebars({
     defaultLayout: "main.hbs"
 }))
 
-app.use("/", VariousRouter)
-app.use("/bands", BandRouter)
-app.use("/account", AccountRouter)
-app.use("/instrument", InstrumentRouter)
+app.use("/", variousRouter)
+app.use("/bands", bandRouter)
+app.use("/account", accountRouter)
+app.use("/instrument", instrumentRouter)
 
 app.listen(listenPort, function() {
     console.log(`Listening on port ${listenPort}`)
