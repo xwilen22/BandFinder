@@ -75,7 +75,8 @@ module.exports = {
     updateAccountBiography: function (username, newBiography, callback) {
         accountRepository.updateUserInfoByUsername(username, newBiography, "", function(error) {
             if(error) {
-                callback([""])
+                console.log(error)
+                callback(["DB ERROR"])
             }
             else {
                 callback([])
