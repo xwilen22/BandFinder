@@ -32,8 +32,16 @@ module.exports = {
             }
             else {
                 const retrievedHashValue = retrievedUserObject[0].password
-                bcrypt.compare(password, retrievedHashValue, function (compareError, success) {
-                    callback(compareError, success)
+                passwordManager.comparePasswordPlainToHash(password, retrievedHashValue, function(compareError, success) {
+                    if(compareError) {
+                        callback(["BCRYPT ERROR"], false)
+                    } 
+                    else if (success == false) {
+                        callback(["WRONG PASSWORD"], false)
+                    }
+                    else {
+                        callback([], true)
+                    }
                 })
             }
         })
