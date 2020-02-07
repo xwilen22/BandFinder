@@ -1,7 +1,7 @@
 const Express = require("express")
 const router = Express.Router()
 
-const AccountManager = require("./../../bll/accountManager")
+const accountManager = require("./../../bll/accountManager")
 
 //Redirects to account detail or login screen
 router.get("/", function (request, response) {
@@ -15,12 +15,11 @@ router.get("/", function (request, response) {
 router.get("/view/:username", function (request, response) {
     const username = request.params.username
 
-    AccountManager.getAccountByUsername(username, function (error, userObjects) {
+    accountManager.getAccountByUsername(username, function (error, userObjects) {
         if (error) {
             response.send(error)
         }
         else {
-            console.log(userObjects)
             const userObject = userObjects[0]
             const model = {
                 username: userObject.username,
@@ -34,12 +33,13 @@ router.get("/view/:username", function (request, response) {
 router.post("/signin", function(request, response) {
     const username = request.body.username
     const password = request.body.password
-    console.log("Went here")
-    AccountManager.signInAccount(username, password, function(error) {
+
+    accountManager.signInAccount(username, password, function(error) {
         if(error) {
             response.send(error)
         } else {
-            response.redirect(`/view/${username}`)
+            request.session.loggedInUsername = username
+            response.redirect(`view/${username}`)
         }
     })
 })
@@ -49,12 +49,8 @@ router.get("/logout", function (request, response) {
 })
 router.get("/update/:username", function (request, response) {
     const username = request.params.username
-    //THIS SHOULD BE REMOVED ???
-    if(username != request.session.loggedInUsername) {
-        response.send("Go away")
-        return
-    }
-    AccountManager.getAccountByUsername(username, function(error, userObjects){
+
+    accountManager.getAccountByUsername(username, function(error, userObjects){
         if (error) {
             response.send("ERRORE: Can't find requested user")
         } else {
@@ -69,13 +65,23 @@ router.get("/update/:username", function (request, response) {
     })
 })
 router.post("/update/:username", function (request, response) {
-    //ADD UPDATE DETAILS IN REPO AND BLL
+    const biography = request.body.biography
+    const username = request.params.username
+
+    accountManager.updateAccountBiography(username, biography, function(error) {
+        if(error.length > 0) {
+            response.send(error)
+        }
+        else {
+            response.redirect("back")
+        }
+    })
 })
 router.post("/delete/:username", function (request, response) {
     const username = request.params.username
     const password = request.body.password
 
-    AccountManager.deleteAccount(username, password, function(error) {
+    accountManager.deleteAccount(username, password, function(error) {
         //Do shit
     })
 })
@@ -83,7 +89,7 @@ router.post("/create", function (request, response) {
     const username = request.body.username
     const password = request.body.password
 
-    AccountManager.signUpAccount(username, password, function (error, createdUsername) {
+    accountManager.signUpAccount(username, password, function (error, createdUsername) {
         if (error) {
             response.send(`Error! ${error}`)
         }
