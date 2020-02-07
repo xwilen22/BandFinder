@@ -25,21 +25,20 @@ module.exports = {
             callback(validationError)
         }
     },
-
-    signInAccount: function (accountName, password, callback) {
-        //Retrieve account info such as password via accountName
-        //callback(error, id, hashValue)
-        if (accountName == retrivedAccountName) {
-            bcrypt.compare(password, retrievedHashValue, function(compareError, success) {
-                callback(compareError, success)
-            })
-        }
-        else {
-            callback(errorAccountName)
-        }
+    signInAccount: function (username, password, callback) {
+        accountRepository.getUserById(username, function (error, retrievedUserObject) {
+            if (error || retrievedUserObject == null) {
+                callback(error, false)
+            }
+            else {
+                const retrievedHashValue = retrievedUser[0].password
+                bcrypt.compare(password, retrievedHashValue, function (compareError, success) {
+                    callback(compareError, success)
+                })
+            }
+        })
     },
-
-    updateAccountPassword: function (username, oldPassword ,newPassword, callback) {
+    updateAccountPassword: function (username, oldPassword, newPassword, callback) {
         if (sessionValidation.validateAccountnameInSession(username) == true) {
             accountRepository.getUserById(username, function(error, userObject) {
                 if(error) {
@@ -65,16 +64,52 @@ module.exports = {
             callback(errorUnauthorized)
         }
     },
-
+    updateAccountBiography: function (username, newBiography, callback) {
+        accountRepository.updateUserInfoById(username, newBiography, "", function(error) {
+            if(error) {
+                callback([""])
+            }
+            else {
+                callback([])
+            }
+        })
+    },
     deleteAccount: function (username, password, callback) {
-        if (sessionValidation.validateAccountnameInSession(username) == true) {
-            accountRepository.deleteUserById(username, function(error) {
-                callback(error)
+        if (sessionValidation.validateAccountnameInSession(username) == true && accountValidation.accountNameValidation(username) == true) {
+            accountRepository.getUserById(username, function(error, userObject) {
+                if(error) {
+                    callback("DB Failed")
+                } 
+                else if(userObject == null) {
+                    callback("Can't find user")
+                }
+                else {
+                    passwordManager.comparePasswordPlainToHash(password, userObject[0].password, function(error, success) {
+                        if(error) {
+                            callback("DB ERROR")
+                        }
+                        else {
+                            if(success == true) {
+                                accountRepository.deleteUserById(username, function(error) {
+                                    if(error) {
+                                        callback(error)
+                                    }
+                                    else {
+                                        callback([])
+                                    }
+                                })
+                            } 
+                            else {
+                                callback("BCRYPT ERROR")
+                            } 
+                        }
+                    })
+                }
             })
         }
         else {
             let errorUnauthorized = "Unauthorized"
-            callback(errorUnauthorized)
+            callback([errorUnauthorized])
         }
     },
 
