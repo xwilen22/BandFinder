@@ -31,7 +31,7 @@ module.exports = {
                 callback(error, false)
             }
             else {
-                const retrievedHashValue = retrievedUser[0].password
+                const retrievedHashValue = retrievedUserObject[0].password
                 bcrypt.compare(password, retrievedHashValue, function (compareError, success) {
                     callback(compareError, success)
                 })
