@@ -26,7 +26,7 @@ module.exports = {
         }
     },
     signInAccount: function (username, password, callback) {
-        accountRepository.getUserById(username, function (error, retrievedUserObject) {
+        accountRepository.getUserByUsername(username, function (error, retrievedUserObject) {
             if (error || retrievedUserObject == null) {
                 callback(error, false)
             }
@@ -40,7 +40,7 @@ module.exports = {
     },
     updateAccountPassword: function (username, oldPassword, newPassword, callback) {
         if (sessionValidation.validateAccountnameInSession(username) == true) {
-            accountRepository.getUserById(username, function(error, userObject) {
+            accountRepository.getUserByUsername(username, function(error, userObject) {
                 if(error) {
                     callback(error)
                 }
@@ -65,7 +65,7 @@ module.exports = {
         }
     },
     updateAccountBiography: function (username, newBiography, callback) {
-        accountRepository.updateUserInfoById(username, newBiography, "", function(error) {
+        accountRepository.updateUserInfoByUsername(username, newBiography, "", function(error) {
             if(error) {
                 callback([""])
             }
@@ -76,7 +76,7 @@ module.exports = {
     },
     deleteAccount: function (username, password, callback) {
         if (sessionValidation.validateAccountnameInSession(username) == true && accountValidation.accountNameValidation(username) == true) {
-            accountRepository.getUserById(username, function(error, userObject) {
+            accountRepository.getUserByUsername(username, function(error, userObject) {
                 if(error) {
                     callback("DB Failed")
                 } 
@@ -90,7 +90,7 @@ module.exports = {
                         }
                         else {
                             if(success == true) {
-                                accountRepository.deleteUserById(username, function(error) {
+                                accountRepository.deleteUserByUsername(username, function(error) {
                                     if(error) {
                                         callback(error)
                                     }
@@ -115,7 +115,7 @@ module.exports = {
 
     getAccountByUsername: function(username, callback) {
         if (accountValidation.accountNameValidation(username) == true) {
-            accountRepository.getUserById(username, function(error, userObject) {
+            accountRepository.getUserByUsername(username, function(error, userObject) {
                 callback(error, userObject)
             })
         }
