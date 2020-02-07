@@ -20,7 +20,7 @@ module.exports = {
     },
 
     getBandById: function(id, callback){
-        let query = `SELECT * FROM band WHERE band_id = ?`
+        let query = `SELECT * FROM band WHERE (band_id) = (?)`
         db.query = (query,[id],function(error,band){
             if(error){
                 callback(error)
@@ -32,7 +32,7 @@ module.exports = {
     },
 
     updateBandById: function(id, bandname, bandbio, genre, callback){
-        let query = `UPDATE band SET (band_name, band_biography, band_genre) VALUES ? WHERE band_id = ?`
+        let query = `UPDATE band SET (band_name, band_biography, band_genre) VALUES (? , ? , ?) WHERE (band_id) = (?)`
         let values = [bandname,bandbio,genre,id]
         db.query = (query,[values],function(error,band){
             if(error){
@@ -45,7 +45,7 @@ module.exports = {
     },
 
     createBand: function(bandname, bandbio, genre, callback){
-        let query = `INSERT INTO band (band_name, band_biography, band_genre) VALUES ?`
+        let query = `INSERT INTO band (band_name, band_biography, band_genre) VALUES (? , ? , ?)`
         let values=[bandname,bandbio,genre]
         db.query(query,[values],function(error,band){
             if(error){
