@@ -1,43 +1,49 @@
-const express = require("express")
-const handlebars = require("express-handlebars")
-const app = express()
+const Express = require("express")
+const Handlebars = require("express-handlebars")
+const ExpressSession = require("express-session")
+const ConnectSQLite3 = require("connect-sqlite3")
 
-const accountRouter = require("./routers/accountRouter")
-const bandRouter = require("./routers/bandRouter")
-const instrumentRouter = require("./routers/instrumentRouter")
+const app = Express()
 
-const bodyParser = require("body-parser")
+const AccountRouter = require("./routers/accountRouter")
+const BandRouter = require("./routers/bandRouter")
+const InstrumentRouter = require("./routers/instrumentRouter")
+const VariousRouter = require("./routers/variousRouter")
+
+const BodyParser = require("body-parser")
 
 const listenPort = 8080
 
-app.use(express.static(__dirname + "/public"))
+app.use(Express.static(__dirname + "/public"))
 
 app.set("views", "src/pl/views")
 
-app.use(bodyParser.urlencoded({
+app.use(BodyParser.urlencoded({
     extended: false
 }))
 
-app.engine("hbs", handlebars({
+const SQLiteStore = ConnectSQLite3(ExpressSession)
+app.use(ExpressSession({
+    store: new SQLiteStore({db: "session-db.db"}),
+    secret: "16007340",
+    saveUninitialized: false,
+    resave: false
+}))
+//SESSION HANDLING
+app.use(function(request, response, next) {
+    response.locals.loggedInUsername = request.session.loggedInUsername
+    next()
+})
+
+app.engine("hbs", Handlebars({
     defaultLayout: "main.hbs"
 }))
 
-app.use("/bands", bandRouter)
-app.use("/account", accountRouter)
-app.use("/instrument", instrumentRouter)
+app.use("/", VariousRouter)
+app.use("/bands", BandRouter)
+app.use("/account", AccountRouter)
+app.use("/instrument", InstrumentRouter)
 
-app.get("/", function(request, response) {
-    response.render("home.hbs")
-})
-app.get("/signinup", function(request, response) {
-    response.render("signinup.hbs")
-})
-app.get("/noband", function(request, response) {
-    response.render("noband.hbs")
-})
-app.get("/admin", function(request, response) {
-//jfdlksafhkjsaf
-})
 app.listen(listenPort, function() {
     console.log(`Listening on port ${listenPort}`)
 })

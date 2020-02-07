@@ -19,11 +19,15 @@
             </section>
             <section class="nav mr-auto">
                 <a class="nav-link" href="/bands">Browse</a>
+                {{#if loggedInUsername}}
                 <a class="nav-link" href="/noband">My band</a>
+                {{/if}}
             </section>
             <section class="nav justify-content-right">
-                <a class="nav-link" href="/account">Account</a>
-                <a class="nav-link btn btn-primary btn-sm" href="/signinup">Sign in/up</a>
+                {{#if loggedInUsername}}
+                <a class="nav-link" href="/account/view/{{loggedInUsername}}">{{loggedInUsername}}</a>
+                {{/if}}
+                <a class="nav-link btn btn-primary btn-sm" href="{{#if loggedInUsername}}/account/logout{{else}}/signinup{{/if}}">{{#if loggedInUsername}}Sign out{{else}}Sign in/up{{/if}}</a>
             </section>
     </nav>
     <main class="p-3 container-fluid">
