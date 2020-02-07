@@ -9,7 +9,7 @@ const db = mysql.createConnection({
 
 module.exports = {
     createUserProficiency: function(username, instrument, proficiency, callback){
-        let query = `INSERT INTO user_proficency (username, instrument_name, proficency_level) VALUES (? , ? , ?)`
+        let query = `INSERT INTO user_proficiency (username, instrument_name, proficiency_level) VALUES (? , ? , ?)`
         let values = [username, instrument, proficiency]
         db.query(query,values,function(error){
             callback(error)
@@ -17,7 +17,7 @@ module.exports = {
     },
 
     updateUserProficiencyLevel: function(username, instrument, proficiency, callback){
-        let query = `UPDATE user_proficency SET (proficency) VALUES (?) WHERE (instrument_name) = (?) AND (username) = (?)`
+        let query = `UPDATE user_proficiency SET (proficiency) VALUES (?) WHERE (instrument_name) = (?) AND (username) = (?)`
         let values = [proficiency,instrument,username]
         db.query(query,values,function(error){
             callback(error)
@@ -25,7 +25,7 @@ module.exports = {
     },
 
     deleteUserProficiency: function(username, instrument, callback){
-        let query = `DELETE * FROM user_proficency WHERE (username) = (?) AND (instrument_name) = (?)`
+        let query = `DELETE * FROM user_proficiency WHERE (username) = (?) AND (instrument_name) = (?)`
         let values = [username, instrument]
         db.query(query,values,function(error){
             callback(error)
@@ -33,7 +33,7 @@ module.exports = {
     },
 
     getAllProficiencyByUsername: function(username, callback){
-        let query = `SELECT * FROM user_proficency WHERE (username) = (?)`
+        let query = `SELECT * FROM user_proficiency WHERE (username) = (?)`
         db.query(query,[username],function(error, proficiencies){
             if(error){
                 callback(error)
