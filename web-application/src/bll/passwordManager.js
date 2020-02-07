@@ -8,7 +8,7 @@ module.exports = {
             callback(error, hashedPassword)
         })
     },
-    compareAndGeneratePassword: function(oldPassword, retrievedOldPassword ,newPassword, callback) {
+    compareAndGeneratePassword: function(oldPassword, retrievedOldPassword, newPassword, callback) {
         bcrypt.compare(oldPassword, retrievedOldPassword, function(error, success) {
             if (error) {
                 callback(error)
@@ -22,6 +22,11 @@ module.exports = {
                     callback(error, hashedPassword)
                 })
             }
+        })
+    },
+    comparePasswordPlainToHash: function(passwordPlain, passwordHash, callback) {
+        bcrypt.compare(passwordPlain, passwordHash, function(error, success) {
+            callback(error, success)
         })
     }
 }

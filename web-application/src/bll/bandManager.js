@@ -2,20 +2,29 @@ const sessionValidation = require("./sessionValidation")
 const bandRepository = require("../dal/bandRepository")
 
 const ERROR_MESSAGE_OBJECT = {
+    getStatusError: function(statusCode) {
+        return {
+            stayOnPage: false,
+            code: statusCode,
+            message: errorList[statusCode]
+        }
+    },
+    getMessageError: function(statusCode, messageOverride) {
+        return {
+            stayOnPage: true,
+            code: statusCode,
+            message: messageOverride
+        }
+    },
     FORBIDDEN: "Forbidden",
     VALIDATION: "Failed validation"
 }
 
 module.exports = {
     createBand: function (accountnameBandLeader, bandName, bandBio, genre, callback) {
-        if (sessionValidation.validateAccountnameInSession(accountname) == true) {
-            bandRepository.createBand(accountnameBandLeader, bandName, bandBio, genre, function(error, bandId) {
-                callback(error, bandId)
-            })
-        }
-        else {
-            callback(ERROR_MESSAGE_OBJECT.FORBIDDEN)
-        }
+        bandRepository.createBand(accountnameBandLeader, bandName, bandBio, genre, function(error, bandId) {
+            callback(error, bandId)
+        })
     },
 
     getBandById: function (bandId, callback) {
