@@ -27,7 +27,7 @@ module.exports = {
     },
     signInAccount: function (username, password, callback) {
         accountRepository.getUserByUsername(username, function (error, retrievedUserObject) {
-            if (error || retrievedUserObject == null) {
+            if (error || retrievedUserObject.length <= 0) {
                 callback(error, false)
             }
             else {
