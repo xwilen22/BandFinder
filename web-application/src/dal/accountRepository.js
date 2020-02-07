@@ -17,7 +17,7 @@ module.exports={
     },
 
     updateUserInfoByUsername: function(username, bio, userPicture,callback) {
-        let query = `UPDATE user SET (biography, user_profile_picture) VALUES (?) WHERE (username) = (?)`
+        let query = `UPDATE user SET (biography, user_profile_picture) VALUES (? , ?) WHERE (username) = (?)`
         let values=[bio,userPicture,username]
         db.query(query,values,function(error) {
             callback(error, username)
