@@ -1,7 +1,7 @@
 const express = require("express")
 const handlebars = require("express-handlebars")
 const expressSession = require("express-session")
-const connectSQLite3 = require("connect-sqlite3")
+const redis = require("redis")
 
 const app = express()
 
@@ -22,9 +22,12 @@ app.use(bodyParser.urlencoded({
     extended: false
 }))
 
-const SQLiteStore = connectSQLite3(expressSession)
+let redisClient = redis.createClient({
+    host:"localhost"
+})
+const Redisstore = require("connect-redis")(expressSession)
 app.use(expressSession({
-    store: new SQLiteStore({db: "session-db.db"}),
+    store: new Redisstore({client: redisClient}),
     secret: "16007340",
     saveUninitialized: false,
     resave: false
