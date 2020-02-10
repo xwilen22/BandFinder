@@ -1,5 +1,7 @@
-module.exports = {
-    validateAccountnameInSession: function(accountName, sessionAccountName) {
-        return accountName == sessionAccountName
+module.exports = function({}) {
+    return {
+        validateAccountnameInSession: function(accountName, sessionAccountName) {
+            return accountName == sessionAccountName
+        }
     }
 }
