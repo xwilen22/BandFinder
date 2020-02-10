@@ -17,7 +17,7 @@ module.exports={
     },
 
     updateUserInfoByUsername: function(username, bio, userPicture,callback) {
-        let query = `UPDATE user SET (biography, user_profile_picture) VALUES (? , ?) WHERE (username) = (?)`
+        let query = `UPDATE user SET biography = ?, user_profile_picture = ? WHERE username = ?`
         let values=[bio,userPicture,username]
         db.query(query,values,function(error) {
             callback(error, username)
@@ -25,24 +25,24 @@ module.exports={
     },
 
     updateUserPassword: function(username, password,callback) {
-        let query = `UPDATE user SET password VALUES (?) WHERE (username) = (?)`
+        let query = `UPDATE user SET password = ? WHERE username = ?`
         let values = [password,username]
         db.query(query,values, function(error) {
             callback(error)
         })
     },       
     
-    getUserByUsername: function(username,callback) {
+    getUserByUsername: function(username, callback) {
         let query = `SELECT * FROM user WHERE (username) = (?)`
         db.query(query,[username],function(error, user) {
             callback(error, user)
         })
     },
 
-    deleteUserByUsername: function(username,callback){
+    deleteUserByUsername: function(username, callback){
         let query =`DELETE FROM (user, band_membership, user_proficiency) 
                     USING user INNERJOIN band_membership INNERJOIN user_proficiency 
-                    WHERE (user.username) = (?) AND (band_membership.username) = (?) AND (user_proficiency.username) = (?)`
+                    WHERE user.username = ? AND band_membership.username = ? AND user_proficiency.username = ?`
         db.query(query,[username],function(error) {
             callback(error)
         })
