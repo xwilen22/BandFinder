@@ -1,104 +1,105 @@
 const Express = require("express")
-const router = Express.Router()
 
-const accountManager = require("./../../bll/accountManager")
+module.exports = function ({accountManager}) {
+    const router = Express.Router()
 
-//Redirects to account detail or login screen
-router.get("/", function (request, response) {
-    let username = 0
+    //Redirects to account detail or login screen
+    router.get("/", function (request, response) {
+        let username = 0
 
-    //if not logged in
-    //response.redirect(`/signinup`)
-    //else
-    response.redirect(`/view/${username}`)
-})
-router.get("/view/:username", function (request, response) {
-    const username = request.params.username
+        //if not logged in
+        //response.redirect(`/signinup`)
+        //else
+        response.redirect(`/view/${username}`)
+    })
+    router.get("/view/:username", function (request, response) {
+        const username = request.params.username
 
-    accountManager.getAccountByUsername(username, function (error, userObjects) {
-        if (error) {
-            response.send(error)
-        }
-        else {
-            const userObject = userObjects[0]
-            const model = {
-                username: userObject.username,
-                biography: userObject.biography,
-                profilePicture: userObject.user_profile_picture
+        accountManager.getAccountByUsername(username, function (error, userObjects) {
+            if (error) {
+                response.send(error)
             }
-            response.render("userdetail.hbs", model)
-        }
-    })
-})
-router.post("/signin", function(request, response) {
-    const username = request.body.username
-    const password = request.body.password
-
-    accountManager.signInAccount(username, password, function(error) {
-        if(error) {
-            response.send(error)
-        } 
-        else {
-            request.session.loggedInUsername = username
-            response.redirect(`view/${username}`)
-        }
-    })
-})
-router.get("/logout", function (request, response) {
-    request.session.loggedInUsername = null
-    response.redirect("../")
-})
-router.get("/update/:username", function (request, response) {
-    const username = request.params.username
-
-    accountManager.getAccountByUsername(username, function(error, userObjects){
-        if (error) {
-            response.send("ERRORE: Can't find requested user")
-        } 
-        else {
-            const userObject = userObjects[0]
-            const model = {
-                username: userObject.username,
-                biography: userObject.biography,
-                profilePicture: userObject.user_profile_picture
+            else {
+                const userObject = userObjects[0]
+                const model = {
+                    username: userObject.username,
+                    biography: userObject.biography,
+                    profilePicture: userObject.user_profile_picture
+                }
+                response.render("userdetail.hbs", model)
             }
-            response.render("edituser.hbs", model)
-        }  
+        })
     })
-})
-router.post("/update/:username", function (request, response) {
-    const biography = request.body.biography
-    const username = request.params.username
+    router.post("/signin", function (request, response) {
+        const username = request.body.username
+        const password = request.body.password
 
-    accountManager.updateAccountBiography(username, biography, function(error) {
-        if(error.length > 0) {
-            response.send(error)
-        }
-        else {
-            response.redirect("back")
-        }
+        accountManager.signInAccount(username, password, function (error) {
+            if (error) {
+                response.send(error)
+            }
+            else {
+                request.session.loggedInUsername = username
+                response.redirect(`view/${username}`)
+            }
+        })
     })
-})
-router.post("/delete/:username", function (request, response) {
-    const username = request.params.username
-    const password = request.body.password
+    router.get("/logout", function (request, response) {
+        request.session.loggedInUsername = null
+        response.redirect("../")
+    })
+    router.get("/update/:username", function (request, response) {
+        const username = request.params.username
 
-    accountManager.deleteAccount(username, password, function(error) {
-        //Do shit
+        accountManager.getAccountByUsername(username, function (error, userObjects) {
+            if (error) {
+                response.send("ERRORE: Can't find requested user")
+            }
+            else {
+                const userObject = userObjects[0]
+                const model = {
+                    username: userObject.username,
+                    biography: userObject.biography,
+                    profilePicture: userObject.user_profile_picture
+                }
+                response.render("edituser.hbs", model)
+            }
+        })
     })
-})
-router.post("/create", function (request, response) {
-    const username = request.body.username
-    const password = request.body.password
+    router.post("/update/:username", function (request, response) {
+        const biography = request.body.biography
+        const username = request.params.username
 
-    accountManager.signUpAccount(username, password, function (error, createdUsername) {
-        if (error) {
-            response.send(`Error! ${error}`)
-        }
-        else {
-            request.session.loggedInUsername = createdUsername
-            response.redirect(`view/${createdUsername}`)
-        }
+        accountManager.updateAccountBiography(username, biography, function (error) {
+            if (error.length > 0) {
+                response.send(error)
+            }
+            else {
+                response.redirect("back")
+            }
+        })
     })
-})
-module.exports = router
+    router.post("/delete/:username", function (request, response) {
+        const username = request.params.username
+        const password = request.body.password
+
+        accountManager.deleteAccount(username, password, function (error) {
+            //Do shit
+        })
+    })
+    router.post("/create", function (request, response) {
+        const username = request.body.username
+        const password = request.body.password
+
+        accountManager.signUpAccount(username, password, function (error, createdUsername) {
+            if (error) {
+                response.send(`Error! ${error}`)
+            }
+            else {
+                request.session.loggedInUsername = createdUsername
+                response.redirect(`view/${createdUsername}`)
+            }
+        })
+    })
+    return router
+}

@@ -36,4 +36,10 @@ container.register("genreRepository", awilix.asFunction(genreRepository))
 container.register("bandMembershipRepository", awilix.asFunction(bandMembershipRepository))
 container.register("bandRepository", awilix.asFunction(bandRepository))
 container.register("bandManager", awilix.asFunction(bandManager))
+container.register("bandRouter", awilix.asFunction(bandRouter))
 
+const theBandRouter = container.resolve("bandRouter")
+
+container.register("variousRouter", awilix.asFunction(variousRouter))
+
+const theVariousRouter = container.resolve("variousRouter")

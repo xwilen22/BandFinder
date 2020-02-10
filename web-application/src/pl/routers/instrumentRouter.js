@@ -1,11 +1,14 @@
 const express = require("express")
-const router = express.Router()
 
-router.post("/create", function(request, response) {
+module.exports = function ({/*instrumentManager???*/}) {
+    const router = express.Router()
 
-})
-router.post("/delete", function(request, response) {
+    router.post("/create", function (request, response) {
 
-})
+    })
+    router.post("/delete", function (request, response) {
 
-module.exports = router
+    })
+
+    return router
+}
