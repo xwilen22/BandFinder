@@ -15,8 +15,10 @@ module.exports = {
         })
     },
 
-    updateBandMemberToLeader: function(username, bandId, isBandleader, callback){
-        let query = `UPDATE band_membership SET (is_band_leader) VALUES (?) WHERE (username,band_id) = (? , ?)`
+    updateBandMemberLeaderStatus: function(username, bandId, isBandleader, callback){
+        let query = `UPDATE band_membership 
+                     SET is_band_leader = ? 
+                     WHERE username = ? AND band_id = ?`
         let values = [isBandleader,username,bandId]
         db.query(query, values, function(error){
             callback(error)
@@ -24,7 +26,8 @@ module.exports = {
     },
     
     deleteBandMembership: function(username, bandId, callback){
-        let query = `DELETE * FROM band_membership WHERE (username, band_id) = (? , ?)`
+        let query = `DELETE * FROM band_membership 
+                     WHERE username = ? AND band_id = ?`
         let values = [username, bandId]
         db.query(query,values,function(error){
             callback(error)

@@ -17,7 +17,9 @@ module.exports={
     },
 
     updateUserInfoByUsername: function(username, bio, userPicture,callback) {
-        let query = `UPDATE user SET biography = ?, user_profile_picture = ? WHERE username = ?`
+        let query = `UPDATE user 
+                     SET biography = ?, user_profile_picture = ? 
+                     WHERE username = ?`
         let values=[bio,userPicture,username]
         db.query(query,values,function(error) {
             callback(error, username)
@@ -25,7 +27,9 @@ module.exports={
     },
 
     updateUserPassword: function(username, password,callback) {
-        let query = `UPDATE user SET password = ? WHERE username = ?`
+        let query = `UPDATE user 
+                     SET password = ? 
+                     WHERE username = ?`
         let values = [password,username]
         db.query(query,values, function(error) {
             callback(error)
@@ -33,7 +37,8 @@ module.exports={
     },       
     
     getUserByUsername: function(username, callback) {
-        let query = `SELECT * FROM user WHERE (username) = (?)`
+        let query = `SELECT * FROM user 
+                     WHERE username = ?`
         db.query(query,[username],function(error, user) {
             callback(error, user)
         })

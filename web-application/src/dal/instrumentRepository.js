@@ -9,7 +9,7 @@ const db = mysql.createConnection({
 
 module.exports = {
     createNewInstrument: function(instrument){
-        let query = `INSERT INTO instrument (instrument_name) VAlUES (?)`
+        let query = `INSERT INTO instrument (instrument_name) VALUES (?)`
         db.query(query,[instrument],function(error){
             callback(error)
         })
@@ -28,7 +28,8 @@ module.exports = {
     },
 
     getInstrumentByName: function(instrument){
-        let query = `SELECT * FROM instrument WHERE (instrument_name) = (?)`
+        let query = `SELECT * FROM instrument 
+                     WHERE instrument_name = ?`
         db.query(query,[instrument],function(error,instrument){
             if(error){
                 callback(error)
