@@ -1,3 +1,4 @@
+//Jag har ingen aning om vad jag håller på med :^)
 const awilix = require("awilix")
 
 const proficiencyRepository = require("./dal/proficiencyRepository")
@@ -32,6 +33,10 @@ container.register("passwordManager", awilix.asFunction(passwordManager))
 container.register("accountValidation", awilix.asFunction(accountValidation))
 
 container.register("instrumentRepository", awilix.asFunction(instrumentRepository))
+container.register("instrumentRouter", awilix.asFunction(instrumentRouter))
+
+const theInstrumentRouter = container.resolve("instrumentRouter")
+
 container.register("genreRepository", awilix.asFunction(genreRepository))
 container.register("bandMembershipRepository", awilix.asFunction(bandMembershipRepository))
 container.register("bandRepository", awilix.asFunction(bandRepository))
