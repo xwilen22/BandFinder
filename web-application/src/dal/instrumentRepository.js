@@ -1,3 +1,5 @@
+module.exports = function({}) {
+
 const mysql =  require("mysql")
 const db = mysql.createConnection({
     host:"database",
@@ -7,7 +9,7 @@ const db = mysql.createConnection({
     database: "bandFinderDatabase"
 })
 
-module.exports = {
+return {
     createNewInstrument: function(instrument){
         let query = `INSERT INTO instrument (instrument_name) VALUES (?)`
         db.query(query,[instrument],function(error){
@@ -43,4 +45,5 @@ module.exports = {
     deleteInstrumentByName: function(instrument){
         
     }
+}
 }
