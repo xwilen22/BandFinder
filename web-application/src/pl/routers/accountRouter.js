@@ -45,7 +45,7 @@ router.post("/signin", function(request, response) {
 })
 router.get("/logout", function (request, response) {
     request.session.loggedInUsername = null
-    response.redirect("back")
+    response.redirect("../")
 })
 router.get("/update/:username", function (request, response) {
     const username = request.params.username
