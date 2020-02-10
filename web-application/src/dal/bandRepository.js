@@ -61,6 +61,6 @@ module.exports = function ({ }) {
                     callback(band)
                 }
             })
-        },
+        }
     }
 }

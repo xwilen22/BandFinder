@@ -1,4 +1,4 @@
-module.exports = function ({ }) {
+module.exports = function ({}) {
 
     const mysql = require("mysql")
     const db = mysql.createConnection({
