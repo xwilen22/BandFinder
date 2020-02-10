@@ -37,7 +37,8 @@ router.post("/signin", function(request, response) {
     accountManager.signInAccount(username, password, function(error) {
         if(error) {
             response.send(error)
-        } else {
+        } 
+        else {
             request.session.loggedInUsername = username
             response.redirect(`view/${username}`)
         }
@@ -53,7 +54,8 @@ router.get("/update/:username", function (request, response) {
     accountManager.getAccountByUsername(username, function(error, userObjects){
         if (error) {
             response.send("ERRORE: Can't find requested user")
-        } else {
+        } 
+        else {
             const userObject = userObjects[0]
             const model = {
                 username: userObject.username,
