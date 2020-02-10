@@ -16,3 +16,7 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=DucTreHouHa
       - MYSQL_DATABASE=bandFinderDatabase
+  session:
+    build: ./session
+    ports:
+      - "6379:6379"

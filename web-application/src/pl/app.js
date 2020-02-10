@@ -23,7 +23,7 @@ app.use(bodyParser.urlencoded({
 }))
 
 let redisClient = redis.createClient({
-    host:"localhost"
+    host:"session"
 })
 const Redisstore = require("connect-redis")(expressSession)
 app.use(expressSession({
