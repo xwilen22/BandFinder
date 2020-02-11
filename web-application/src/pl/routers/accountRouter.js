@@ -75,7 +75,7 @@ module.exports = function ({accountManager}) {
                 response.send(error)
             }
             else {
-                response.redirect("back")
+                response.redirect(`/account/view/${username}`)
             }
         })
     })
