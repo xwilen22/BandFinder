@@ -2,8 +2,8 @@
 const sessionValidation = require("./sessionValidation")
 const bandRepository = require("../dal/bandRepository")
 */
-
-module.exports = function ({sessionValidation, bandRepository}) {
+//sessionValidation, 
+module.exports = function ({bandRepository}) {
 
     const ERROR_MESSAGE_OBJECT = {
         getStatusError: function (statusCode) {
@@ -32,7 +32,7 @@ module.exports = function ({sessionValidation, bandRepository}) {
         },
 
         getBandById: function (bandId, callback) {
-            const bandId = parseInt(bandId)
+            //const bandId = parseInt(bandId)
             if (isNaN(bandId) == false) {
                 bandRepository.getBandById(bandId, function (error, bandObject) {
                     callback(error, bandObject)

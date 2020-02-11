@@ -1,4 +1,4 @@
-module.exports = function ({ }) {
+module.exports = function ({}) {
 
     const PASSWORD_MIN_LENGTH = 6
     const ACCOUNTNAME_MIN_LENGTH = 4
