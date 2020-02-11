@@ -75,9 +75,9 @@ module.exports = function ({ accountRepository, accountValidation, passwordManag
             })
         },
         deleteAccount: function (username, password, callback) {
-            const validationErrors = accountValidation.getValidationErrors(password, username)
+            const accountValidationErrors = accountValidation.getValidationErrors(password, username)
 
-            if (validationErrors.length > 0) {
+            if (accountValidationErrors.length > 0) {
                 callback(validationErrors)
             }
             else {
