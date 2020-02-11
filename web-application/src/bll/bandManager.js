@@ -1,8 +1,3 @@
-/*
-const sessionValidation = require("./sessionValidation")
-const bandRepository = require("../dal/bandRepository")
-*/
-
 module.exports = function ({sessionValidation, bandRepository}) {
 
     const ERROR_MESSAGE_OBJECT = {

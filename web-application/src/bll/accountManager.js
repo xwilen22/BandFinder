@@ -1,11 +1,3 @@
-/*
-const accountValidation = require("./accountValidation")
-const sessionValidation = require("./sessionValidation")
-const passwordManager = require("./passwordManager")
-
-const accountRepository = require("../dal/accountRepository")
-*/
-//accountValidation, sessionValidation, passwordManager, 
 module.exports = function ({accountRepository, accountValidation, sessionValidation, passwordManager}) {
     return {
         signUpAccount: function (username, password, callback) {
