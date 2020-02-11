@@ -6,7 +6,7 @@ const passwordManager = require("./passwordManager")
 const accountRepository = require("../dal/accountRepository")
 */
 //accountValidation, sessionValidation, passwordManager, 
-module.exports = function ({accountRepository}) {
+module.exports = function ({accountRepository, accountValidation, sessionValidation, passwordManager}) {
     return {
         signUpAccount: function (username, password, callback) {
             if (accountValidation.accountNameValidation(username) && accountValidation.passwordValidation(password)) {

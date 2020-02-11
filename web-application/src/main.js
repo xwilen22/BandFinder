@@ -62,6 +62,11 @@ const bandRouter = require("./pl/routers/bandRouter")
 const variousRouter = require("./pl/routers/variousRouter")
 
 const container = awilix.createContainer()
+//High level dependency, these needs to be registered first
+container.register("passwordManager", awilix.asFunction(passwordManager))
+container.register("accountValidation", awilix.asFunction(accountValidation))
+container.register("sessionValidation", awilix.asFunction(sessionValidation))
+
 container.register("accountRepository", awilix.asFunction(accountRepository))
 container.register("accountManager", awilix.asFunction(accountManager))
 container.register("accountRouter", awilix.asFunction(accountRouter))
@@ -69,9 +74,6 @@ container.register("accountRouter", awilix.asFunction(accountRouter))
 const theAccountRouter = container.resolve("accountRouter")
 
 container.register("proficiencyRepository", awilix.asFunction(proficiencyRepository))
-
-container.register("passwordManager", awilix.asFunction(passwordManager))
-container.register("accountValidation", awilix.asFunction(accountValidation))
 
 container.register("instrumentRepository", awilix.asFunction(instrumentRepository))
 container.register("instrumentRouter", awilix.asFunction(instrumentRouter))
@@ -83,8 +85,6 @@ container.register("bandMembershipRepository", awilix.asFunction(bandMembershipR
 container.register("bandRepository", awilix.asFunction(bandRepository))
 container.register("bandManager", awilix.asFunction(bandManager))
 container.register("bandRouter", awilix.asFunction(bandRouter))
-
-container.register("sessionValidation", awilix.asFunction(sessionValidation))
 
 const theBandRouter = container.resolve("bandRouter")
 
