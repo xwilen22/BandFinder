@@ -1,6 +1,6 @@
 module.exports = function ({sessionValidation, bandRepository}) {
-
-    const ERROR_MESSAGE_OBJECT = {
+    
+    const ERROR_MESSAGE = {
         getStatusError: function (statusCode) {
             return {
                 stayOnPage: false,
@@ -15,8 +15,6 @@ module.exports = function ({sessionValidation, bandRepository}) {
                 message: messageOverride
             }
         },
-        FORBIDDEN: "Forbidden",
-        VALIDATION: "Failed validation"
     }
 
     return {
@@ -34,7 +32,7 @@ module.exports = function ({sessionValidation, bandRepository}) {
                 })
             }
             else {
-                callback(ERROR_MESSAGE_OBJECT.VALIDATION)
+                callback()
             }
         },
 
