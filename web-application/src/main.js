@@ -42,24 +42,23 @@ app.listen(listenPort, function() {
 
 //Jag har ingen aning om vad jag håller på med :^)
 const awilix = require("awilix")
-
+///DATA ACCESS LAYER
 const proficiencyRepository = require("./dal/proficiencyRepository")
 const accountRepository = require("./dal/accountRepository")
-const accountManager = require("./bll/accountManager")
-const accountRouter = require("./pl/routers/accountRouter")
-
-const passwordManager = require("./bll/passwordManager")
-const accountValidation = require("./bll/accountValidation")
-
 const instrumentRepository = require("./dal/instrumentRepository")
-const instrumentRouter = require("./pl/routers/instrumentRouter")
-
 const genreRepository = require("./dal/genreRepository")
 const bandMembershipRepository = require("./dal/bandMembershipRepository")
 const bandRepository = require("./dal/bandRepository")
+///BUSINESS LOGIC LAYER
+const accountManager = require("./bll/accountManager")
+const passwordManager = require("./bll/passwordManager")
 const bandManager = require("./bll/bandManager")
+const sessionValidation = require("./bll/sessionValidation")
+const accountValidation = require("./bll/accountValidation")
+///PRESENTATION LAYER
+const accountRouter = require("./pl/routers/accountRouter")
+const instrumentRouter = require("./pl/routers/instrumentRouter")
 const bandRouter = require("./pl/routers/bandRouter")
-
 const variousRouter = require("./pl/routers/variousRouter")
 
 const container = awilix.createContainer()
@@ -84,6 +83,8 @@ container.register("bandMembershipRepository", awilix.asFunction(bandMembershipR
 container.register("bandRepository", awilix.asFunction(bandRepository))
 container.register("bandManager", awilix.asFunction(bandManager))
 container.register("bandRouter", awilix.asFunction(bandRouter))
+
+container.register("sessionValidation", awilix.asFunction(sessionValidation))
 
 const theBandRouter = container.resolve("bandRouter")
 

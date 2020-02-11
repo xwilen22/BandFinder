@@ -2,8 +2,8 @@
 const sessionValidation = require("./sessionValidation")
 const bandRepository = require("../dal/bandRepository")
 */
-//sessionValidation, 
-module.exports = function ({bandRepository}) {
+
+module.exports = function ({sessionValidation, bandRepository}) {
 
     const ERROR_MESSAGE_OBJECT = {
         getStatusError: function (statusCode) {

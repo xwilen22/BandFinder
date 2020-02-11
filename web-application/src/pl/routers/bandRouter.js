@@ -1,6 +1,6 @@
 const express = require("express")
 
-module.exports = function ({ bandManager }) {
+module.exports = function ({bandManager}) {
     const router = express.Router()
 
     //Get all

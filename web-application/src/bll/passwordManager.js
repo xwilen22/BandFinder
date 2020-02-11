@@ -1,4 +1,3 @@
-
 module.exports = function ({}) {
     const bcrypt = require("bcrypt")
     const HASH_SALT_ROUNDS = 10
