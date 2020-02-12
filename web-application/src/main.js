@@ -1,45 +1,3 @@
-const express = require("express")
-const handlebars = require("express-handlebars")
-const expressSession = require("express-session")
-const redis = require("redis")
-
-const app = express()
-const bodyParser = require("body-parser")
-
-const listenPort = 8080
-
-app.use(express.static(__dirname + "/pl/public"))
-
-app.set("views", "src/pl/views")
-
-app.use(bodyParser.urlencoded({
-    extended: false
-}))
-
-let redisClient = redis.createClient({
-    host:"session"
-})
-const Redisstore = require("connect-redis")(expressSession)
-app.use(expressSession({
-    store: new Redisstore({client: redisClient}),
-    secret: "16007340",
-    saveUninitialized: false,
-    resave: false
-}))
-//SESSION HANDLING
-app.use(function(request, response, next) {
-    response.locals.loggedInUsername = request.session.loggedInUsername
-    next()
-})
-
-app.engine("hbs", handlebars({
-    defaultLayout: "main.hbs"
-}))
-
-app.listen(listenPort, function() {
-    console.log(`Listening on port ${listenPort}`)
-})
-
 //Jag har ingen aning om vad jag håller på med :^)
 const awilix = require("awilix")
 ///DATA ACCESS LAYER
@@ -56,6 +14,7 @@ const bandManager = require("./bll/bandManager")
 const sessionValidation = require("./bll/sessionValidation")
 const accountValidation = require("./bll/accountValidation")
 ///PRESENTATION LAYER
+const webAppMain = require("./pl/app")
 const accountRouter = require("./pl/routers/accountRouter")
 const instrumentRouter = require("./pl/routers/instrumentRouter")
 const bandRouter = require("./pl/routers/bandRouter")
@@ -92,7 +51,4 @@ container.register("variousRouter", awilix.asFunction(variousRouter))
 
 const theVariousRouter = container.resolve("variousRouter")
 
-app.use("/", theVariousRouter)
-app.use("/bands", theBandRouter)
-app.use("/account", theAccountRouter)
-app.use("/instrument", theInstrumentRouter)
+container.register("webAppMain", webAppMain)
