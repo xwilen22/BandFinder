@@ -93,9 +93,11 @@ module.exports = function ({accountManager}) {
 
         accountManager.signUpAccount(username, password, function (error, createdUsername) {
             if (error) {
+                console.log("Sent error!")
                 response.send(`Error! ${error}`)
             }
             else {
+                console.log("Did not send error!")
                 request.session.loggedInUsername = createdUsername
                 response.redirect(`view/${createdUsername}`)
             }
