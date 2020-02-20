@@ -54,6 +54,7 @@ const database = require("./dal/db")
 const accountManager = require("./bll/accountManager")
 const passwordManager = require("./bll/passwordManager")
 const bandManager = require("./bll/bandManager")
+const bandValidation = require("./bll/bandValidation")
 const sessionValidation = require("./bll/sessionValidation")
 const accountValidation = require("./bll/accountValidation")
 const errorGenerator = require("./bll/errorGenerator")
@@ -66,8 +67,9 @@ const variousRouter = require("./pl/routers/variousRouter")
 const container = awilix.createContainer()
 //High level dependency, these needs to be registered first
 container.register("errorGenerator", awilix.asFunction(errorGenerator))
-
 container.register("db", awilix.asFunction(database))
+container.register("bandValidation", awilix.asFunction(bandValidation))
+
 
 container.register("passwordManager", awilix.asFunction(passwordManager))
 container.register("accountValidation", awilix.asFunction(accountValidation))
