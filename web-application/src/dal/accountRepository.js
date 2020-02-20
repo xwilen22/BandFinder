@@ -1,13 +1,4 @@
-module.exports = function ({}) {
-    const mysql = require("mysql")
-    const db = mysql.createConnection({
-        host: "database",
-        user: "root",
-        port: "3306",
-        password: "DucTreHouHa",
-        database: "bandFinderDatabase"
-    })
-
+module.exports = function ({ db }) {
     return {
         createNewUser: function (username, password, callback) {
             let query = `INSERT INTO user (username, password) VALUES ( ? , ? )`

@@ -1,13 +1,4 @@
-module.exports = function ({ }) {
-
-    const mysql = require("mysql")
-    const db = mysql.createConnection({
-        host: "db",
-        user: "root",
-        password: "DucTreHouHa",
-        database: "bandFinderDatabase"
-    })
-
+module.exports = function ({ db }) {
     return {
         getAllBands: function (callback) {
             let query = `SELECT * FROM band`
