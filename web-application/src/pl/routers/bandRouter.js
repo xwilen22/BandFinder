@@ -52,6 +52,7 @@ module.exports = function ({bandManager}) {
                 response.send(error)
             }
             else{
+                console.log("hej hej fungerar bra")
                 response.redirect(`/view/${bandId}`)
             }
         })
