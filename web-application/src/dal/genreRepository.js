@@ -1,13 +1,4 @@
-module.exports = function ({}) {
-
-    const mysql = require("mysql")
-    const db = mysql.createConnection({
-        host: "db",
-        user: "root",
-        password: "DucTreHouHa",
-        database: "bandFinderDatabase"
-    })
-
+module.exports = function ({ db }) {
     return {
         createGenre: function (genreName, callback) {
             let query = `INSERT INTO genre (genre_name) VALUES (?)`

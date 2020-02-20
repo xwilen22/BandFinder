@@ -1,14 +1,4 @@
-module.exports = function ({ }) {
-
-    const mysql = require("mysql")
-    const db = mysql.createConnection({
-        host: "database",
-        user: "root",
-        port: "3306",
-        password: "DucTreHouHa",
-        database: "bandFinderDatabase"
-    })
-
+module.exports = function ({ db }) {
     return {
         createUserProficiency: function (username, instrument, proficiency, callback) {
             let query = `INSERT INTO user_proficiency (username, instrument_name, proficiency_level) VALUES (? , ? , ?)`
