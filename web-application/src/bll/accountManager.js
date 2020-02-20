@@ -33,10 +33,10 @@ module.exports = function ({ accountRepository, accountValidation, passwordManag
                     const retrievedHashValue = retrievedUserObject[0].password
                     passwordManager.comparePasswordPlainToHash(password, retrievedHashValue, function (compareErrors, success) {
                         if(compareErrors.length > 0) {
-                            callback(compareErrors, false)
+                            callback(compareErrors, success)
                         } 
                         else {
-                            callback(null, true)
+                            callback([], success)
                         }
                     })
                 }
@@ -55,7 +55,7 @@ module.exports = function ({ accountRepository, accountValidation, passwordManag
                         }
                         else {
                             accountRepository.updateUserPassword(username, hashedPassword, function (error) {
-                                callback(error)
+                                callback(errorGenerator.getInternalError(error))
                             })
                         }
                     })
@@ -65,8 +65,7 @@ module.exports = function ({ accountRepository, accountValidation, passwordManag
         updateAccountBiography: function (username, newBiography, callback) {
             accountRepository.updateUserInfoByUsername(username, newBiography, "", function (error) {
                 if (error) {
-                    console.log(error)
-                    callback(["DB ERROR"])
+                    callback(errorGenerator.getInternalError(error))
                 }
                 else {
                     callback([])
@@ -112,16 +111,16 @@ module.exports = function ({ accountRepository, accountValidation, passwordManag
                 })
             }
         },
-
         getAccountByUsername: function (username, callback) {
-            if (accountValidation.accountNameValidation(username) == true) {
+            const accountNameValidationErrors = accountValidation.getNameValidationErrors(username)
+
+            if (accountNameValidationErrors <= 0) {
                 accountRepository.getUserByUsername(username, function (error, userObject) {
-                    callback(error, userObject)
+                    callback(errorGenerator.getInternalError(error), userObject)
                 })
             }
             else {
-                let validationError = "Validation error"
-                callback(validationError)
+                callback(accountNameValidationErrors)
             }
         }
     }
