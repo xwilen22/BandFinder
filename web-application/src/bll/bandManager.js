@@ -1,5 +1,4 @@
-module.exports = function ({ sessionValidation, bandRepository, bandValidation, errorGenerator }) {
-    
+module.exports = function ({ sessionValidation, bandRepository, bandValidation, errorGenerator }) {  
     return {
         createBand: function (accountnameBandLeader, bandName, bandBio, genre, callback) {
             const bandNamevalidationErrors = bandValidation.getNameValidationErrors(bandName)

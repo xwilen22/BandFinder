@@ -68,7 +68,8 @@ const container = awilix.createContainer()
 //High level dependency, these needs to be registered first
 container.register("errorGenerator", awilix.asFunction(errorGenerator))
 container.register("db", awilix.asFunction(database))
-container.bandManager("bandManager", awilix.asFunction(bandManager))
+container.register("bandValidation", awilix.asFunction(bandValidation))
+
 
 container.register("passwordManager", awilix.asFunction(passwordManager))
 container.register("accountValidation", awilix.asFunction(accountValidation))

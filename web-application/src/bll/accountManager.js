@@ -6,7 +6,7 @@ module.exports = function ({ accountRepository, accountValidation, passwordManag
             if (accountValidationErrors.length <= 0) {
                 passwordManager.generatePasswordHash(password, function (hashErrors, hashedPassword) {
                     if (hashErrors.length > 0) {
-                        callback(hashErrors)
+                        callback(errorGenerator.getClientError(hashErrors))
                     }
                     else {
                         accountRepository.createNewUser(username, hashedPassword, function (error, createdUsername) {
@@ -21,7 +21,7 @@ module.exports = function ({ accountRepository, accountValidation, passwordManag
                 })
             }
             else {
-                callback(accountValidationErrors)
+                callback(errorGenerator.getClientError(accountValidationErrors))
             }
         },
         signInAccount: function (username, password, callback) {
@@ -33,7 +33,7 @@ module.exports = function ({ accountRepository, accountValidation, passwordManag
                     const retrievedHashValue = retrievedUserObject[0].password
                     passwordManager.comparePasswordPlainToHash(password, retrievedHashValue, function (compareErrors, success) {
                         if(compareErrors.length > 0) {
-                            callback(compareErrors, success)
+                            callback(errorGenerator.getClientError(compareErrors))
                         } 
                         else {
                             callback([], success)
@@ -51,7 +51,7 @@ module.exports = function ({ accountRepository, accountValidation, passwordManag
                     let retrievedPassword = userObject.password
                     passwordManager.compareAndGeneratePassword(oldPassword, retrievedPassword, newPassword, function (compareError, hashedPassword) {
                         if (compareError.length > 0) {
-                            callback(compareError)
+                            callback(errorGenerator.getClientError(compareError))
                         }
                         else {
                             accountRepository.updateUserPassword(username, hashedPassword, function (error) {
@@ -76,20 +76,20 @@ module.exports = function ({ accountRepository, accountValidation, passwordManag
             const accountValidationErrors = accountValidation.getValidationErrors(password, username)
 
             if (accountValidationErrors.length > 0) {
-                callback(validationErrors)
+                callback(errorGenerator.getClientError(validationErrors))
             }
             else {
                 accountRepository.getUserByUsername(username, function (error, userObject) {
                     if (error) {
-                        callback("DB Failed")
+                        callback(errorGenerator.getInternalError(error))
                     }
                     else if (userObject == null) {
-                        callback("Can't find user")
+                        callback(errorGenerator.getInternalError(["Can't find user"]))
                     }
                     else {
                         passwordManager.comparePasswordPlainToHash(password, userObject[0].password, function (error, success) {
                             if (error.length > 0) {
-                                callback("DB ERROR")
+                                callback(errorGenerator.getInternalError(error))
                             }
                             else {
                                 if (success == true) {
