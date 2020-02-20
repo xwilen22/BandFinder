@@ -49,6 +49,7 @@ const instrumentRepository = require("./dal/instrumentRepository")
 const genreRepository = require("./dal/genreRepository")
 const bandMembershipRepository = require("./dal/bandMembershipRepository")
 const bandRepository = require("./dal/bandRepository")
+const database = require("./dal/db")
 ///BUSINESS LOGIC LAYER
 const accountManager = require("./bll/accountManager")
 const passwordManager = require("./bll/passwordManager")
@@ -65,6 +66,8 @@ const variousRouter = require("./pl/routers/variousRouter")
 const container = awilix.createContainer()
 //High level dependency, these needs to be registered first
 container.register("errorGenerator", awilix.asFunction(errorGenerator))
+
+container.register("db", awilix.asFunction(database))
 
 container.register("passwordManager", awilix.asFunction(passwordManager))
 container.register("accountValidation", awilix.asFunction(accountValidation))
