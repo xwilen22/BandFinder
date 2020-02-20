@@ -14,7 +14,7 @@ module.exports = function ({ accountRepository, accountValidation, passwordManag
                                 callback(errorGenerator.getInternalError(error))
                             }
                             else {
-                                callback(null, createdUsername)
+                                callback([], createdUsername)
                             }
                         })
                     }
@@ -45,13 +45,13 @@ module.exports = function ({ accountRepository, accountValidation, passwordManag
         updateAccountPassword: function (username, oldPassword, newPassword, callback) {
             accountRepository.getUserByUsername(username, function (error, userObject) {
                 if (error) {
-                    callback(error)
+                    callback(errorGenerator.getInternalError(error))
                 }
                 else {
                     let retrievedPassword = userObject.password
-                    passwordManager.compareAndGeneratePassword(oldPassword, retrievedPassword, newPassword, function (error, hashedPassword) {
-                        if (error) {
-                            callback(error)
+                    passwordManager.compareAndGeneratePassword(oldPassword, retrievedPassword, newPassword, function (compareError, hashedPassword) {
+                        if (compareError.length > 0) {
+                            callback(compareError)
                         }
                         else {
                             accountRepository.updateUserPassword(username, hashedPassword, function (error) {
