@@ -1,29 +1,25 @@
-/*
-const accountValidation = require("./accountValidation")
-const sessionValidation = require("./sessionValidation")
-const passwordManager = require("./passwordManager")
-
-const accountRepository = require("../dal/accountRepository")
-*/
-//accountValidation, sessionValidation, passwordManager, 
-module.exports = function ({accountRepository, accountValidation, sessionValidation, passwordManager}) {
+module.exports = function ({ accountRepository, accountValidation, passwordManager, errorGenerator }) {
     return {
         signUpAccount: function (username, password, callback) {
-            if (accountValidation.accountNameValidation(username) && accountValidation.passwordValidation(password)) {
-                passwordManager.generatePasswordHash(password, function (error, hashedPassword) {
-                    if (error) {
-                        callback(error)
+            const accountValidationErrors = accountValidation.getValidationErrors(password, username)
+
+            if (accountValidationErrors.length > 0) {
+                passwordManager.generatePasswordHash(password, function (hashError, hashedPassword) {
+                    if (hashError) {
+                        callback(hashError)
                     }
                     else {
                         accountRepository.createNewUser(username, hashedPassword, function (error, createdUsername) {
+                            if (error) {
+                                callback({ code: 500, messages: ["Internal error, sorry about that"] })
+                            }
                             callback(error, createdUsername)
                         })
                     }
                 })
             }
             else {
-                let validationError = ["Failed to validate password or username"]
-                callback(validationError)
+                callback(accountValidationErrors)
             }
         },
         signInAccount: function (username, password, callback) {
@@ -48,30 +44,24 @@ module.exports = function ({accountRepository, accountValidation, sessionValidat
             })
         },
         updateAccountPassword: function (username, oldPassword, newPassword, callback) {
-            if (sessionValidation.validateAccountnameInSession(username) == true) {
-                accountRepository.getUserByUsername(username, function (error, userObject) {
-                    if (error) {
-                        callback(error)
-                    }
-                    else {
-                        let retrievedPassword = userObject.password
-                        passwordManager.compareAndGeneratePassword(oldPassword, retrievedPassword, newPassword, function (error, hashedPassword) {
-                            if (error) {
+            accountRepository.getUserByUsername(username, function (error, userObject) {
+                if (error) {
+                    callback(error)
+                }
+                else {
+                    let retrievedPassword = userObject.password
+                    passwordManager.compareAndGeneratePassword(oldPassword, retrievedPassword, newPassword, function (error, hashedPassword) {
+                        if (error) {
+                            callback(error)
+                        }
+                        else {
+                            accountRepository.updateUserPassword(username, hashedPassword, function (error) {
                                 callback(error)
-                            }
-                            else {
-                                accountRepository.updateUserPassword(username, hashedPassword, function (error) {
-                                    callback(error)
-                                })
-                            }
-                        })
-                    }
-                })
-            }
-            else {
-                let errorUnauthorized = "Unauthorized"
-                callback(errorUnauthorized)
-            }
+                            })
+                        }
+                    })
+                }
+            })
         },
         updateAccountBiography: function (username, newBiography, callback) {
             accountRepository.updateUserInfoByUsername(username, newBiography, "", function (error) {
@@ -85,7 +75,12 @@ module.exports = function ({accountRepository, accountValidation, sessionValidat
             })
         },
         deleteAccount: function (username, password, callback) {
-            if (sessionValidation.validateAccountnameInSession(username) == true && accountValidation.accountNameValidation(username) == true) {
+            const accountValidationErrors = accountValidation.getValidationErrors(password, username)
+
+            if (accountValidationErrors.length > 0) {
+                callback(validationErrors)
+            }
+            else {
                 accountRepository.getUserByUsername(username, function (error, userObject) {
                     if (error) {
                         callback("DB Failed")
@@ -116,10 +111,6 @@ module.exports = function ({accountRepository, accountValidation, sessionValidat
                         })
                     }
                 })
-            }
-            else {
-                let errorUnauthorized = "Unauthorized"
-                callback([errorUnauthorized])
             }
         },
 
