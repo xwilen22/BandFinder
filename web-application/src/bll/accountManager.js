@@ -3,17 +3,19 @@ module.exports = function ({ accountRepository, accountValidation, passwordManag
         signUpAccount: function (username, password, callback) {
             const accountValidationErrors = accountValidation.getValidationErrors(password, username)
 
-            if (accountValidationErrors.length > 0) {
-                passwordManager.generatePasswordHash(password, function (hashError, hashedPassword) {
-                    if (hashError) {
-                        callback(hashError)
+            if (accountValidationErrors.length <= 0) {
+                passwordManager.generatePasswordHash(password, function (hashErrors, hashedPassword) {
+                    if (hashErrors.length > 0) {
+                        callback(hashErrors)
                     }
                     else {
                         accountRepository.createNewUser(username, hashedPassword, function (error, createdUsername) {
                             if (error) {
-                                callback({ code: 500, messages: ["Internal error, sorry about that"] })
+                                callback(errorGenerator.getInternalError(error))
                             }
-                            callback(error, createdUsername)
+                            else {
+                                callback(null, createdUsername)
+                            }
                         })
                     }
                 })
@@ -25,17 +27,14 @@ module.exports = function ({ accountRepository, accountValidation, passwordManag
         signInAccount: function (username, password, callback) {
             accountRepository.getUserByUsername(username, function (error, retrievedUserObject) {
                 if (error || retrievedUserObject.length <= 0) {
-                    callback(error, false)
+                    callback(errorGenerator.getInternalError(error), false)
                 }
                 else {
                     const retrievedHashValue = retrievedUserObject[0].password
-                    passwordManager.comparePasswordPlainToHash(password, retrievedHashValue, function (compareError, success) {
-                        if (compareError) {
-                            callback(["BCRYPT ERROR"], false)
-                        }
-                        else if (success == false) {
-                            callback(["WRONG PASSWORD"], false)
-                        }
+                    passwordManager.comparePasswordPlainToHash(password, retrievedHashValue, function (compareErrors, success) {
+                        if(compareErrors.length > 0) {
+                            callback(compareErrors, false)
+                        } 
                         else {
                             callback(null, true)
                         }
@@ -90,7 +89,7 @@ module.exports = function ({ accountRepository, accountValidation, passwordManag
                     }
                     else {
                         passwordManager.comparePasswordPlainToHash(password, userObject[0].password, function (error, success) {
-                            if (error) {
+                            if (error.length > 0) {
                                 callback("DB ERROR")
                             }
                             else {
