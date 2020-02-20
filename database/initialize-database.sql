@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS user (
     user_profile_picture BLOB
 );
 CREATE TABLE IF NOT EXISTS genre (
-    genre_name VARCHAR(20),
+    genre_name VARCHAR(20) NOT NULL,
     parent_genre VARCHAR(20),
     CONSTRAINT subGenreContraint FOREIGN KEY (parent_genre) REFERENCES genre(genre_name)
 );
