@@ -7,11 +7,11 @@ module.exports = function ({ db }) {
             })
         },
 
-        createSubGenreOf: function (genreName, parentGenre, callback) {
+        createSubGenreOf: function (parentGenreName, subGenreName, callback) {
             let query = `INSERT INTO genre (genre_name, parent_genre) VALUES (? , ?)`
-            let values = [genreName, parentGenre]
-            db.query(query, values, function (error) {
-                callback(error)
+            let values = [subGenreName, parentGenreName]
+            db.query(query, values, function (insertSubGenreError) {
+                callback(insertSubGenreError)
             })
         },
 
