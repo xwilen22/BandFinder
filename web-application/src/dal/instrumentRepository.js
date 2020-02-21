@@ -1,13 +1,13 @@
 module.exports = function ({ db }) {
     return {
-        createNewInstrument: function (instrument) {
+        createInstrument: function (instrument, callback) {
             let query = `INSERT INTO instrument (instrument_name) VALUES (?)`
             db.query(query, [instrument], function (error) {
                 callback(error)
             })
         },
 
-        getAllInstrument: function () {
+        getAllInstruments: function (callback) {
             let query = `SELECT * FROM instrument`
             db.query(query, function (error, instruments) {
                 if (error) {
@@ -19,9 +19,9 @@ module.exports = function ({ db }) {
             })
         },
 
-        getInstrumentByName: function (instrument) {
+        getInstrumentByName: function (instrumentName, callback) {
             let query = `SELECT * FROM instrument 
-                     WHERE instrument_name = ?`
+                         WHERE instrument_name = ?`
             db.query(query, [instrument], function (error, instrument) {
                 if (error) {
                     callback(error)
@@ -32,8 +32,8 @@ module.exports = function ({ db }) {
             })
         },
 
-        deleteInstrumentByName: function (instrument) {
-
+        deleteInstrumentByName: function (instrument, callback) {
+            
         }
     }
 }

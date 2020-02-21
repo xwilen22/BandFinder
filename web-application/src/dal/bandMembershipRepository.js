@@ -10,8 +10,8 @@ module.exports = function ({ db }) {
 
         updateBandMemberLeaderStatus: function (username, bandId, isBandleader, callback) {
             let query = `UPDATE band_membership 
-                     SET is_band_leader = ? 
-                     WHERE username = ? AND band_id = ?`
+                         SET is_band_leader = ? 
+                         WHERE username = ? AND band_id = ?`
             let values = [isBandleader, username, bandId]
             db.query(query, values, function (error) {
                 callback(error)
@@ -20,7 +20,7 @@ module.exports = function ({ db }) {
 
         deleteBandMembership: function (username, bandId, callback) {
             let query = `DELETE * FROM band_membership 
-                     WHERE username = ? AND band_id = ?`
+                         WHERE username = ? AND band_id = ?`
             let values = [username, bandId]
             db.query(query, values, function (error) {
                 callback(error)

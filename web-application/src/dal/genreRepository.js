@@ -7,64 +7,61 @@ module.exports = function ({ db }) {
             })
         },
 
-        createSubGenreOf: function (genreName, parentGenre, callback) {
+        createSubGenreOf: function (parentGenreName, subGenreName, callback) {
             let query = `INSERT INTO genre (genre_name, parent_genre) VALUES (? , ?)`
-            let values = [genreName, parentGenre]
-            db.query(query, values, function (error) {
-                callback(error)
+            let values = [subGenreName, parentGenreName]
+            db.query(query, values, function (insertSubGenreError) {
+                callback(insertSubGenreError)
             })
         },
 
         deleteSubGenre: function (genreName, parentGenre, callback) {
             let query = `DELETE * FROM genre 
-                     WHERE genre_name = ? AND parent_genre = ?`
+                         WHERE genre_name = ? AND parent_genre = ?`
             let values = [genreName, parentGenre]
             db.query(query, values, function (error) {
                 callback(error)
             })
         },
 
-        getParentGenresByName: function (parentGenre, callback) {
+        getParentGenreByName: function (parentGenre, callback) {
             let query = `SELECT * FROM genre 
                      WHERE genre_name = ?`
-            db.query(query, [parentGenre], function (error, parentGenres) {
-                if (error) {
-                    callback(error)
-                }
-                else {
-                    callback(genres)
-                }
+            db.query(query, [parentGenre], function (error, parentGenre) {
+                callback(error, parentGenre)
             })
         },
 
-        getSubGenresByName: function (genreName, parentGenre, callback) {
+        getSubGenresByParentGenre: function (parentGenre, callback) {
             let query = `SELECT * FROM genre 
-                     WHERE parent_genre = ? AND genre_name = ?`
-            let values = [parentGenre, genreName]
+                         WHERE parent_genre = ?`
+            let values = [parentGenre]
             db.query(query, values, function (error, subGenres) {
-                if (error) {
-                    callback(error)
-                }
-                else {
-                    callback(subGenres)
-                }
+                callback(error, subGenres)
             })
         },
 
         getAllGenres: function (callback) {
             let query = `SELECT * FROM genre`
             db.query(query, function (error, genres) {
-                if (error) {
-                    callback(error)
-                }
-                else {
-                    callback(genres)
-                }
+                callback(error, genres)
             })
         },
 
-        deleteGenre: function (genreName, parentGenre, callback) {
-            //todo implement this so that it also deletes all children
+        getAllParentGenres: function(callback) {
+            let query = `SELECT * FROM genre
+                         WHERE parent_genre IS NULL or parent_genre = ''`
+            db.query(query, function(error, parentGenres) {
+                callback(error, parentGenres)
+            })
+        },
+
+        deleteGenreByName: function (genreName, callback) {
+            let query = `DELETE FROM genre WHERE genre_name = ?`
+            let values = [genreName]
+            db.query(query, values, function(error) {
+                callback(error)
+            })
         }
     }
 }
