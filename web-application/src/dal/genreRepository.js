@@ -24,42 +24,35 @@ module.exports = function ({ db }) {
             })
         },
 
-        getParentGenresByName: function (parentGenre, callback) {
+        getParentGenreByName: function (parentGenre, callback) {
             let query = `SELECT * FROM genre 
                      WHERE genre_name = ?`
-            db.query(query, [parentGenre], function (error, parentGenres) {
-                if (error) {
-                    callback(error)
-                }
-                else {
-                    callback(genres)
-                }
+            db.query(query, [parentGenre], function (error, parentGenre) {
+                callback(error, parentGenre)
             })
         },
 
-        getSubGenresByName: function (genreName, parentGenre, callback) {
+        getSubGenresByParentGenre: function (parentGenre, callback) {
             let query = `SELECT * FROM genre 
-                     WHERE parent_genre = ? AND genre_name = ?`
-            let values = [parentGenre, genreName]
+                         WHERE parent_genre = ?`
+            let values = [parentGenre]
             db.query(query, values, function (error, subGenres) {
-                if (error) {
-                    callback(error)
-                }
-                else {
-                    callback(subGenres)
-                }
+                callback(error, subGenres)
             })
         },
 
         getAllGenres: function (callback) {
             let query = `SELECT * FROM genre`
             db.query(query, function (error, genres) {
-                if (error) {
-                    callback(error)
-                }
-                else {
-                    callback(genres)
-                }
+                callback(error, genres)
+            })
+        },
+
+        getAllParentGenres: function(callback) {
+            let query = `SELECT * FROM genre
+                         WHERE parent_genre IS NULL or parent_genre = ''`
+            db.query(query, function(error, parentGenres) {
+                callback(error, parentGenres)
             })
         },
 

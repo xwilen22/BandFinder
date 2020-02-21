@@ -10,8 +10,8 @@ module.exports = function ({ db }) {
 
         updateUserInfoByUsername: function (username, bio, userPicture, callback) {
             let query = `UPDATE user 
-                     SET biography = ?, user_profile_picture = ? 
-                     WHERE username = ?`
+                         SET biography = ?, user_profile_picture = ? 
+                         WHERE username = ?`
             let values = [bio, userPicture, username]
             db.query(query, values, function (error) {
                 callback(error, username)
@@ -20,8 +20,8 @@ module.exports = function ({ db }) {
 
         updateUserPassword: function (username, password, callback) {
             let query = `UPDATE user 
-                     SET password = ? 
-                     WHERE username = ?`
+                         SET password = ? 
+                         WHERE username = ?`
             let values = [password, username]
             db.query(query, values, function (error) {
                 callback(error)
@@ -30,7 +30,7 @@ module.exports = function ({ db }) {
 
         getUserByUsername: function (username, callback) {
             let query = `SELECT * FROM user 
-                     WHERE username = ?`
+                         WHERE username = ?`
             db.query(query, [username], function (error, user) {
                 callback(error, user)
             })
@@ -38,8 +38,8 @@ module.exports = function ({ db }) {
 
         deleteUserByUsername: function (username, callback) {
             let query = `DELETE FROM (user, band_membership, user_proficiency) 
-                    USING user INNERJOIN band_membership INNERJOIN user_proficiency 
-                    WHERE user.username = ? AND band_membership.username = ? AND user_proficiency.username = ?`
+                         USING user INNERJOIN band_membership INNERJOIN user_proficiency 
+                         WHERE user.username = ? AND band_membership.username = ? AND user_proficiency.username = ?`
             db.query(query, [username], function (error) {
                 callback(error)
             })

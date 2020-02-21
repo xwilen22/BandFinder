@@ -31,12 +31,7 @@ module.exports = function ({ db }) {
             let query = `SELECT * FROM user_proficiency 
                      WHERE username = ?`
             db.query(query, [username], function (error, proficiencies) {
-                if (error) {
-                    callback(error)
-                }
-                else {
-                    callback(proficiencies)
-                }
+                callback(error, proficiencies)
             })
         }
     }

@@ -7,7 +7,9 @@ CREATE TABLE IF NOT EXISTS user (
 CREATE TABLE IF NOT EXISTS genre (
     genre_name VARCHAR(20) PRIMARY KEY,
     parent_genre VARCHAR(20),
-    CONSTRAINT subGenreContraint FOREIGN KEY (parent_genre) REFERENCES genre(genre_name)
+    CONSTRAINT FOREIGN KEY (parent_genre) 
+        REFERENCES genre(genre_name)
+        ON DELETE CASCADE
 );
 CREATE TABLE IF NOT EXISTS band (
     band_id INT AUTO_INCREMENT NOT NULL,
@@ -17,7 +19,7 @@ CREATE TABLE IF NOT EXISTS band (
     max_members TINYINT UNSIGNED NOT NULL,
     band_profile_picture BLOB,
     PRIMARY KEY (band_id),
-    CONSTRAINT blumbo FOREIGN KEY (band_genre) REFERENCES genre(genre_name)
+    CONSTRAINT FOREIGN KEY (band_genre) REFERENCES genre(genre_name)
 );
 CREATE TABLE IF NOT EXISTS instrument (
     instrument_name VARCHAR(20) PRIMARY KEY
