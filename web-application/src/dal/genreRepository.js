@@ -17,7 +17,7 @@ module.exports = function ({ db }) {
 
         deleteSubGenre: function (genreName, parentGenre, callback) {
             let query = `DELETE * FROM genre 
-                     WHERE genre_name = ? AND parent_genre = ?`
+                         WHERE genre_name = ? AND parent_genre = ?`
             let values = [genreName, parentGenre]
             db.query(query, values, function (error) {
                 callback(error)
@@ -56,8 +56,12 @@ module.exports = function ({ db }) {
             })
         },
 
-        deleteGenre: function (genreName, parentGenre, callback) {
-            //todo implement this so that it also deletes all children
+        deleteGenreByName: function (genreName, callback) {
+            let query = `DELETE FROM genre WHERE genre_name = ?`
+            let values = [genreName]
+            db.query(query, values, function(error) {
+                callback(error)
+            })
         }
     }
 }
