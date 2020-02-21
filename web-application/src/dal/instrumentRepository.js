@@ -10,30 +10,25 @@ module.exports = function ({ db }) {
         getAllInstruments: function (callback) {
             let query = `SELECT * FROM instrument`
             db.query(query, function (error, instruments) {
-                if (error) {
-                    callback(error)
-                }
-                else {
-                    callback(instruments)
-                }
+                callback(error, instruments)
             })
         },
 
         getInstrumentByName: function (instrumentName, callback) {
             let query = `SELECT * FROM instrument 
                          WHERE instrument_name = ?`
-            db.query(query, [instrument], function (error, instrument) {
-                if (error) {
-                    callback(error)
-                }
-                else {
-                    callback(instrument)
-                }
+            db.query(query, [instrumentName], function (error, instrument) {
+                callback(error, instrument)
             })
         },
 
-        deleteInstrumentByName: function (instrument, callback) {
-            
+        deleteInstrumentByName: function (instrumentName, callback) {
+            let query = `DELETE FROM instrument
+                         WHERE instrument_name = ?`
+            let values = [instrumentName]
+            db.query(query, values, function(error) {
+                callback(error)
+            })
         }
     }
 }
