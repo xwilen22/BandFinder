@@ -25,8 +25,8 @@ services:
   database-postgres:
     build: ./database-postgre
     environment:
-      POSTGRES_PASSWORD: DucTreHouHa
-      POSTGRES_USER: root
-      POSTGRES_DB: postDatabase
+      - POSTGRES_PASSWORD=DucTreHouHa
+      - POSTGRES_USER=root
+      - POSTGRES_DB=postDatabase
     ports:
       - "5432:5432"

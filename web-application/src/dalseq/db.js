@@ -1,9 +1,10 @@
 module.exports = function({}) {
     const sequelize = require("sequelize")
 
-    const sequelizeClient = new sequelize('database', 'root', 'DucTreHouHa', {
+    const sequelizeClient = new sequelize('postDatabase', 'root', 'DucTreHouHa', {
         host: 'database-postgre',
-        dialect: 'postgres'
+        dialect: 'postgres',
+        database: 'postDatabase'
     })
 
     sequelizeClient.authenticate()
