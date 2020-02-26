@@ -43,17 +43,18 @@ app.listen(listenPort, function() {
 //Jag har ingen aning om vad jag håller på med :^)
 const awilix = require("awilix")
 ///DATA ACCESS LAYER
-const proficiencyRepository = require("./dal/proficiencyRepository")
-const accountRepository = require("./dal/accountRepository")
-const instrumentRepository = require("./dal/instrumentRepository")
-const genreRepository = require("./dal/genreRepository")
-const bandMembershipRepository = require("./dal/bandMembershipRepository")
-const bandRepository = require("./dal/bandRepository")
-const database = require("./dal/db")
+const proficiencyRepository = require("./dalseq/proficiencyRepository")
+const accountRepository = require("./dalseq/accountRepository")
+const instrumentRepository = require("./dalseq/instrumentRepository")
+const genreRepository = require("./dalseq/genreRepository")
+const bandMembershipRepository = require("./dalseq/bandMembershipRepository")
+const bandRepository = require("./dalseq/bandRepository")
+const database = require("./dalseq/db")
 ///BUSINESS LOGIC LAYER
 const accountManager = require("./bll/accountManager")
 const passwordManager = require("./bll/passwordManager")
 const bandManager = require("./bll/bandManager")
+const bandValidation = require("./bll/bandValidation")
 const sessionValidation = require("./bll/sessionValidation")
 const accountValidation = require("./bll/accountValidation")
 const errorGenerator = require("./bll/errorGenerator")
@@ -66,8 +67,9 @@ const variousRouter = require("./pl/routers/variousRouter")
 const container = awilix.createContainer()
 //High level dependency, these needs to be registered first
 container.register("errorGenerator", awilix.asFunction(errorGenerator))
-
 container.register("db", awilix.asFunction(database))
+container.register("bandValidation", awilix.asFunction(bandValidation))
+
 
 container.register("passwordManager", awilix.asFunction(passwordManager))
 container.register("accountValidation", awilix.asFunction(accountValidation))
