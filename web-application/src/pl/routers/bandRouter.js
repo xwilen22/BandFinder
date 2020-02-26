@@ -10,8 +10,8 @@ module.exports = function ({bandManager}) {
 
     router.get("/view/:bandId", function (request, response) {
         const bandId = request.params.bandId
-        bandManager.getBandById(bandId, function (error, band) {
-            if (error) {
+        bandManager.getBandById(bandId, function (errors, band) {
+            if (errors.length > 0) {
                 response.send(error)
             }
             else {
