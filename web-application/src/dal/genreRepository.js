@@ -15,14 +15,14 @@ module.exports = function ({ db }) {
             })
         },
 
-        deleteSubGenre: function (genreName, parentGenre, callback) {
+        /*deleteSubGenre: function (genreName, parentGenre, callback) {
             let query = `DELETE * FROM genre 
                          WHERE genre_name = ? AND parent_genre = ?`
             let values = [genreName, parentGenre]
             db.query(query, values, function (error) {
                 callback(error)
             })
-        },
+        },*/
 
         getParentGenreByName: function (parentGenre, callback) {
             let query = `SELECT * FROM genre 
