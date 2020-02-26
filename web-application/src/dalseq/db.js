@@ -18,12 +18,12 @@ module.exports = function({}) {
     //TABLES INITALIZING
     const user = sequelizeClient.define("user", {
         username: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING(20),
             allowNull: false,
             primaryKey: true
         },
         password: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING(80),
             allowNull: false
         },
         biography: {
@@ -37,14 +37,14 @@ module.exports = function({}) {
     })
     const genre = sequelizeClient.define("genre", {
         genre_name: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING(20),
             allowNull: false,
             primaryKey: true
         }
     })
     genre.hasOne(genre, {
-        as: "parent_genre", 
-        foreignKey: "genre_name"
+        as: "parent_genre",
+        onDelete: "cascade"
     })
     const band = sequelizeClient.define("band", {
         band_id: {
@@ -133,6 +133,5 @@ module.exports = function({}) {
         .catch(err => {
             console.error(`POSTGRESQL ERROR: ${err}`)
         })
-
     return sequelizeClient
 }
