@@ -1,16 +1,16 @@
-<h2>BAND NAME</h2>
+<h2>{{bandname}}</h2>
 <section class="row container-fluid">
     <div class="col-md-12 p-2 row">
         <img class="img-thumbnail membercard" src="/images/PLACEHOLDER.jpg">
         <form class="form-group col-md-10">
             <label>Edit Band name</label>
-            <input class="form-control" type="text">
+            <input class="form-control" type="text" name="bandNameText">
             <section>
                 <label class="keepaspectratio" for="thumbImageSelect">Replace band image</label>
                 <input class="form-control" type="file">
             </section>
             <label for="bioEditText">Edit band bio</label>
-            <input class="form-control" type="text" value="Edit bio" id="bioEditText">
+            <input class="form-control" type="text" value={{biography}} id="bioEditText" name="bioText">
 
             <input class="btn btn-primary" type="submit" value="Save changes">
         </form> 

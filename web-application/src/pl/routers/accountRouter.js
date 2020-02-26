@@ -15,9 +15,9 @@ module.exports = function ({accountManager}) {
     router.get("/view/:username", function (request, response) {
         const username = request.params.username
 
-        accountManager.getAccountByUsername(username, function (error, userObjects) {
-            if (error) {
-                response.send(error)
+        accountManager.getAccountByUsername(username, function (errors, userObjects) {
+            if (errors.length > 0) {
+                response.send(errors)
             }
             else {
                 const userObject = userObjects[0]
@@ -34,9 +34,9 @@ module.exports = function ({accountManager}) {
         const username = request.body.username
         const password = request.body.password
 
-        accountManager.signInAccount(username, password, function (error) {
-            if (error) {
-                response.send(error)
+        accountManager.signInAccount(username, password, function (errors) {
+            if (errors.length > 0) {
+                response.send(errors)
             }
             else {
                 request.session.loggedInUsername = username
@@ -51,9 +51,9 @@ module.exports = function ({accountManager}) {
     router.get("/update/:username", function (request, response) {
         const username = request.params.username
 
-        accountManager.getAccountByUsername(username, function (error, userObjects) {
-            if (error) {
-                response.send("ERRORE: Can't find requested user")
+        accountManager.getAccountByUsername(username, function (errors, userObjects) {
+            if (errors.length > 0) {
+                response.send(errors)
             }
             else {
                 const userObject = userObjects[0]
@@ -70,12 +70,12 @@ module.exports = function ({accountManager}) {
         const biography = request.body.biography
         const username = request.params.username
 
-        accountManager.updateAccountBiography(username, biography, function (error) {
-            if (error.length > 0) {
-                response.send(error)
+        accountManager.updateAccountBiography(username, biography, function (errors) {
+            if (errors.length > 0) {
+                response.send(errors)
             }
             else {
-                response.redirect("back")
+                response.redirect(`/account/view/${username}`)
             }
         })
     })
@@ -83,7 +83,7 @@ module.exports = function ({accountManager}) {
         const username = request.params.username
         const password = request.body.password
 
-        accountManager.deleteAccount(username, password, function (error) {
+        accountManager.deleteAccount(username, password, function (errors) {
             //Do shit
         })
     })
@@ -91,9 +91,9 @@ module.exports = function ({accountManager}) {
         const username = request.body.username
         const password = request.body.password
 
-        accountManager.signUpAccount(username, password, function (error, createdUsername) {
-            if (error) {
-                response.send(`Error! ${error}`)
+        accountManager.signUpAccount(username, password, function (errors, createdUsername) {
+            if (errors.length > 0) {
+                response.send(errors)
             }
             else {
                 request.session.loggedInUsername = createdUsername
