@@ -1,4 +1,4 @@
-module.exports = function ({accountManager, instrumentManager}) {
+module.exports = function ({accountManager, instrumentManager, errorGenerator}) {
     return {
         retrieveUsernameAndInstrumentName(username, instrumentName, callback) {
             accountManager.getAccountByUsername(username, function(error, userObject) {
