@@ -10,8 +10,8 @@ module.exports = function ({ db }) {
 
         updateUserProficiencyLevel: function (username, instrument, proficiency, callback) {
             let query = `UPDATE user_proficiency 
-                     SET proficiency_level = ? 
-                     WHERE instrument_name = ? AND username = ?`
+                         SET proficiency_level = ? 
+                         WHERE instrument_name = ? AND username = ?`
             let values = [proficiency, instrument, username]
             db.query(query, values, function (error) {
                 callback(error)
@@ -20,16 +20,16 @@ module.exports = function ({ db }) {
 
         deleteUserProficiency: function (username, instrument, callback) {
             let query = `DELETE * FROM user_proficiency 
-                     WHERE username = ? AND instrument_name = ?`
+                         WHERE username = ? AND instrument_name = ?`
             let values = [username, instrument]
             db.query(query, values, function (error) {
                 callback(error)
             })
         },
 
-        getAllProficiencyByUsername: function (username, callback) {
+        getAllProficienciesByUsername: function (username, callback) {
             let query = `SELECT * FROM user_proficiency 
-                     WHERE username = ?`
+                         WHERE username = ?`
             db.query(query, [username], function (error, proficiencies) {
                 callback(error, proficiencies)
             })

@@ -9,6 +9,8 @@ services:
       - "./web-application/src:/web-application/src"
     depends_on:
       - database
+      - database-postgre
+      - session
   database:
     build: ./database
     ports:
@@ -20,3 +22,11 @@ services:
     build: ./session
     ports:
       - "6379:6379"
+  database-postgre:
+    build: ./database-postgre
+    environment:
+      - POSTGRES_PASSWORD=DucTreHouHa
+      - POSTGRES_USER=root
+      - POSTGRES_DB=postDatabase
+    ports:
+      - "5432:5432"

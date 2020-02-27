@@ -6,29 +6,30 @@ module.exports = function ({ db }) {
                 callback(error)
             })
         },
-
+        /// Creates sub genre for parent genre, however make sure that parent genre exists before invoking this function.
         createSubGenreOf: function (parentGenreName, subGenreName, callback) {
             let query = `INSERT INTO genre (genre_name, parent_genre) VALUES (? , ?)`
             let values = [subGenreName, parentGenreName]
-            db.query(query, values, function (insertSubGenreError) {
-                callback(insertSubGenreError)
+            db.query(query, values, function (error) {
+                callback(error)
             })
         },
 
-        deleteSubGenre: function (genreName, parentGenre, callback) {
+        /*deleteSubGenre: function (genreName, parentGenre, callback) {
             let query = `DELETE * FROM genre 
                          WHERE genre_name = ? AND parent_genre = ?`
             let values = [genreName, parentGenre]
             db.query(query, values, function (error) {
                 callback(error)
             })
-        },
+        },*/
 
-        getParentGenreByName: function (parentGenre, callback) {
+        getGenreByName: function (genreName, callback) {
             let query = `SELECT * FROM genre 
                      WHERE genre_name = ?`
-            db.query(query, [parentGenre], function (error, parentGenre) {
-                callback(error, parentGenre)
+            let values = [genreName]
+            db.query(query, values, function (error, genreName) {
+                callback(error, genreName)
             })
         },
 
@@ -55,7 +56,7 @@ module.exports = function ({ db }) {
                 callback(error, parentGenres)
             })
         },
-
+        
         deleteGenreByName: function (genreName, callback) {
             let query = `DELETE FROM genre WHERE genre_name = ?`
             let values = [genreName]

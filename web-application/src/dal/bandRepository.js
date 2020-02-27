@@ -10,7 +10,8 @@ module.exports = function ({ db }) {
         getBandById: function (id, callback) {
             let query = `SELECT * FROM band 
                          WHERE band_id = ?`
-            db.query = (query, [id], function (error, band) {
+            let values = [id]
+            db.query = (query, values, function (error, band) {
                 callback(error, band)
             })
         },
@@ -20,7 +21,7 @@ module.exports = function ({ db }) {
                      SET band_name = ?, band_biography = ?, band_genre = ? 
                      WHERE band_id = ?`
             let values = [bandname, bandbio, genre, id]
-            db.query = (query, [values], function (error, bandArray) {
+            db.query = (query, values, function (error, bandArray) {
                 callback(error, bandArray[0].band_id)
             })
         },
@@ -29,13 +30,16 @@ module.exports = function ({ db }) {
             let query = `INSERT INTO band (band_name, band_biography, band_genre) 
                          VALUES (? , ? , ?)`
             let values = [bandname, bandbio, genre]
-            db.query(query, [values], function (error, bandArray) {
+            db.query(query, values, function (error, bandArray) {
                 callback(error, bandArray[0].band_id)
             })
         },
 
-        deleteBandById: function(bandId) {
+        deleteBandById: function(bandId, callback) {
+            let query = ``
+            let values = []
 
+            db.query(query, )
         }
     }
 }
