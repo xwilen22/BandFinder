@@ -16,15 +16,15 @@
 </section>
 {{#if instruments}}
 <section class="row container-fluid">
-    <form method="POST" class="form-group">
+    <form method="POST" class="form-group" action="/proficiencies/create/{{username}}">
         <label for="instrumentSelect">Instrument</label>
-        <select id="instrumentSelect">
+        <select id="instrumentSelect" name="instrument">
             {{#each instruments}}
-            <option>STUFF</option>
+            <option>{{this}}</option>
             {{/each}}
         </select>
         <label for="skillLevelNumber">Skill level</label>
-        <input type="number" min="1" , max="5" value="1" id="skillLevelNumber">
+        <input type="number" min="1" , max="5" value="1" id="skillLevelNumber" name="skillLevel">
         <input class="btn btn-secondary" type="submit" value="Add proficiency">
     </form>
 </section>

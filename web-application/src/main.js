@@ -73,6 +73,7 @@ const accountRouter = require("./pl/routers/accountRouter")
 const instrumentRouter = require("./pl/routers/instrumentRouter")
 const bandRouter = require("./pl/routers/bandRouter")
 const variousRouter = require("./pl/routers/variousRouter")
+const proficiencyRouter = require("./pl/routers/proficiencyRouter")
 
 const container = awilix.createContainer()
 //High level dependency, these needs to be registered first
@@ -88,13 +89,16 @@ container.register("instrumentRepository", awilix.asFunction(instrumentRepositor
 container.register("instrumentManager", awilix.asFunction(instrumentManager))
 container.register("instrumentRouter", awilix.asFunction(instrumentRouter))
 
+container.register("accountRepository", awilix.asFunction(accountRepository))
+container.register("accountManager", awilix.asFunction(accountManager))
+container.register("accountRouter", awilix.asFunction(accountRouter))
+
 container.register("proficiencyRepository", awilix.asFunction(proficiencyRepository))
 container.register("proficiencyManager", awilix.asFunction(proficiencyManager))
 container.register("proficiencyValidation", awilix.asFunction(proficiencyValidation))
 
-container.register("accountRepository", awilix.asFunction(accountRepository))
-container.register("accountManager", awilix.asFunction(accountManager))
-container.register("accountRouter", awilix.asFunction(accountRouter))
+container.register("proficiencyRouter", awilix.asFunction(proficiencyRouter))
+const theProficiencyRouter = container.resolve("proficiencyRouter")
 
 const theAccountRouter = container.resolve("accountRouter")
 const theInstrumentRouter = container.resolve("instrumentRouter")
@@ -117,3 +121,4 @@ app.use("/", theVariousRouter)
 app.use("/bands", theBandRouter)
 app.use("/account", theAccountRouter)
 app.use("/instruments", theInstrumentRouter)
+app.use("/proficiencies", theProficiencyRouter)

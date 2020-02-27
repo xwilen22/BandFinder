@@ -78,8 +78,8 @@ module.exports = function ({accountManager, proficiencyManager, instrumentManage
                             }
                             else {
                                 let instrumentNames = []
-                                console.log(intruments)
                                 instruments.forEach(instrumentObject => instrumentNames.push(instrumentObject.instrument_name))
+                                console.log("Grillad med mos: ",instrumentNames)
                                 console.log(`Proficiencies: ${proficiencies}`)
                                 const model = {
                                     username: userObject.username,
