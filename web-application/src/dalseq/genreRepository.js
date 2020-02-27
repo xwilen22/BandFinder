@@ -61,7 +61,9 @@ module.exports = function ({ db }) {
         },
 
         getAllGenres: function (callback) {
-            genreModel.findAll()
+            genreModel.findAll({
+                raw: true
+            })
             .then(genres => {
                 callback(undefined, genres)
             })
