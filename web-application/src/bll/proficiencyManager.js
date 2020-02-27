@@ -1,4 +1,4 @@
-module.exports = function ({errorGenerator, proficiencyRepository, proficiencyValidation}) { 
+module.exports = function ({errorGenerator, proficiencyRepository, proficiencyValidation, accountManager}) { 
     return {
         createProficiency(username, instrumentName, proficiencyLevelNumber, callback) {
             proficiencyValidation.retrieveUsernameAndInstrumentName(username, instrumentName, function(formatedError, usernameAndInstrumentObject) {
@@ -61,7 +61,22 @@ module.exports = function ({errorGenerator, proficiencyRepository, proficiencyVa
             })
         },
         getAllProficienciesForUser(username, callback) {
-
+            accountManager.getAccountByUsername(username, function(accountError, userObject) {
+                if(accountError) {
+                    callback(accountError)
+                }
+                else {
+                    const retrievedUsername = userObject.username
+                    proficiencyRepository.getAllProficienciesByUsername(username, function(error, proficiencies) {
+                        if(error) {
+                            callback(errorGenerator.getInternalError(error))
+                        }
+                        else {
+                            callback([], proficiencies)
+                        }
+                    })
+                }
+            })
         }
     }
 }

@@ -116,7 +116,12 @@ module.exports = function ({ accountRepository, accountValidation, passwordManag
 
             if (accountNameValidationErrors <= 0) {
                 accountRepository.getUserByUsername(username, function (error, userObject) {
-                    callback(errorGenerator.getInternalError(error), userObject)
+                    if(userObject == null) {
+                        callback(errorGenerator.getClientError(["No user with that name"]))
+                    }
+                    else {
+                        callback(errorGenerator.getInternalError(error), userObject)
+                    }
                 })
             }
             else {
