@@ -31,10 +31,10 @@ module.exports = function ({ db }) {
 
         },*/
 
-        getParentGenreByName: function (parentGenre, callback) {
+        getGenreByName: function (genreName, callback) {
             genreModel.findAll({
                 where: {
-                    genre_name:parentGenre,
+                    genre_name:genreName,
                     parent_genre: null
                 }
             })

@@ -24,12 +24,12 @@ module.exports = function ({ db }) {
             })
         },*/
 
-        getParentGenreByName: function (parentGenre, callback) {
+        getGenreByName: function (genreName, callback) {
             let query = `SELECT * FROM genre 
                      WHERE genre_name = ?`
-            let values = [parentGenre]
-            db.query(query, values, function (error, parentGenre) {
-                callback(error, parentGenre)
+            let values = [genreName]
+            db.query(query, values, function (error, genreName) {
+                callback(error, genreName)
             })
         },
 
