@@ -1,6 +1,6 @@
 module.exports = function ({accountManager, instrumentManager}) {
     return {
-        retrieveUsernameAndInstrumentName(username, instrumentName) {
+        retrieveUsernameAndInstrumentName(username, instrumentName, callback) {
             accountManager.getAccountByUsername(username, function(error, userObject) {
                 if(error) {
                     callback(errorGenerator.getInternalError(error))
