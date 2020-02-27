@@ -3,7 +3,9 @@ module.exports = function ({ db }) {
     
     return {
         getAllBands: function (callback) {
-            bandModel.findAll()
+            bandModel.findAll({
+                raw: true
+            })
             .then(bands => {
                 callback(undefined, bands)
             })

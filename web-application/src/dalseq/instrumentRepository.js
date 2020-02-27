@@ -6,8 +6,8 @@ module.exports = function ({ db }) {
             instrumentModel.create({
                 instrument_name:instrument
             })
-            .then(user => {
-                callback(undefined, user.username)
+            .then(() => {
+                callback(undefined)
             })
             .catch(error => {
                 callback(error, null)
@@ -15,7 +15,9 @@ module.exports = function ({ db }) {
         },
 
         getAllInstruments: function (callback) {
-            instrumentModel.findAll()
+            instrumentModel.findAll({
+                raw: true
+            })
             .then(instruments => {
                 callback(undefined, instruments)
             })
