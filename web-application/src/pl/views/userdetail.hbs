@@ -9,10 +9,16 @@
     </div> 
 </section>
 <section class="row container-fluid p-4">
-    <p class="h3">Proficencies</p>
+    <p class="h3">Proficiencies</p>
     <div class="col-12">
+        {{#if proficiencies}}
         <ul class="list-unstyled list-inline">
+            {{#each proficiencies}}
             <li class="list-inline-item bg-light p-2">SKIN FLUTE</li>
+            {{/each}}
         </ul>
+        {{else}}
+        <p>Nothing here but us rats!</p>
+        {{/if}}
     </div>
 </section>

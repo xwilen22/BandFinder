@@ -8,17 +8,38 @@
                 <input class="form-control" type="file">
             </section>
             <label for="bioEditText">Bio</label>
-            <input class="form-control" type="text" value="{{biography}}" id="bioEditText" name="biography">
-
-            <div class="form-group">
-                <label for="proficencyFormSelect">Select proficencies</label>
-                <select multiple class="form-control" id="proficencyFormSelect">
-                    <option>SKINFLUTE</option>
-                    <option>PLACEHOLDER</option>
-                </select>
-            </div>
+            <textarea class="form-control" type="text" value="{{biography}}" id="bioEditText" name="biography" rows="4"></textarea>
 
             <input class="btn btn-primary" type="submit" value="Save changes">
-        </form> 
+        </form>
+    </div>
+</section>
+{{#if instruments}}
+<section class="row container-fluid">
+    <form method="POST" class="form-group">
+        <label for="instrumentSelect">Instrument</label>
+        <select id="instrumentSelect">
+            {{#each instruments}}
+            <option>STUFF</option>
+            {{/each}}
+        </select>
+        <label for="skillLevelNumber">Skill level</label>
+        <input type="number" min="1" , max="5" value="1" id="skillLevelNumber">
+        <input class="btn btn-secondary" type="submit" value="Add proficiency">
+    </form>
+</section>
+{{/if}}
+<section class="row container-fluid">
+    <h3>Proficiencies</h3>
+    <div class="col-12">
+        {{#if proficiencies}}
+        <ul class="list-unstyled list-inline">
+            {{#each proficiencies}}
+            <li class="list-inline-item bg-light p-2">{{this}}</li>
+            {{/each}}
+        </ul>
+        {{else}}
+        <p>Nothing here but us rats!</p>
+        {{/if}}
     </div>
 </section>

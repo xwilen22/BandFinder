@@ -1,6 +1,6 @@
 const Express = require("express")
 
-module.exports = function ({accountManager}) {
+module.exports = function ({accountManager, proficiencyManager, instrumentManager}) {
     const router = Express.Router()
 
     //Redirects to account detail or login screen
@@ -15,18 +15,28 @@ module.exports = function ({accountManager}) {
     router.get("/view/:username", function (request, response) {
         const username = request.params.username
 
-        accountManager.getAccountByUsername(username, function (errors, userObjects) {
-            if (errors.length > 0) {
-                response.send(errors)
+        accountManager.getAccountByUsername(username, function (accountErrors, userObjects) {
+            if (accountErrors.length > 0) {
+                response.send(accountErrors)
             }
             else {
                 const userObject = userObjects[0]
-                const model = {
-                    username: userObject.username,
-                    biography: userObject.biography,
-                    profilePicture: userObject.user_profile_picture
-                }
-                response.render("userdetail.hbs", model)
+
+                proficiencyManager.getAllProficienciesForUser(userObject.username, function(proficiencyErrors, proficiencies) {
+                    if(proficiencyErrors.length > 0) {
+                        response.send(proficiencyErrors)
+                    }
+                    else {
+                        console.log(`Proficiencies: ${proficiencies}`)
+                        const model = {
+                            username: userObject.username,
+                            biography: userObject.biography,
+                            profilePicture: userObject.user_profile_picture,
+                            proficiencies
+                        }
+                        response.render("userdetail.hbs", model)
+                    }
+                })
             }
         })
     })
@@ -51,18 +61,38 @@ module.exports = function ({accountManager}) {
     router.get("/update/:username", function (request, response) {
         const username = request.params.username
 
-        accountManager.getAccountByUsername(username, function (errors, userObjects) {
-            if (errors.length > 0) {
-                response.send(errors)
+        accountManager.getAccountByUsername(username, function (accountErrors, userObjects) {
+            if (accountErrors.length > 0) {
+                response.send(accountErrors)
             }
             else {
                 const userObject = userObjects[0]
-                const model = {
-                    username: userObject.username,
-                    biography: userObject.biography,
-                    profilePicture: userObject.user_profile_picture
-                }
-                response.render("edituser.hbs", model)
+                proficiencyManager.getAllProficienciesForUser(userObject.username, function(proficiencyErrors, proficiencies) {
+                    if(proficiencyErrors.length > 0) {
+                        response.send(proficiencyErrors)
+                    }
+                    else {
+                        instrumentManager.getAllInstruments(function(instrumentErrors, instruments) {
+                            if(instrumentErrors.length > 0) {
+                                response.send(instrumentErrors)
+                            }
+                            else {
+                                let instrumentNames = []
+                                console.log(intruments)
+                                instruments.forEach(instrumentObject => instrumentNames.push(instrumentObject.instrument_name))
+                                console.log(`Proficiencies: ${proficiencies}`)
+                                const model = {
+                                    username: userObject.username,
+                                    biography: userObject.biography,
+                                    profilePicture: userObject.user_profile_picture,
+                                    proficiencies,
+                                    instruments:instrumentNames
+                                }
+                                response.render("edituser.hbs", model)
+                            }
+                        })
+                    }
+                })
             }
         })
     })

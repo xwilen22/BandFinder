@@ -43,13 +43,19 @@ app.listen(listenPort, function() {
 //Jag har ingen aning om vad jag håller på med :^)
 const awilix = require("awilix")
 ///DATA ACCESS LAYER
-const proficiencyRepository = require("./dalseq/proficiencyRepository")
-const accountRepository = require("./dalseq/accountRepository")
-const instrumentRepository = require("./dalseq/instrumentRepository")
-const genreRepository = require("./dalseq/genreRepository")
-const bandMembershipRepository = require("./dalseq/bandMembershipRepository")
-const bandRepository = require("./dalseq/bandRepository")
-const database = require("./dalseq/db")
+const dalSources = {
+    MYSQL:"dal",
+    SEQUELIZE:"dalseq"
+}
+const dalSource = dalSources.SEQUELIZE
+
+const proficiencyRepository = require(`./${dalSource}/proficiencyRepository`)
+const accountRepository = require(`./${dalSource}/accountRepository`)
+const instrumentRepository = require(`./${dalSource}/instrumentRepository`)
+const genreRepository = require(`./${dalSource}/genreRepository`)
+const bandMembershipRepository = require(`./${dalSource}/bandMembershipRepository`)
+const bandRepository = require(`./${dalSource}/bandRepository`)
+const database = require(`./${dalSource}/db`)
 ///BUSINESS LOGIC LAYER
 const accountManager = require("./bll/accountManager")
 const passwordManager = require("./bll/passwordManager")
@@ -61,6 +67,7 @@ const errorGenerator = require("./bll/errorGenerator")
 const genreManager = require("./bll/genreManager")
 const proficiencyManager = require("./bll/proficiencyManager")
 const instrumentManager = require("./bll/instrumentManager")
+const proficiencyValidation = require("./bll/proficiencyValidation")
 ///PRESENTATION LAYER
 const accountRouter = require("./pl/routers/accountRouter")
 const instrumentRouter = require("./pl/routers/instrumentRouter")
@@ -77,19 +84,19 @@ container.register("passwordManager", awilix.asFunction(passwordManager))
 container.register("accountValidation", awilix.asFunction(accountValidation))
 container.register("sessionValidation", awilix.asFunction(sessionValidation))
 
+container.register("instrumentRepository", awilix.asFunction(instrumentRepository))
+container.register("instrumentManager", awilix.asFunction(instrumentManager))
+container.register("instrumentRouter", awilix.asFunction(instrumentRouter))
+
+container.register("proficiencyRepository", awilix.asFunction(proficiencyRepository))
+container.register("proficiencyManager", awilix.asFunction(proficiencyManager))
+container.register("proficiencyValidation", awilix.asFunction(proficiencyValidation))
+
 container.register("accountRepository", awilix.asFunction(accountRepository))
 container.register("accountManager", awilix.asFunction(accountManager))
 container.register("accountRouter", awilix.asFunction(accountRouter))
 
 const theAccountRouter = container.resolve("accountRouter")
-
-container.register("proficiencyRepository", awilix.asFunction(proficiencyRepository))
-container.register("proficiencyManager", awilix.asFunction(proficiencyManager))
-
-container.register("instrumentRepository", awilix.asFunction(instrumentRepository))
-container.register("instrumentManager", awilix.asFunction(instrumentManager))
-container.register("instrumentRouter", awilix.asFunction(instrumentRouter))
-
 const theInstrumentRouter = container.resolve("instrumentRouter")
 
 container.register("genreRepository", awilix.asFunction(genreRepository))
@@ -109,4 +116,4 @@ const theVariousRouter = container.resolve("variousRouter")
 app.use("/", theVariousRouter)
 app.use("/bands", theBandRouter)
 app.use("/account", theAccountRouter)
-app.use("/instrument", theInstrumentRouter)
+app.use("/instruments", theInstrumentRouter)
