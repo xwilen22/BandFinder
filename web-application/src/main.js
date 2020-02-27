@@ -58,6 +58,9 @@ const bandValidation = require("./bll/bandValidation")
 const sessionValidation = require("./bll/sessionValidation")
 const accountValidation = require("./bll/accountValidation")
 const errorGenerator = require("./bll/errorGenerator")
+const genreManager = require("./bll/genreManager")
+const proficiencyManager = require("./bll/proficiencyManager")
+const instrumentManager = require("./bll/instrumentManager")
 ///PRESENTATION LAYER
 const accountRouter = require("./pl/routers/accountRouter")
 const instrumentRouter = require("./pl/routers/instrumentRouter")
@@ -70,7 +73,6 @@ container.register("errorGenerator", awilix.asFunction(errorGenerator))
 container.register("db", awilix.asFunction(database))
 container.register("bandValidation", awilix.asFunction(bandValidation))
 
-
 container.register("passwordManager", awilix.asFunction(passwordManager))
 container.register("accountValidation", awilix.asFunction(accountValidation))
 container.register("sessionValidation", awilix.asFunction(sessionValidation))
@@ -82,13 +84,17 @@ container.register("accountRouter", awilix.asFunction(accountRouter))
 const theAccountRouter = container.resolve("accountRouter")
 
 container.register("proficiencyRepository", awilix.asFunction(proficiencyRepository))
+container.register("proficiencyManager", awilix.asFunction(proficiencyManager))
 
 container.register("instrumentRepository", awilix.asFunction(instrumentRepository))
+container.register("instrumentManager", awilix.asFunction(instrumentManager))
 container.register("instrumentRouter", awilix.asFunction(instrumentRouter))
 
 const theInstrumentRouter = container.resolve("instrumentRouter")
 
 container.register("genreRepository", awilix.asFunction(genreRepository))
+container.register("genreManager", awilix.asFunction(genreManager))
+
 container.register("bandMembershipRepository", awilix.asFunction(bandMembershipRepository))
 container.register("bandRepository", awilix.asFunction(bandRepository))
 container.register("bandManager", awilix.asFunction(bandManager))
