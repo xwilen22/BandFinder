@@ -1,25 +1,21 @@
-module.exports = function ({accountManager, instrumentManager, errorGenerator}) {
+module.exports = function ({accountManager, instrumentManager}) {
     return {
         retrieveUsernameAndInstrumentName(username, instrumentName, callback) {
-            accountManager.getAccountByUsername(username, function(error, userObject) {
-                if(error) {
-                    callback(errorGenerator.getInternalError(error))
-                }
-                else if(userObject == null) {
-                    callback(errorGenerator.getClientError(["User does not exist"]))
+            accountManager.getAccountByUsername(username, function(accountErrors, userObject) {
+                if(accountErrors.length > 0) {
+                    callback(accountError)
                 }
                 else {
-                    instrumentManager.getInstrumentByName(instrumentName, function(error, instrumentObject) {
-                        if (error) {
-                            callback(errorGenerator.getInternalError(error))
-                        }
-                        else if (instrument == null) {
-                            callback(errorGenerator.getClientError(["Instrument does not exist"]))
+                    console.log("Found user!")
+                    instrumentManager.getInstrumentByName(instrumentName, function(instrumentErrors, instrumentObject) {
+                        if (instrumentErrors.length > 0) {
+                            callback(instrumentError)
                         }
                         else {
                             const retrievedUsername = userObject.username
                             const retrievedInstrumentName = instrumentObject.instrument_name
-                            callback([], {username: retrievedUsername, instrumentName: retrievedInstrumentName})
+                            console.log("Found instrument!", userObject, instrumentObject)
+                            callback(undefined, {username: retrievedUsername, instrumentName: retrievedInstrumentName})
                         }
                     })
                 }
