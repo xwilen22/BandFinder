@@ -3,13 +3,14 @@ module.exports = function ({errorGenerator, proficiencyRepository, proficiencyVa
         createProficiency(username, instrumentName, proficiencyLevelNumber, callback) {
             proficiencyValidation.retrieveUsernameAndInstrumentName(username, instrumentName, function(formatedError, usernameAndInstrumentObject) {
                 if(formatedError) {
+                    console.log("Failed getting intrument and user")
                     callback(formatedError)
                 }
                 else {
                     const retrievedUsername = usernameAndInstrumentObject.username
                     const retrievedInstrumentName = usernameAndInstrumentObject.instrumentName
 
-                    proficiencyRepository.createUserProficiency(retrievedUsername, retrievedInstrumentName, function(error) {
+                    proficiencyRepository.createUserProficiency(retrievedUsername, retrievedInstrumentName, proficiencyLevelNumber, function(error) {
                         if(error) {
                             callback(errorGenerator.getInternalError(error))
                         }
