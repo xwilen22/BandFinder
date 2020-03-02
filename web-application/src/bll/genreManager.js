@@ -47,18 +47,19 @@ module.exports = function ({errorGenerator, genreRepository}) {
                     callback(errorGenerator.getInternalError(error))
                 } 
                 else {
-                    //GET ALL GENRES, Present in some kind of structure? Like and object with an array of subgenres
                     const returningGenres = []
 
-                    genres.forEach(function(index, item) {
+                    genres.forEach(function(item) {
                         if(item.parent_genre == null) {
                             returningGenres.push({
                                 headGenreName: item.genre_name,
                                 subGenres: []
                             })
                         } else {
-                            const headGenreIndex = returningGenres.findIndex((element) => element.headGenre == item.parent_genre)
-                            returningGenres[headGenreIndex].subGenres.push(item.genre_name)
+                            const headGenreIndex = returningGenres.findIndex((element) => element.headGenreName == item.parent_genre)
+                            if(headeGenreIndex != -1) {
+                                returningGenres[headGenreIndex].subGenres.push(item.genre_name)
+                            }
                         }
                     })
 

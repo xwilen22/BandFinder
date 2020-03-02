@@ -60,13 +60,13 @@ module.exports = function ({bandManager,bandMembershipManager,genreManager}) {
         const username = request.session.loggedInUsername
         const bio = request.body.bioText
         const isBandLeader = true
-        const genre = "Empty"
+        const genre = request.body.genre
         const maxMembers = 5
+        console.log("Genre is:", genre)
         bandManager.createBand(bandname, bio, genre, maxMembers,function(error, bandId){
-            console.log("HE HEJ")
             bandMembershipManager.createBandMembership(username, bandId, isBandLeader, function(error){
                 if(error){
-                    console.log("HE HEJ")
+                    console.log("Genre is:", genre)
                     response.send(error)
                 }
                 else{
