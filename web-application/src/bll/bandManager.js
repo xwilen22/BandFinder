@@ -1,13 +1,13 @@
 module.exports = function ({ sessionValidation, bandRepository, bandValidation, errorGenerator }) {  
     return {
-        createBand: function (accountnameBandLeader, bandName, bandBio, genre, maxBandMembers, callback) {
+        createBand: function (bandName, bandBio, genre, maxBandMembers, callback) {
             const bandNamevalidationErrors = bandValidation.getNameValidationErrors(bandName)
 
             if (bandNamevalidationErrors.length > 0) {
                 callback(bandNamevalidationErrors)
             }
             else {
-                bandRepository.createBand(accountnameBandLeader, bandName, bandBio, genre, maxBandMembers, function (error, bandId) {
+                bandRepository.createBand(bandName, bandBio, genre, maxBandMembers, function (error, bandId) {
                     if (error) {
                         callback(errorGenerator.getInternalError(error), null)
                     }
