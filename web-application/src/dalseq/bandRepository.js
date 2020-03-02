@@ -54,7 +54,9 @@ module.exports = function ({ db }) {
                 band_genre:genre,
                 max_members:maxMembers
             })
-            .then(band => {
+            .then(resultBandEntity => {
+                const band = resultBandEntity.get({plain: true})
+                console.log("BAND CREATED ID: ", band.id)
                 callback(undefined, band.id)
             })
             .catch(error => {
