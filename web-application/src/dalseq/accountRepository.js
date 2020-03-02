@@ -52,7 +52,8 @@ module.exports = function ({ db }) {
             userModel.findAll({
                 where: {
                     username
-                }
+                },
+                raw: true
             })
             .then(user => {
                 callback(undefined, user)

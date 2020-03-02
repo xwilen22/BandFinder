@@ -27,16 +27,13 @@ module.exports = function ({ db }) {
             })
         },
 
-        /*deleteSubGenre: function (genreName, parentGenre, callback) {
-
-        },*/
-
         getGenreByName: function (genreName, callback) {
             genreModel.findAll({
                 where: {
                     genre_name:genreName,
                     parent_genre: null
-                }
+                },
+                raw: true
             })
             .then(genre => {
                 callback(undefined, genre)
@@ -76,7 +73,8 @@ module.exports = function ({ db }) {
             genreModel.findAll({
                 where: {
                     parent_genre: null
-                }
+                },
+                raw: true
             })
             .then(parentGenres => {
                 callback(undefined, parentGenres)
