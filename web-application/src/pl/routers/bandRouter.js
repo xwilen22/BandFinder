@@ -48,6 +48,7 @@ module.exports = function ({bandManager,bandMembershipManager,genreManager}) {
                 const model = {
                     genres
                 }
+                console.log(genres)
                 response.render("manageband.hbs", model)
             }
         })
