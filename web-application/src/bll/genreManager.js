@@ -57,7 +57,7 @@ module.exports = function ({errorGenerator, genreRepository}) {
                                 subGenres: []
                             })
                         } else {
-                            const headGenreIndex = returningGenres.findIndex((element) => element.headGenre == item.parent_genre)
+                            const headGenreIndex = returningGenres.findIndex((element) => element.headGenreName == item.parent_genre)
                             console.log("HeadGenreIndex", headGenreIndex)
                             returningGenres[headGenreIndex].subGenres.push(item.genre_name)
                         }
