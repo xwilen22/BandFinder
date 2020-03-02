@@ -57,7 +57,7 @@ module.exports = function ({errorGenerator, genreRepository}) {
                             })
                         } else {
                             const headGenreIndex = returningGenres.findIndex((element) => element.headGenreName == item.parent_genre)
-                            if(headeGenreIndex != -1) {
+                            if(headGenreIndex != -1) {
                                 returningGenres[headGenreIndex].subGenres.push(item.genre_name)
                             }
                         }
