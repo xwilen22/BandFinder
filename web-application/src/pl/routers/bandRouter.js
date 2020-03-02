@@ -10,9 +10,8 @@ module.exports = function ({bandManager,bandMembershipManager,genreManager}) {
 
     router.get("/view/:bandId", function (request, response) {
         const bandId = request.params.bandId
-        bandManager.getBandById(bandId, function (error, band) {
-            if (error) {
-                console.log("hejehejehje")
+        bandManager.getBandById(bandId, function (errors, band) {
+            if (errors.length > 0) {
                 response.send(error)
             }
             else {
@@ -63,17 +62,22 @@ module.exports = function ({bandManager,bandMembershipManager,genreManager}) {
         const genre = request.body.genre
         const maxMembers = 5
         console.log("Genre is:", genre)
-        bandManager.createBand(bandname, bio, genre, maxMembers,function(error, bandId){
-            bandMembershipManager.createBandMembership(username, bandId, isBandLeader, function(error){
-                if(error){
-                    console.log("Genre is:", genre)
-                    response.send(error)
-                }
-                else{
-                    console.log("Does it get here")
-                    response.redirect(`/view/${bandId}`)
-                }
-            })
+        bandManager.createBand(bandname, bio, genre, maxMembers,function(bandErrors, bandId){
+            if(bandErrors.length > 0){
+                response.send(error)
+            }
+            else{
+                bandMembershipManager.createBandMembership(username, bandId, isBandLeader, function(membershipErrors){
+                    if(membershipErrors.length > 0){
+                        console.log("Genre is:", genre)
+                        response.send(error)
+                    }
+                    else{
+                        console.log("Does it get here")
+                        response.redirect(`/view/${bandId}`)
+                    }
+                })
+            }
         })
     })
 
