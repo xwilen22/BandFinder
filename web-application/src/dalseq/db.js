@@ -4,7 +4,8 @@ module.exports = function({}) {
     const sequelizeClient = new Sequelize('postDatabase', 'root', 'DucTreHouHa', {
         host: 'database-postgre',
         dialect: 'postgres',
-        database: 'postDatabase'
+        database: 'postDatabase',
+        omitNull: true
     })
 
     sequelizeClient.authenticate()
