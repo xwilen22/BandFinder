@@ -17,7 +17,7 @@ module.exports = function ({ db }) {
         getBandById: function (id, callback) {
             bandModel.findAll({
                 where: {
-                    band_id:id
+                    id
                 },
                 raw: true
             })
@@ -36,7 +36,7 @@ module.exports = function ({ db }) {
                 band_genre:genre
             },{
                 where: {
-                    band_id:id
+                    id
                 }
             })
             .then(band => {
@@ -55,7 +55,7 @@ module.exports = function ({ db }) {
                 max_members:maxMembers
             })
             .then(band => {
-                callback(undefined, band.band_id)
+                callback(undefined, band.id)
             })
             .catch(error => {
                 callback(error, null)
@@ -65,7 +65,7 @@ module.exports = function ({ db }) {
         deleteBandById: function(bandId) {
             bandModel.delete({
                 where: {
-                    band_id:bandId
+                    id:bandId
                 }
             })
             .then(() => {
