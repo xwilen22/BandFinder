@@ -40,10 +40,13 @@ module.exports = function({}) {
             type: DataTypes.STRING(20),
             allowNull: false,
             primaryKey: true
+        },
+        parent_genre: {
+            type: DataTypes.STRING(20)
         }
     })
     genre.hasOne(genre, {
-        as: "parent_genre",
+        foreignKey: "parent_genre",
         onDelete: "cascade"
     })
     const band = sequelizeClient.define("band", {
