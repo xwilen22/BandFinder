@@ -1,6 +1,6 @@
 const express = require("express")
 
-module.exports = function ({bandManager}) {
+module.exports = function ({bandManager,bandMembershipManager}) {
     const router = express.Router()
 
     //Get all
@@ -10,8 +10,9 @@ module.exports = function ({bandManager}) {
 
     router.get("/view/:bandId", function (request, response) {
         const bandId = request.params.bandId
-        bandManager.getBandById(bandId, function (errors, band) {
-            if (errors.length > 0) {
+        bandManager.getBandById(bandId, function (error, band) {
+            if (error) {
+                console.log("hejehejehje")
                 response.send(error)
             }
             else {
@@ -46,15 +47,18 @@ module.exports = function ({bandManager}) {
         const bandname = request.body.bandNameText
         const username = request.session.loggedInUsername
         const bio = request.body.bioText
-
-        bandManager.createBand(username, bandname, bio, function(error, bandId){
-            if(error){
-                response.send(error)
-            }
-            else{
-                console.log("hej hej fungerar bra")
-                response.redirect(`/view/${bandId}`)
-            }
+        const isBandLeader = true
+        bandManager.createBand(bandname, bio, genre, function(error, bandId){
+            bandMembershipManager.createBandMembership(username, bandId, isBandLeader, function(error){
+                if(error){
+                    console.log("HE HEJ")
+                    response.send(error)
+                }
+                else{
+                    console.log("Does it get here")
+                    response.redirect(`/view/${bandId}`)
+                }
+            })
         })
     })
 

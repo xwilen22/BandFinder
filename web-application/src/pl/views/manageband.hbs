@@ -2,7 +2,7 @@
 <section class="row container-fluid">
     <div class="col-md-12 p-2 row">
         <img class="img-thumbnail membercard" src="/images/PLACEHOLDER.jpg">
-        <form class="form-group col-md-10">
+        <form class="form-group col-md-10" method="POST">
             <label>Edit Band name</label>
             <input class="form-control" type="text" name="bandNameText">
             <section>
@@ -10,7 +10,7 @@
                 <input class="form-control" type="file">
             </section>
             <label for="bioEditText">Edit band bio</label>
-            <input class="form-control" type="text" value={{biography}} id="bioEditText" name="bioText">
+            <input class="form-control" type="text" id="bioEditText" name="bioText">
 
             <input class="btn btn-primary" type="submit" value="Save changes">
         </form> 
