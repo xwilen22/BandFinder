@@ -46,11 +46,12 @@ module.exports = function ({ db }) {
             })
         },
 
-        createBand: function (bandname, bandbio, genre, callback) {
+        createBand: function (bandname, bandbio, genre, maxMembers,callback) {
             bandModel.create({
                 band_name:bandname,
                 band_biography:bandbio,
-                band_genre:genre
+                band_genre:genre,
+                max_members:maxMembers
             })
             .then(band => {
                 callback(undefined, band.band_id)
