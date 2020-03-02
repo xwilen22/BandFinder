@@ -18,7 +18,8 @@ module.exports = function ({ db }) {
             bandModel.findAll({
                 where: {
                     band_id:id
-                }
+                },
+                raw: true
             })
             .then(band => {
                 callback(undefined, band)
