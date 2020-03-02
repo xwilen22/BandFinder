@@ -1,4 +1,4 @@
-module.exports = function ({ accountRepository, bandMembershipRepository, errorGenerator, bandRepository}){
+module.exports = function ({bandMembershipRepository, errorGenerator}){
     return{
         createBandMembership: function(username, bandId, isBandLeader, callback){
             bandMembershipRepository.createBandMembership(username, bandId, isBandLeader, function(error){

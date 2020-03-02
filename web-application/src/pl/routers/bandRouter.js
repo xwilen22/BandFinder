@@ -48,6 +48,7 @@ module.exports = function ({bandManager,bandMembershipManager}) {
         const username = request.session.loggedInUsername
         const bio = request.body.bioText
         const isBandLeader = true
+        const genre = "Empty"
         bandManager.createBand(bandname, bio, genre, function(error, bandId){
             bandMembershipManager.createBandMembership(username, bandId, isBandLeader, function(error){
                 if(error){
