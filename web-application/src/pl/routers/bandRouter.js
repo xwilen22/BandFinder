@@ -61,7 +61,6 @@ module.exports = function ({bandManager,bandMembershipManager,genreManager}) {
         const isBandLeader = true
         const genre = request.body.genre
         const maxMembers = 5
-        console.log("Genre is:", genre)
         bandManager.createBand(bandname, bio, genre, maxMembers,function(bandErrors, bandId){
             if(bandErrors.length > 0){
                 response.send(bandErrors)
@@ -69,12 +68,10 @@ module.exports = function ({bandManager,bandMembershipManager,genreManager}) {
             else{
                 bandMembershipManager.createBandMembership(username, bandId, isBandLeader, function(membershipErrors){
                     if(membershipErrors.length > 0){
-                        console.log("Genre is:", genre)
                         response.send(membershipErrors)
                     }
                     else{
-                        console.log("Does it get here")
-                        response.redirect(`/view/${bandId}`)
+                        response.redirect(`view/${bandId}`)
                     }
                 })
             }
