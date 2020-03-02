@@ -22,7 +22,7 @@ module.exports = function ({ db }) {
                 raw: true
             })
             .then(band => {
-                callback(undefined, band)
+                callback(undefined, band[0])
             })
             .catch(error => {
                 callback(error, null)
