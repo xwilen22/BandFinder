@@ -26,10 +26,10 @@ module.exports = function ({ db }) {
             })
         },
 
-        createBand: function (bandname, bandbio, genre, callback) {
-            let query = `INSERT INTO band (band_name, band_biography, band_genre) 
-                         VALUES (? , ? , ?)`
-            let values = [bandname, bandbio, genre]
+        createBand: function (bandname, bandbio, genre, maxBandMembers,callback) {
+            let query = `INSERT INTO band (band_name, band_biography, band_genre, max_members) 
+                         VALUES (? , ? , ? , ?)`
+            let values = [bandname, bandbio, genre, maxBandMembers]
             db.query(query, values, function (error, bandArray) {
                 callback(error, bandArray[0].band_id)
             })
