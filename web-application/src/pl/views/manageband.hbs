@@ -1,4 +1,4 @@
-<h2>{{bandname}}</h2>
+<h2>Create Band</h2>
 <section class="row container-fluid">
     <div class="col-md-12 p-2 row">
         <img class="img-thumbnail membercard" src="/images/PLACEHOLDER.jpg">
@@ -13,6 +13,18 @@
             <input class="form-control" type="text" id="bioEditText" name="bioText">
 
             <input class="btn btn-primary" type="submit" value="Save changes">
+            <section>
+                <label for="genreChoose">Choose your genre</label>
+                <select name="genre" id="genre">
+                    {{#each genres}}
+                        <optgroup label={{this.headGenreName}}>
+                            {{#each this.subGenres}}
+                                <option value={{this}}></option>
+                            {{/each}}
+                        </optgroup>
+                    {{/each}}
+                </select>
+            </section>
         </form> 
     </div>
 </section>

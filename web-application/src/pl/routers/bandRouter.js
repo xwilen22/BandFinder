@@ -1,6 +1,6 @@
 const express = require("express")
 
-module.exports = function ({bandManager,bandMembershipManager}) {
+module.exports = function ({bandManager,bandMembershipManager,genreManager}) {
     const router = express.Router()
 
     //Get all
@@ -40,7 +40,19 @@ module.exports = function ({bandManager,bandMembershipManager}) {
     })
 
     router.get("/create", function (request, response) {
-        response.render("manageband.hbs")
+        genreManager.getAllGenres(function(errors, genres){
+            if(errors.length > 0){
+                response.send(error)
+            }
+            else{
+                const model = {
+                    genres
+                }
+                console.log(genres)
+                response.render("manageband.hbs", model)
+            }
+        })
+        
     })
 
     router.post("/create", function (request, response) {
@@ -51,6 +63,7 @@ module.exports = function ({bandManager,bandMembershipManager}) {
         const genre = "Empty"
         const maxMembers = 5
         bandManager.createBand(bandname, bio, genre, maxMembers,function(error, bandId){
+            console.log("HE HEJ")
             bandMembershipManager.createBandMembership(username, bandId, isBandLeader, function(error){
                 if(error){
                     console.log("HE HEJ")
