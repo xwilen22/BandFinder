@@ -12,7 +12,7 @@ module.exports = function ({bandManager,bandMembershipManager,genreManager}) {
         const bandId = request.params.bandId
         bandManager.getBandById(bandId, function (errors, band) {
             if (errors.length > 0) {
-                response.send(error)
+                response.send(errors)
             }
             else {
                 const bandObject = band
@@ -41,7 +41,7 @@ module.exports = function ({bandManager,bandMembershipManager,genreManager}) {
     router.get("/create", function (request, response) {
         genreManager.getAllGenres(function(errors, genres){
             if(errors.length > 0){
-                response.send(error)
+                response.send(errors)
             }
             else{
                 const model = {
@@ -64,13 +64,13 @@ module.exports = function ({bandManager,bandMembershipManager,genreManager}) {
         console.log("Genre is:", genre)
         bandManager.createBand(bandname, bio, genre, maxMembers,function(bandErrors, bandId){
             if(bandErrors.length > 0){
-                response.send(error)
+                response.send(bandErrors)
             }
             else{
                 bandMembershipManager.createBandMembership(username, bandId, isBandLeader, function(membershipErrors){
                     if(membershipErrors.length > 0){
                         console.log("Genre is:", genre)
-                        response.send(error)
+                        response.send(membershipErrors)
                     }
                     else{
                         console.log("Does it get here")
