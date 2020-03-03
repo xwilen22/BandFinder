@@ -34,7 +34,22 @@ module.exports = function ({bandManager,bandMembershipManager,genreManager}) {
             }
         })
     })
-
+    
+    router.get("/browseUserBands", function(request, response) {
+        const username = request.session.loggedInUsername
+        bandMembershipManager.getBandMembershipByUsername(username, function(bandMembershipErrors, bandMemberships){
+            if(bandMembershipError > 0){
+                response.send(bandMembershipErrors)
+            }
+            else{
+                const model = {
+                    bandMemberships
+                }
+                response.render("browseUserBands.hbs", model)
+            }
+        })
+    })
+    
     router.post("/delete/:bandname", function (request, response) {
 
     })
