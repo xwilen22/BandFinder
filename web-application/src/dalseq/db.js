@@ -4,7 +4,8 @@ module.exports = function({}) {
     const sequelizeClient = new Sequelize('postDatabase', 'root', 'DucTreHouHa', {
         host: 'database-postgre',
         dialect: 'postgres',
-        database: 'postDatabase'
+        database: 'postDatabase',
+        omitNull: true
     })
 
     sequelizeClient.authenticate()
@@ -40,18 +41,16 @@ module.exports = function({}) {
             type: DataTypes.STRING(20),
             allowNull: false,
             primaryKey: true
+        },
+        parent_genre: {
+            type: DataTypes.STRING(20)
         }
     })
     genre.hasOne(genre, {
-        as: "parent_genre",
+        foreignKey: "parent_genre",
         onDelete: "cascade"
     })
     const band = sequelizeClient.define("band", {
-        band_id: {
-            type: DataTypes.INTEGER,
-            primaryKey: true,
-            autoIncrement: true
-        },
         band_name: {
             type: DataTypes.STRING,
             allowNull: false
@@ -117,7 +116,7 @@ module.exports = function({}) {
             allowNull: false,
             references: {
                 model: band,
-                key: "band_id"
+                key: "id"
             }
         },
         is_band_leader: {

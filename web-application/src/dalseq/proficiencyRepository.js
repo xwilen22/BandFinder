@@ -52,7 +52,8 @@ module.exports = function ({ db }) {
             proficiencyModel.findAll({
                 where: {
                     username
-                }
+                },
+                raw: true
             })
             .then(proficiencies => {
                 callback(undefined, proficiencies)

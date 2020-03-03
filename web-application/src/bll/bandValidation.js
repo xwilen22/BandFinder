@@ -18,7 +18,9 @@ module.exports = function ({}) {
         getBandIdValidationErrors: function(bandId) {
             let validationErrors = []
             
-            if (isNaN(bandId) == false) {
+            const parsedBandId = parseInt(bandId)
+
+            if (isNaN(parsedBandId) == true) {
                 validationErrors.push("Invalid band id")
             }
 

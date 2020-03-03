@@ -30,7 +30,8 @@ module.exports = function ({ db }) {
             instrumentModel.findAll({
                 where: {
                     instrument_name:instrumentName
-                }
+                },
+                raw: true
             })
             .then(instrument => {
                 callback(undefined, instrument)

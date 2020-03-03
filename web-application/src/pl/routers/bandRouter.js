@@ -10,13 +10,13 @@ module.exports = function ({bandManager,bandMembershipManager,genreManager}) {
 
     router.get("/view/:bandId", function (request, response) {
         const bandId = request.params.bandId
-        bandManager.getBandById(bandId, function (error, band) {
-            if (error) {
-                console.log("hejehejehje")
-                response.send(error)
+        bandManager.getBandById(bandId, function (errors, band) {
+            if (errors.length > 0) {
+                response.send(errors)
             }
             else {
                 const bandObject = band
+                console.log("band object:", bandObject)
                 const model = {
                     bandname: bandObject.band_name,
                     biography: bandObject.band_biography,
@@ -42,7 +42,7 @@ module.exports = function ({bandManager,bandMembershipManager,genreManager}) {
     router.get("/create", function (request, response) {
         genreManager.getAllGenres(function(errors, genres){
             if(errors.length > 0){
-                response.send(error)
+                response.send(errors)
             }
             else{
                 const model = {
@@ -60,20 +60,22 @@ module.exports = function ({bandManager,bandMembershipManager,genreManager}) {
         const username = request.session.loggedInUsername
         const bio = request.body.bioText
         const isBandLeader = true
-        const genre = "Empty"
+        const genre = request.body.genre
         const maxMembers = 5
-        bandManager.createBand(bandname, bio, genre, maxMembers,function(error, bandId){
-            console.log("HE HEJ")
-            bandMembershipManager.createBandMembership(username, bandId, isBandLeader, function(error){
-                if(error){
-                    console.log("HE HEJ")
-                    response.send(error)
-                }
-                else{
-                    console.log("Does it get here")
-                    response.redirect(`/view/${bandId}`)
-                }
-            })
+        bandManager.createBand(bandname, bio, genre, maxMembers,function(bandErrors, bandId){
+            if(bandErrors.length > 0){
+                response.send(bandErrors)
+            }
+            else{
+                bandMembershipManager.createBandMembership(username, bandId, isBandLeader, function(membershipErrors){
+                    if(membershipErrors.length > 0){
+                        response.send(membershipErrors)
+                    }
+                    else{
+                        response.redirect(`view/${bandId}`)
+                    }
+                })
+            }
         })
     })
 
