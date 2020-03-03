@@ -25,7 +25,6 @@ module.exports = function ({accountManager, proficiencyManager, instrumentManage
                         response.send(proficiencyErrors)
                     }
                     else {
-                        console.log(`Proficiencies: ${proficiencies}`)
                         const model = {
                             username: userObject.username,
                             biography: userObject.biography,
