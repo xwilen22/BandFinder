@@ -33,6 +33,21 @@ module.exports = function ({ db }) {
             })
         },
 
+        getBandMembershipByBandId: function(bandId,callback){
+            bandMembershipModel.findAll({
+                where: {
+                    band_id
+                },
+                raw: true
+            })
+            .then(members => {
+                callback(undefined, members)
+            })
+            .catch(error => {
+                callback(error, null)
+            })
+        },
+
         deleteBandMembership: function (username, bandId, callback) {
             bandMembershipModel.delete({
                 where: {
