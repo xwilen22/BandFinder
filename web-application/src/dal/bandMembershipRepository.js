@@ -33,8 +33,12 @@ module.exports = function ({ db }) {
         },
 
         getBandMembershipByUsername: function(username,callback){
-            let query = `SELECT * FROM band_membership
-                         WHERE username = ?`
+            let query = `SELECT band_membership.band_id, band.band_name, 
+                         band.band_biography
+                         FROM band_membership
+                         INNER JOIN band 
+                         ON band_membership.band_id = band.band_id 
+                         AND band_membership.username = ?`
             let values = [username]
             db.query(query, values, function(error, bandMembership){
                 if(error){

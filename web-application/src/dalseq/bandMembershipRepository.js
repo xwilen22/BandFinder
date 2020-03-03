@@ -50,9 +50,10 @@ module.exports = function ({ db }) {
 
         getBandMembershipByUsername: function(username,callback){
             bandMembershipModel.findAll({
-                where: {
-                    username
-                },
+                include: [{
+                    model: db.model("band"),
+                    where: {band_id: id, username}
+                }],
                 raw: true
             })
             .then(bandMemberships => {
