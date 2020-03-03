@@ -32,7 +32,7 @@ module.exports = function ({ db }) {
             let query = `SELECT * FROM user 
                          WHERE username = ?`
             db.query(query, [username], function (error, user) {
-                callback(error, user[0])
+                callback(error, user)
             })
         },
 

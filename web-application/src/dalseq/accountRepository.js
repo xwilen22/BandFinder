@@ -56,7 +56,7 @@ module.exports = function ({ db }) {
                 raw: true
             })
             .then(user => {
-                callback(undefined, user[0])
+                callback(undefined, user)
             })
             .catch(error => {
                 callback(error, null)
