@@ -33,8 +33,8 @@ module.exports = function ({bandMembershipRepository, errorGenerator}){
             })
         },
 
-        getBandMembershipUsername: function (username, callback){
-            bandMembershipRepository.getBandMembershipUsername(username, function(error, bandMemberships){
+        getBandMembershipByUsername: function (username, callback){
+            bandMembershipRepository.getBandMembershipByUsername(username, function(error, bandMemberships){
                 if(error){
                     callback(errorGenerator.getInternalError(error),null)
                 }
