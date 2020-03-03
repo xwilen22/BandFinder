@@ -16,6 +16,7 @@ module.exports = function ({bandManager,bandMembershipManager,genreManager}) {
             }
             else {
                 const bandObject = band
+                console.log("band object:", bandObject)
                 const model = {
                     bandname: bandObject.band_name,
                     biography: bandObject.band_biography,
