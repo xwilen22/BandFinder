@@ -32,6 +32,20 @@ module.exports = function ({ db }) {
             })
         },
 
+        getBandMembershipByUsername: function(username,callback){
+            let query = `SELECT * FROM band_membership
+                         WHERE username = ?`
+            let values = [username]
+            db.query(query, values, function(error, bandMembership){
+                if(error){
+                    callback(error)
+                }
+                else{
+                    callback(bandMembership)
+                }
+            })
+        },
+
         deleteBandMembership: function (username, bandId, callback) {
             let query = `DELETE * FROM band_membership 
                          WHERE username = ? AND band_id = ?`
