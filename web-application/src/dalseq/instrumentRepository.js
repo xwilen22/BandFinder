@@ -34,7 +34,7 @@ module.exports = function ({ db }) {
                 raw: true
             })
             .then(instrument => {
-                callback(undefined, instrument)
+                callback(undefined, instrument[0])
             })
             .catch(error => {
                 callback(error, null)
