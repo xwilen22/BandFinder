@@ -29,13 +29,15 @@
     </form>
 </section>
 {{/if}}
-<section class="row container-fluid">
-    <h3>Proficiencies</h3>
+<section class="row container-fluid p-4">
+    <p class="h3">Proficiencies</p>
     <div class="col-12">
         {{#if proficiencies}}
         <ul class="list-unstyled list-inline">
             {{#each proficiencies}}
-            <li class="list-inline-item bg-light p-2">{{this}}</li>
+            <li class="list-inline-item bg-light p-2">
+                {{this.instrument_name}} {{this.proficiency_level}}
+            </li>
             {{/each}}
         </ul>
         {{else}}

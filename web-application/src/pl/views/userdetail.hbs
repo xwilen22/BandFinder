@@ -14,7 +14,9 @@
         {{#if proficiencies}}
         <ul class="list-unstyled list-inline">
             {{#each proficiencies}}
-            <li class="list-inline-item bg-light p-2">SKIN FLUTE</li>
+            <li class="list-inline-item bg-light p-2">
+                {{this.instrument_name}} {{this.proficiency_level}}
+            </li>
             {{/each}}
         </ul>
         {{else}}
