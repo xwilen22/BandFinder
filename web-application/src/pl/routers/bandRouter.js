@@ -10,19 +10,27 @@ module.exports = function ({bandManager,bandMembershipManager,genreManager}) {
 
     router.get("/view/:bandId", function (request, response) {
         const bandId = request.params.bandId
-        bandManager.getBandById(bandId, function (errors, band) {
-            if (errors.length > 0) {
-                response.send(errors)
+        bandManager.getBandById(bandId, function (bandErrors, band) {
+            if (bandErrors.length > 0) {
+                response.send(bandErrors)
             }
             else {
-                const bandObject = band
-                console.log("band object:", bandObject)
-                const model = {
-                    bandname: bandObject.band_name,
-                    biography: bandObject.band_biography,
-                    profilePicture: bandObject.band_profile_picture
-                }
-                response.render("banddetail.hbs", model)
+                bandMembershipManager.getBandMembershipByBandId(bandId,  function(membershipErrors, bandMembers){
+                    if(membershipErrors.length > 0){
+                        response.send(membershipErrors)
+                    }
+                    else{
+                        const bandObject = band
+                        console.log("band object:", bandObject)
+                        const model = {
+                            bandMembers,
+                            bandname: bandObject.band_name,
+                            biography: bandObject.band_biography,
+                            profilePicture: bandObject.band_profile_picture
+                        }
+                        response.render("banddetail.hbs", model)
+                    }
+                })
             }
         })
     })

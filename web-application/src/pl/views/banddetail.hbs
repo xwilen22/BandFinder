@@ -11,14 +11,16 @@
     <p class="h3">Members</p>
     <div class="col-12">
         <ul class="list-unstyled list-inline">
-            <li class="list-inline-item">
-                <div class="card membercard">
-                    <img src="/images/PLACEHOLDER.jpg" class="card-img-top">
-                    <div class="card-body">
-                        <h5 class="card-title">USERNAME</h5>
+            {{#each bandMembers}}
+                <li class="list-inline-item">
+                    <div class="card membercard">
+                        <img src="/images/PLACEHOLDER.jpg" class="card-img-top">
+                        <div class="card-body">
+                            <h5 class="card-title"><a href="/account/view/{{this.username}}">{{this.username}}</a></h5>
+                        </div>
                     </div>
-                </div>
-            </li>
+                </li>
+            {{/each}}
         </ul>
     </div>
 </section>
