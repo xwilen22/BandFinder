@@ -36,7 +36,7 @@ module.exports = function ({ db }) {
         getBandMembershipByBandId: function(bandId,callback){
             bandMembershipModel.findAll({
                 where: {
-                    band_id
+                    band_id:bandId
                 },
                 raw: true
             })
