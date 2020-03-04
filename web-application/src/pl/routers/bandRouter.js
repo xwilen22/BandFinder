@@ -8,6 +8,10 @@ module.exports = function ({bandManager,bandMembershipManager,genreManager}) {
         response.render("browse.hbs")
     })
 
+    router.get("/noband", function (request, response){
+        response.render("noband.hbs")
+    })
+
     router.get("/view/:bandId", function (request, response) {
         const bandId = request.params.bandId
         bandManager.getBandById(bandId, function (bandErrors, band) {
@@ -35,7 +39,7 @@ module.exports = function ({bandManager,bandMembershipManager,genreManager}) {
         })
     })
     
-    router.get("/browseUserBands", function(request, response) {
+    router.get("/browseuserbands", function(request, response) {
         const username = request.session.loggedInUsername
         bandMembershipManager.getBandMembershipByUsername(username, function(bandMembershipErrors, bandMemberships){
             if(bandMembershipError > 0){
@@ -45,7 +49,7 @@ module.exports = function ({bandManager,bandMembershipManager,genreManager}) {
                 const model = {
                     bandMemberships
                 }
-                response.render("browseUserBands.hbs", model)
+                response.render("browseuserbands.hbs", model)
             }
         })
     })
