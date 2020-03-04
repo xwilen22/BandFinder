@@ -19,9 +19,9 @@ module.exports = function ({ proficiencyManager }) {
             }
         })
     })
-    router.post("/delete/:forUsername", function (request, response) {
+    router.post("/delete/:forUsername/:instrumentName", function (request, response) {
         const username = request.params.forUsername
-        const instrumentName = request.body.instrument
+        const instrumentName = request.params.instrumentName
 
         proficiencyManager.deleteProficiencyForUser(username, instrumentName, function(errors) {
             if(errors.length > 0) {
@@ -32,6 +32,19 @@ module.exports = function ({ proficiencyManager }) {
             }
         })
     })
+    router.post("/update/:forUsername/:instrumentName", function(request, response) {
+        const username = request.params.forUsername
+        const instrumentName = request.params.instrumentName
+        const newProficiencySkillLevel = request.body.skillLevel
 
+        proficiencyManager.updateProficiencyLevelForUser(username, instrumentName, newProficiencySkillLevel, function(errors) {
+            if(errors.length > 0) {
+                response.send(errors)
+            }
+            else {
+                response.redirect("back")
+            }
+        })
+    })
     return router
 }
