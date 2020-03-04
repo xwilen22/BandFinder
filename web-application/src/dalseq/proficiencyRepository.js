@@ -34,7 +34,7 @@ module.exports = function ({ db }) {
         },
 
         deleteUserProficiency: function (username, instrument, callback) {
-            proficiencyModel.delete({
+            proficiencyModel.destroy({
                 where: {
                     username,
                     instrument_name:instrument
