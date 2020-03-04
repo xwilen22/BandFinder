@@ -39,7 +39,7 @@
                 <div>
                     {{this.instrument_name}} 
                     <form method="POST" action="/proficiencies/update/{{username}}/{{this.instrument_name}}">
-                        <input type="number" value="{{this.proficiency_level}}">
+                        <input type="number" value="{{this.proficiency_level}}" name="skillLevel">
                         <input type="submit" value="Update skill" class="btn btn-primary">
                     </form>
                     <form method="POST" action="/proficiencies/delete/{{username}}/{{this.instrument_name}}">
