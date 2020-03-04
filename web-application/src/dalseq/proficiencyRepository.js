@@ -18,10 +18,10 @@ module.exports = function ({ db }) {
 
         updateUserProficiencyLevel: function (username, instrument, proficiency, callback) {
             proficiencyModel.update({
-                instrument_name: instrument, 
                 proficiency_level: proficiency
             },{
                 where: {
+                    instrument_name: instrument, 
                     username
                 }
             })
