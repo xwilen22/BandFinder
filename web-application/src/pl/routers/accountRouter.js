@@ -25,7 +25,6 @@ module.exports = function ({accountManager, proficiencyManager, instrumentManage
                         response.send(proficiencyErrors)
                     }
                     else {
-                        console.log(`Proficiencies: ${proficiencies}`)
                         const model = {
                             username: userObject.username,
                             biography: userObject.biography,
@@ -59,12 +58,11 @@ module.exports = function ({accountManager, proficiencyManager, instrumentManage
     router.get("/update/:username", function (request, response) {
         const username = request.params.username
 
-        accountManager.getAccountByUsername(username, function (accountErrors, userObjects) {
+        accountManager.getAccountByUsername(username, function (accountErrors, userObject) {
             if (accountErrors.length > 0) {
                 response.send(accountErrors)
             }
             else {
-                const userObject = userObjects[0]
                 proficiencyManager.getAllProficienciesForUser(userObject.username, function(proficiencyErrors, proficiencies) {
                     if(proficiencyErrors.length > 0) {
                         response.send(proficiencyErrors)

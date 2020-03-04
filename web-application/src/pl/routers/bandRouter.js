@@ -8,24 +8,52 @@ module.exports = function ({bandManager,bandMembershipManager,genreManager}) {
         response.render("browse.hbs")
     })
 
+    router.get("/noband", function (request, response){
+        response.render("noband.hbs")
+    })
+
     router.get("/view/:bandId", function (request, response) {
         const bandId = request.params.bandId
-        bandManager.getBandById(bandId, function (errors, band) {
-            if (errors.length > 0) {
-                response.send(errors)
+        bandManager.getBandById(bandId, function (bandErrors, band) {
+            if (bandErrors.length > 0) {
+                response.send(bandErrors)
             }
             else {
-                const bandObject = band
-                const model = {
-                    bandname: bandObject.band_name,
-                    biography: bandObject.band_biography,
-                    profilePicture: bandObject.band_profile_picture
-                }
-                response.render("banddetail.hbs", model)
+                bandMembershipManager.getBandMembershipByBandId(bandId,  function(membershipErrors, bandMembers){
+                    if(membershipErrors.length > 0){
+                        response.send(membershipErrors)
+                    }
+                    else{
+                        const bandObject = band
+                        console.log("band object:", bandObject)
+                        const model = {
+                            bandMembers,
+                            bandname: bandObject.band_name,
+                            biography: bandObject.band_biography,
+                            profilePicture: bandObject.band_profile_picture
+                        }
+                        response.render("banddetail.hbs", model)
+                    }
+                })
             }
         })
     })
-
+    
+    router.get("/browseuserbands", function(request, response) {
+        const username = request.session.loggedInUsername
+        bandMembershipManager.getBandMembershipByUsername(username, function(bandMembershipErrors, bandMemberships){
+            if(bandMembershipError > 0){
+                response.send(bandMembershipErrors)
+            }
+            else{
+                const model = {
+                    bandMemberships
+                }
+                response.render("browseuserbands.hbs", model)
+            }
+        })
+    })
+    
     router.post("/delete/:bandname", function (request, response) {
 
     })

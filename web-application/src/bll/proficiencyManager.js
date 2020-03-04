@@ -62,17 +62,17 @@ module.exports = function ({errorGenerator, proficiencyRepository, proficiencyVa
             })
         },
         getAllProficienciesForUser(username, callback) {
-            accountManager.getAccountByUsername(username, function(accountError, userObject) {
-                if(accountError) {
-                    callback(accountError)
+            accountManager.getAccountByUsername(username, function(accountErrors, userObject) {
+                if(accountErrors.length > 0) {
+                    callback(accountErrors)
                 }
                 else {
-                    const retrievedUsername = userObject.username
-                    proficiencyRepository.getAllProficienciesByUsername(username, function(error, proficiencies) {
+                    proficiencyRepository.getAllProficienciesByUsername(userObject.username, function(error, proficiencies) {
                         if(error) {
                             callback(errorGenerator.getInternalError(error))
                         }
                         else {
+                            console.log("BLL PROF: ", proficiencies)
                             callback([], proficiencies)
                         }
                     })
