@@ -28,7 +28,7 @@ module.exports = function ({ proficiencyManager }) {
                 response.send(errors)
             }
             else {
-                response.send("back")
+                response.redirect("back")
             }
         })
     })
