@@ -8,7 +8,7 @@
                 <input class="form-control" type="file">
             </section>
             <label for="bioEditText">Bio</label>
-            <textarea class="form-control" type="text" value="{{biography}}" id="bioEditText" name="biography" rows="4"></textarea>
+            <textarea class="form-control" type="text" id="bioEditText" name="biography" rows="4">{{biography}}</textarea>
 
             <input class="btn btn-primary" type="submit" value="Save changes">
         </form>
@@ -36,10 +36,10 @@
         <ul class="list-unstyled list-inline">
             {{#each proficiencies}}
             <li class="list-inline-item bg-light p-2">
-                <div>
+                <div class="inline">
                     {{this.instrument_name}} 
                     <form method="POST" action="/proficiencies/update/{{username}}/{{this.instrument_name}}">
-                        <input type="number" value="{{this.proficiency_level}}" name="skillLevel">
+                        <input type="number" min="1" , max="5" value="{{this.proficiency_level}}" name="skillLevel">
                         <input type="submit" value="Update skill" class="btn btn-primary">
                     </form>
                     <form method="POST" action="/proficiencies/delete/{{username}}/{{this.instrument_name}}">

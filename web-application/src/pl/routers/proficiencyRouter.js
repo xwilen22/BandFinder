@@ -10,9 +10,9 @@ module.exports = function ({ proficiencyManager }) {
 
         console.log("CREATING PROF: ", username, instrumentName, proficiencySkillLevel)
 
-        proficiencyManager.createProficiency(username, instrumentName, proficiencySkillLevel, function(errors) {
-            if(errors.length > 0) {
-                response.send(errors)
+        proficiencyManager.createProficiency(username, instrumentName, proficiencySkillLevel, function(error) {
+            if(error) {
+                response.send(error)
             }
             else {
                 response.redirect("back")
@@ -23,12 +23,12 @@ module.exports = function ({ proficiencyManager }) {
         const username = request.params.forUsername
         const instrumentName = request.params.instrumentName
 
-        proficiencyManager.deleteProficiencyForUser(username, instrumentName, function(errors) {
-            if(errors.length > 0) {
-                response.send(errors)
+        proficiencyManager.deleteProficiencyForUser(username, instrumentName, function(error) {
+            if(error) {
+                response.send(error)
             }
             else {
-                response.send("back")
+                response.redirect("back")
             }
         })
     })
@@ -37,9 +37,9 @@ module.exports = function ({ proficiencyManager }) {
         const instrumentName = request.params.instrumentName
         const newProficiencySkillLevel = request.body.skillLevel
 
-        proficiencyManager.updateProficiencyLevelForUser(username, instrumentName, newProficiencySkillLevel, function(errors) {
-            if(errors.length > 0) {
-                response.send(errors)
+        proficiencyManager.updateProficiencyLevelForUser(username, instrumentName, newProficiencySkillLevel, function(error) {
+            if(error) {
+                response.send(error)
             }
             else {
                 response.redirect("back")
