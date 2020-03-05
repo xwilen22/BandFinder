@@ -6,7 +6,7 @@ module.exports = function ({errorGenerator, instrumentRepository}) {
                     callback(errorGenerator.getInternalError(error))
                 }
                 else {
-                    callback([])
+                    callback(errorGenerator.getSuccess())
                 }
             })
         },
@@ -16,7 +16,7 @@ module.exports = function ({errorGenerator, instrumentRepository}) {
                     callback(errorGenerator.getInternalError(error))
                 }
                 else {
-                    callback([])
+                    callback(errorGenerator.getSuccess())
                 }
             })
         },
@@ -26,7 +26,7 @@ module.exports = function ({errorGenerator, instrumentRepository}) {
                     callback(errorGenerator.getInternalError(error))
                 }
                 else {
-                    callback([], instrument)
+                    callback(errorGenerator.getSuccess(), instrument)
                 }
             })
         },
@@ -36,7 +36,7 @@ module.exports = function ({errorGenerator, instrumentRepository}) {
                     callback(errorGenerator.getInternalError(error))
                 }
                 else {
-                    callback([], instruments)
+                    callback(errorGenerator.getSuccess(), instruments)
                 }
             })
         }

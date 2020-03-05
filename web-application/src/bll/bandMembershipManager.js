@@ -6,7 +6,7 @@ module.exports = function ({bandMembershipRepository, errorGenerator}){
                     callback(errorGenerator.getInternalError(error))
                 }
                 else{
-                    callback([])
+                    callback(errorGenerator.getSuccess())
                 }
             })
         },
@@ -17,7 +17,7 @@ module.exports = function ({bandMembershipRepository, errorGenerator}){
                     callback(errorGenerator.getInternalError(error))
                 }
                 else{
-                    callback([])
+                    callback(errorGenerator.getSuccess())
                 }
             })
         },
@@ -28,7 +28,7 @@ module.exports = function ({bandMembershipRepository, errorGenerator}){
                     callback(errorGenerator.getInternalError(error),null)
                 }
                 else{
-                    callback([],bandMembers)
+                    callback(errorGenerator.getSuccess(),bandMembers)
                 }
             })
         },
@@ -39,7 +39,7 @@ module.exports = function ({bandMembershipRepository, errorGenerator}){
                     callback(errorGenerator.getInternalError(error),null)
                 }
                 else{
-                    callback([],bandMemberships)
+                    callback(errorGenerator.getSuccess(),bandMemberships)
                 }
             })
         },
@@ -50,7 +50,7 @@ module.exports = function ({bandMembershipRepository, errorGenerator}){
                     callback(errorGenerator.getInternalError(error))
                 }
                 else{
-                    callback([])
+                    callback(errorGenerator.getSuccess())
                 }
             })
         }

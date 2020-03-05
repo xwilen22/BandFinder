@@ -13,7 +13,7 @@ module.exports = function ({errorGenerator, genreRepository, genreValidation}) {
                         callback(errorGenerator.getInternalError(createError))
                     }
                     else {
-                        callback([])
+                        callback(errorGenerator.getSuccess())
                     }
                 })
             }
@@ -42,7 +42,7 @@ module.exports = function ({errorGenerator, genreRepository, genreValidation}) {
                                 callback(errorGenerator.getInternalError(createError))
                             }
                             else {
-                                callback([])
+                                callback(errorGenerator.getSuccess())
                             }
                         })
                     }
@@ -55,7 +55,7 @@ module.exports = function ({errorGenerator, genreRepository, genreValidation}) {
                     callback(errorGenerator.getInternalError(error))
                 } 
                 else {
-                    callback([])
+                    callback(errorGenerator.getSuccess())
                 }
             })
         },
@@ -81,7 +81,7 @@ module.exports = function ({errorGenerator, genreRepository, genreValidation}) {
                         }
                     })
 
-                    callback([], returningGenres)
+                    callback(errorGenerator.getSuccess(), returningGenres)
                 }
             })
         },
@@ -91,7 +91,7 @@ module.exports = function ({errorGenerator, genreRepository, genreValidation}) {
                     callback(errorGenerator.getInternalError(error))
                 } 
                 else {
-                    callback([], subGenres)
+                    callback(errorGenerator.getSuccess(), subGenres)
                 }
             })
         },
@@ -101,7 +101,7 @@ module.exports = function ({errorGenerator, genreRepository, genreValidation}) {
                     callback(errorGenerator.getInternalError(error))
                 }
                 else {
-                    callback([], genre)
+                    callback(errorGenerator.getSuccess(), genre)
                 }
             })
         }

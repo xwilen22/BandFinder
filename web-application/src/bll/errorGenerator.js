@@ -15,6 +15,9 @@ module.exports = function ({}) {
             }
             
             return {code: 400, messages:messageArray}
+        },
+        getSuccess: function() {
+            return undefined
         }
     }
 }
