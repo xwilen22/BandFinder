@@ -1,6 +1,6 @@
 const Express = require("express")
 
-module.exports = function ({accountManager, proficiencyManager, instrumentManager, errorGenerator}) {
+module.exports = function ({accountManager, proficiencyManager, instrumentManager, errorGenerator, sessionValidation}) {
     const router = Express.Router()
 
     //Redirects to account detail or login screen
@@ -29,7 +29,8 @@ module.exports = function ({accountManager, proficiencyManager, instrumentManage
                             username: userObject.username,
                             biography: userObject.biography,
                             profilePicture: userObject.user_profile_picture,
-                            proficiencies
+                            proficiencies,
+                            isUserOwner: sessionValidation.validateAccountNameInSession(userObject.username, request.session.loggedInUsername)
                         }
                         response.render("userdetail.hbs", model)
                     }
