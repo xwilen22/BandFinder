@@ -1,16 +1,20 @@
+{{#if bandname}}
+<h2>Editing {{bandname}}</h2>
+{{else}}
 <h2>Create Band</h2>
+{{/if}}
 <section class="row container-fluid">
     <div class="col-md-12 p-2 row">
         <img class="img-thumbnail membercard" src="/images/PLACEHOLDER.jpg">
         <form class="form-group col-md-10" method="POST">
             <label>Edit Band name</label>
-            <input class="form-control" type="text" name="bandNameText">
+            <input class="form-control" type="text" name="bandNameText" value="{{bandname}}">
             <section>
                 <label class="keepaspectratio" for="thumbImageSelect">Replace band image</label>
                 <input class="form-control" type="file">
             </section>
             <label for="bioEditText">Edit band bio</label>
-            <input class="form-control" type="text" id="bioEditText" name="bioText">
+            <input class="form-control" type="text" id="bioEditText" name="bioText" value="{{biography}}">
 
             <input class="btn btn-primary" type="submit" value="Save changes">
             <section>

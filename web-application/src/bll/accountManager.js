@@ -87,7 +87,7 @@ module.exports = function ({ accountRepository, accountValidation, passwordManag
                         callback(errorGenerator.getInternalError(accountGetError))
                     }
                     else if (userObject == null) {
-                        callback(errorGenerator.getInternalError(["Can't find user"]))
+                        callback(errorGenerator.getClientError(["Can't find user"], 404))
                     }
                     else {
                         passwordManager.comparePasswordPlainToHash(password, userObject[0].password, function (passwordCompareError, success) {
@@ -120,7 +120,7 @@ module.exports = function ({ accountRepository, accountValidation, passwordManag
             if (accountNameValidationErrors.length <= 0) {
                 accountRepository.getUserByUsername(username, function (error, userObjects) {
                     if(userObjects == null || userObjects.length <= 0) {
-                        callback(errorGenerator.getClientError(["No user with that name"]))
+                        callback(errorGenerator.getHttpCodeError(404))
                     }
                     else if (error){
                         callback(errorGenerator.getInternalError(error), null)

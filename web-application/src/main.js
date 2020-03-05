@@ -126,3 +126,8 @@ app.use("/bands", theBandRouter)
 app.use("/account", theAccountRouter)
 app.use("/instruments", theInstrumentRouter)
 app.use("/proficiencies", theProficiencyRouter)
+
+app.use(function(error, request, response, next) {	
+    console.log(error)
+    response.render("error.hbs", error)
+})
