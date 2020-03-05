@@ -1,6 +1,6 @@
 const Express = require("express")
 
-module.exports = function ({accountManager, proficiencyManager, instrumentManager}) {
+module.exports = function ({accountManager, proficiencyManager, instrumentManager, errorGenerator}) {
     const router = Express.Router()
 
     //Redirects to account detail or login screen
@@ -12,17 +12,17 @@ module.exports = function ({accountManager, proficiencyManager, instrumentManage
         //else
         response.redirect(`/view/${username}`)
     })
-    router.get("/view/:username", function (request, response) {
+    router.get("/view/:username", function (request, response, next) {
         const username = request.params.username
 
         accountManager.getAccountByUsername(username, function (accountError, userObject) {
             if (accountError) {
-                response.send(accountError)
+                next(accountError)
             }
             else {
                 proficiencyManager.getAllProficienciesForUser(userObject.username, function(proficiencyError, proficiencies) {
                     if(proficiencyError) {
-                        response.send(proficiencyError)
+                        next(proficiencyError)
                     }
                     else {
                         const model = {
@@ -37,13 +37,28 @@ module.exports = function ({accountManager, proficiencyManager, instrumentManage
             }
         })
     })
-    router.post("/signin", function (request, response) {
+    router.get("/signin", function(request, response) {
+        const model = {
+            showSignInPage: true
+        }
+        response.render("signinup.hbs", model)
+    })
+    router.post("/signin", function (request, response, next) {
         const username = request.body.username
         const password = request.body.password
 
         accountManager.signInAccount(username, password, function (error) {
             if (error) {
-                response.send(error)
+                if(error.retainPage == true) {
+                    const model = {
+                        error,
+                        showSignInPage: true
+                    }
+                    response.render("signinup.hbs", model)
+                }
+                else {
+                    next(error)
+                }
             }
             else {
                 request.session.loggedInUsername = username
@@ -113,7 +128,13 @@ module.exports = function ({accountManager, proficiencyManager, instrumentManage
             //Do shit
         })
     })
-    router.post("/create", function (request, response) {
+    router.get("/signup", function(request, response) {
+        const model = {
+            showSignInPage: false
+        }
+        response.render("signinup.hbs", model)
+    })
+    router.post("/signup", function (request, response) {
         const username = request.body.username
         const password = request.body.password
 
