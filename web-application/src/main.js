@@ -127,7 +127,12 @@ app.use("/account", theAccountRouter)
 app.use("/instruments", theInstrumentRouter)
 app.use("/proficiencies", theProficiencyRouter)
 
-app.use(function(error, request, response, next) {	
-    console.log(error)
-    response.render("error.hbs", error)
+app.use(function(errorModel, request, response, next) {
+    if(errorModel != undefined || errorModel != null) {
+        response.status(errorModel.code).render("error.hbs", errorModel)
+    }
+    else {
+        const fatalModel = errorGenerator.getInternalError(`UNHANDLED ERROR! A NULL ERROR MODEL RETRIEVED`)
+        response.status(fatalModel.code).render("error.hbs", fatalModel)
+    }
 })
