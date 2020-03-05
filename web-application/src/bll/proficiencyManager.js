@@ -15,7 +15,7 @@ module.exports = function ({errorGenerator, proficiencyRepository, proficiencyVa
                             callback(errorGenerator.getInternalError(error))
                         }
                         else {
-                            callback([])
+                            callback(errorGenerator.getSuccess())
                         }
                     })
                 }
@@ -35,7 +35,7 @@ module.exports = function ({errorGenerator, proficiencyRepository, proficiencyVa
                             callback(errorGenerator.getInternalError(error))
                         }
                         else {
-                            callback([])
+                            callback(errorGenerator.getSuccess())
                         }
                     })
                 }
@@ -55,7 +55,7 @@ module.exports = function ({errorGenerator, proficiencyRepository, proficiencyVa
                             callback(errorGenerator.getInternalError(error))
                         }
                         else {
-                            callback([])
+                            callback(errorGenerator.getSuccess())
                         }
                     })
                 }
@@ -73,7 +73,7 @@ module.exports = function ({errorGenerator, proficiencyRepository, proficiencyVa
                         }
                         else {
                             console.log("BLL PROF: ", proficiencies)
-                            callback([], proficiencies)
+                            callback(errorGenerator.getSuccess(), proficiencies)
                         }
                     })
                 }

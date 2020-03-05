@@ -14,7 +14,7 @@ module.exports = function ({ accountRepository, accountValidation, passwordManag
                                 callback(errorGenerator.getInternalError(error))
                             }
                             else {
-                                callback([], createdUsername)
+                                callback(errorGenerator.getSuccess(), createdUsername)
                             }
                         })
                     }
@@ -36,7 +36,7 @@ module.exports = function ({ accountRepository, accountValidation, passwordManag
                             callback(errorGenerator.getClientError(compareErrors))
                         } 
                         else {
-                            callback([], success)
+                            callback(errorGenerator.getSuccess(), success)
                         }
                     })
                 }
@@ -68,7 +68,7 @@ module.exports = function ({ accountRepository, accountValidation, passwordManag
                     callback(errorGenerator.getInternalError(error))
                 }
                 else {
-                    callback([])
+                    callback(errorGenerator.getSuccess())
                 }
             })
         },
@@ -79,31 +79,31 @@ module.exports = function ({ accountRepository, accountValidation, passwordManag
                 callback(errorGenerator.getClientError(validationErrors))
             }
             else {
-                accountRepository.getUserByUsername(username, function (error, userObject) {
-                    if (error) {
-                        callback(errorGenerator.getInternalError(error))
+                accountRepository.getUserByUsername(username, function (accountGetError, userObject) {
+                    if (accountGetError) {
+                        callback(errorGenerator.getInternalError(accountGetError))
                     }
                     else if (userObject == null) {
                         callback(errorGenerator.getInternalError(["Can't find user"]))
                     }
                     else {
-                        passwordManager.comparePasswordPlainToHash(password, userObject[0].password, function (error, success) {
-                            if (error.length > 0) {
-                                callback(errorGenerator.getInternalError(error))
+                        passwordManager.comparePasswordPlainToHash(password, userObject[0].password, function (passwordCompareError, success) {
+                            if (passwordCompareError.length > 0) {
+                                callback(errorGenerator.getInternalError(passwordCompareError))
                             }
                             else {
                                 if (success == true) {
-                                    accountRepository.deleteUserByUsername(username, function (error) {
-                                        if (error) {
-                                            callback(error)
+                                    accountRepository.deleteUserByUsername(username, function (accountDeleteError) {
+                                        if (accountDeleteError) {
+                                            callback(accountDeleteError)
                                         }
                                         else {
-                                            callback([])
+                                            callback(errorGenerator.getSuccess())
                                         }
                                     })
                                 }
                                 else {
-                                    callback("BCRYPT ERROR")
+                                    callback(errorGenerator.getClientError("Wrong password"))
                                 }
                             }
                         })
@@ -123,7 +123,7 @@ module.exports = function ({ accountRepository, accountValidation, passwordManag
                         callback(errorGenerator.getInternalError(error), null)
                     } 
                     else {
-                        callback([], userObjects[0])
+                        callback(errorGenerator.getSuccess(), userObjects[0])
                     }
                 })
             }
