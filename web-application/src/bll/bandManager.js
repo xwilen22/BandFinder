@@ -51,7 +51,7 @@ module.exports = function ({ sessionValidation, bandRepository, bandValidation, 
             //TODO search and get genre & title in repo
         },
 
-        updateBandById: function (bandId, bandInfo, bandName, bandGenre) {
+        updateBandById: function (bandId, bandBio, bandName, bandGenre) {
             bandRepository.updateBandById(bandId, bandName, bandBio, bandGenre, function (error) {
                 if (error) {
                     callback(errorGenerator.getInternalError(error))
