@@ -86,15 +86,19 @@ module.exports = function ({bandManager,bandMembershipManager,genreManager, sess
         const bandname = request.body.bandNameText
         const bio = request.body.bioText
         const genre = request.body.genre
-        
-        bandManager.updateBandById(bandId, bandname, bio, genre, function(bandError, bandId){
-            if(bandError){
-                response.send(bandError)
-            }
-            else{
-                response.redirect(`view/${bandId}`)
-            }
-        })
+        if(sessionValidation.validateAccountNameInSession()==true){
+            bandManager.updateBandById(bandId, bandname, bio, genre, function(bandError, bandId){
+                if(bandError){
+                    response.send(bandError)
+                }
+                else{
+                    response.redirect(`view/${bandId}`)
+                }
+            })
+        }
+        else{
+            
+        }
     })
 
     router.get("/create", function (request, response) {
