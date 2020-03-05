@@ -1,6 +1,6 @@
 const Express = require("express")
 
-module.exports = function ({accountManager, proficiencyManager, instrumentManager}) {
+module.exports = function ({accountManager, proficiencyManager, instrumentManager, errorGenerator, sessionValidation}) {
     const router = Express.Router()
 
     //Redirects to account detail or login screen
@@ -12,24 +12,25 @@ module.exports = function ({accountManager, proficiencyManager, instrumentManage
         //else
         response.redirect(`/view/${username}`)
     })
-    router.get("/view/:username", function (request, response) {
+    router.get("/view/:username", function (request, response, next) {
         const username = request.params.username
 
         accountManager.getAccountByUsername(username, function (accountError, userObject) {
             if (accountError) {
-                response.send(accountError)
+                next(accountError)
             }
             else {
                 proficiencyManager.getAllProficienciesForUser(userObject.username, function(proficiencyError, proficiencies) {
                     if(proficiencyError) {
-                        response.send(proficiencyError)
+                        next(proficiencyError)
                     }
                     else {
                         const model = {
                             username: userObject.username,
                             biography: userObject.biography,
                             profilePicture: userObject.user_profile_picture,
-                            proficiencies
+                            proficiencies,
+                            isUserOwner: sessionValidation.validateAccountNameInSession(userObject.username, request.session.loggedInUsername)
                         }
                         response.render("userdetail.hbs", model)
                     }
@@ -37,13 +38,30 @@ module.exports = function ({accountManager, proficiencyManager, instrumentManage
             }
         })
     })
-    router.post("/signin", function (request, response) {
+    router.get("/signin", function(request, response) {
+        const model = {
+            showSignInPage: true
+        }
+        response.render("signinup.hbs", model)
+    })
+    router.post("/signin", function (request, response, next) {
         const username = request.body.username
         const password = request.body.password
 
         accountManager.signInAccount(username, password, function (error) {
             if (error) {
-                response.send(error)
+                if(error.retainPage == true) {
+                    const model = {
+                        username,
+                        password,
+                        error,
+                        showSignInPage: true
+                    }
+                    response.render("signinup.hbs", model)
+                }
+                else {
+                    next(error)
+                }
             }
             else {
                 request.session.loggedInUsername = username
@@ -55,28 +73,27 @@ module.exports = function ({accountManager, proficiencyManager, instrumentManage
         request.session.loggedInUsername = null
         response.redirect("../")
     })
-    router.get("/update/:username", function (request, response) {
+    router.get("/update/:username", function (request, response, next) {
         const username = request.params.username
 
         accountManager.getAccountByUsername(username, function (accountError, userObject) {
             if (accountError) {
-                response.send(accountError)
+                next(accountError)
             }
             else {
                 proficiencyManager.getAllProficienciesForUser(userObject.username, function(proficiencyError, proficiencies) {
                     if(proficiencyError) {
-                        response.send(proficiencyError)
+                        next(proficiencyError)
                     }
                     else {
                         instrumentManager.getAllInstruments(function(instrumentError, instruments) {
                             if(instrumentError) {
-                                response.send(instrumentError)
+                                next(proficiencyError)
                             }
                             else {
                                 let instrumentNames = []
                                 instruments.forEach(instrumentObject => instrumentNames.push(instrumentObject.instrument_name))
-                                console.log("Grillad med mos: ",instrumentNames)
-                                console.log(`Proficiencies: ${proficiencies}`)
+
                                 const model = {
                                     username: userObject.username,
                                     biography: userObject.biography,
@@ -92,13 +109,13 @@ module.exports = function ({accountManager, proficiencyManager, instrumentManage
             }
         })
     })
-    router.post("/update/:username", function (request, response) {
+    router.post("/update/:username", function (request, response, next) {
         const biography = request.body.biography
         const username = request.params.username
 
         accountManager.updateAccountBiography(username, biography, function (error) {
             if (error) {
-                response.send(error)
+                next(error)
             }
             else {
                 response.redirect(`/account/view/${username}`)
@@ -113,13 +130,31 @@ module.exports = function ({accountManager, proficiencyManager, instrumentManage
             //Do shit
         })
     })
-    router.post("/create", function (request, response) {
+    router.get("/signup", function(request, response) {
+        const model = {
+            showSignInPage: false
+        }
+        response.render("signinup.hbs", model)
+    })
+    router.post("/signup", function (request, response) {
         const username = request.body.username
         const password = request.body.password
+        const passwordRepeat = request.body.passwordRepeat
 
         accountManager.signUpAccount(username, password, function (error, createdUsername) {
             if (error) {
-                response.send(error)
+                if (error.retainPage == true) {
+                    const model = {
+                        username,
+                        password,
+                        passwordRepeat,
+                        error
+                    }
+                    response.render("signinup.hbs", model)
+                }
+                else {
+                    next(error)
+                }
             }
             else {
                 request.session.loggedInUsername = createdUsername
