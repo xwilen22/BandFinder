@@ -1,18 +1,18 @@
 {{#if bandMemberships}}
-    <section class="row p-2 container-fluid">
-        <ul class="list-group w-100">
-            {{#each bandMemberships}}
-                <li class="list-group-item row">
-                    <img class="col-2 img-thumbnail m-0" src="/images/PLACEHOLDER.JPG">
-                    <div class="col-10 m-0">
-                        <p class="h3">{{this.band_name}}</p>
-                        <p class="text-break">{{this.band_biography}}</p>
-                        <a href="#" class="stretched-link"></a>
-                    </div>
-                </li>
-            {{/each}}
-        </ul>
-    </section>
+<section class="row p-2 container-fluid">
+    <ul class="list-group w-100">
+        {{#each bandMemberships}}
+        <li class="list-group-item row">
+            <img class="col-2 img-thumbnail m-0" src="/images/PLACEHOLDER.JPG">
+            <div class="col-10 m-0">
+                <p class="h3" class="card-title"><a href="/bands/view/{{this.id}}" class="stretched-link">{{this.band_name}}</a></p>
+                <p class="text-break">Bio: {{this.band_biography}}</p>
+                <p class="text-break">Genre: {{this.band_genre}}</p>
+            </div>
+        </li>
+        {{/each}}
+    </ul>
+</section>
 {{else}}
-     <meta http-equiv = "refresh" content = "0; url = /bands/noband"/>
+<meta http-equiv="refresh" content="0; url = /bands/noband" />
 {{/if}}
