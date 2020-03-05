@@ -42,7 +42,7 @@ module.exports = function ({ db }) {
         },
 
         deleteInstrumentByName: function (instrumentName, callback) {
-            userModel.delete({
+            userModel.destroy({
                 where: {
                     instrument_name:instrumentName
                 }

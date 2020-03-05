@@ -64,7 +64,7 @@ module.exports = function ({ db }) {
         },
 
         deleteUserByUsername: function (username, callback) {
-            userModel.delete({
+            userModel.destroy({
                 where: {
                     username
                 }

@@ -65,7 +65,7 @@ module.exports = function ({ db }) {
         },
 
         deleteBandMembership: function (username, bandId, callback) {
-            bandMembershipModel.delete({
+            bandMembershipModel.destroy({
                 where: {
                     username,
                     band_id:bandId
