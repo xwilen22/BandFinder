@@ -15,14 +15,14 @@ module.exports = function ({accountManager, proficiencyManager, instrumentManage
     router.get("/view/:username", function (request, response) {
         const username = request.params.username
 
-        accountManager.getAccountByUsername(username, function (accountErrors, userObject) {
-            if (accountErrors.length > 0) {
-                response.send(accountErrors)
+        accountManager.getAccountByUsername(username, function (accountError, userObject) {
+            if (accountError) {
+                response.send(accountError)
             }
             else {
-                proficiencyManager.getAllProficienciesForUser(userObject.username, function(proficiencyErrors, proficiencies) {
-                    if(proficiencyErrors.length > 0) {
-                        response.send(proficiencyErrors)
+                proficiencyManager.getAllProficienciesForUser(userObject.username, function(proficiencyError, proficiencies) {
+                    if(proficiencyError) {
+                        response.send(proficiencyError)
                     }
                     else {
                         const model = {
@@ -41,9 +41,9 @@ module.exports = function ({accountManager, proficiencyManager, instrumentManage
         const username = request.body.username
         const password = request.body.password
 
-        accountManager.signInAccount(username, password, function (errors) {
-            if (errors.length > 0) {
-                response.send(errors)
+        accountManager.signInAccount(username, password, function (error) {
+            if (error) {
+                response.send(error)
             }
             else {
                 request.session.loggedInUsername = username
@@ -58,19 +58,19 @@ module.exports = function ({accountManager, proficiencyManager, instrumentManage
     router.get("/update/:username", function (request, response) {
         const username = request.params.username
 
-        accountManager.getAccountByUsername(username, function (accountErrors, userObject) {
-            if (accountErrors.length > 0) {
-                response.send(accountErrors)
+        accountManager.getAccountByUsername(username, function (accountError, userObject) {
+            if (accountError) {
+                response.send(accountError)
             }
             else {
-                proficiencyManager.getAllProficienciesForUser(userObject.username, function(proficiencyErrors, proficiencies) {
-                    if(proficiencyErrors.length > 0) {
-                        response.send(proficiencyErrors)
+                proficiencyManager.getAllProficienciesForUser(userObject.username, function(proficiencyError, proficiencies) {
+                    if(proficiencyError) {
+                        response.send(proficiencyError)
                     }
                     else {
-                        instrumentManager.getAllInstruments(function(instrumentErrors, instruments) {
-                            if(instrumentErrors.length > 0) {
-                                response.send(instrumentErrors)
+                        instrumentManager.getAllInstruments(function(instrumentError, instruments) {
+                            if(instrumentError) {
+                                response.send(instrumentError)
                             }
                             else {
                                 let instrumentNames = []
@@ -96,9 +96,9 @@ module.exports = function ({accountManager, proficiencyManager, instrumentManage
         const biography = request.body.biography
         const username = request.params.username
 
-        accountManager.updateAccountBiography(username, biography, function (errors) {
-            if (errors.length > 0) {
-                response.send(errors)
+        accountManager.updateAccountBiography(username, biography, function (error) {
+            if (error) {
+                response.send(error)
             }
             else {
                 response.redirect(`/account/view/${username}`)
@@ -109,7 +109,7 @@ module.exports = function ({accountManager, proficiencyManager, instrumentManage
         const username = request.params.username
         const password = request.body.password
 
-        accountManager.deleteAccount(username, password, function (errors) {
+        accountManager.deleteAccount(username, password, function (error) {
             //Do shit
         })
     })
@@ -117,9 +117,9 @@ module.exports = function ({accountManager, proficiencyManager, instrumentManage
         const username = request.body.username
         const password = request.body.password
 
-        accountManager.signUpAccount(username, password, function (errors, createdUsername) {
-            if (errors.length > 0) {
-                response.send(errors)
+        accountManager.signUpAccount(username, password, function (error, createdUsername) {
+            if (error) {
+                response.send(error)
             }
             else {
                 request.session.loggedInUsername = createdUsername
