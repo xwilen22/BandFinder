@@ -24,15 +24,16 @@ module.exports = function ({bandManager,bandMembershipManager,genreManager, sess
                         response.send(membershipError)
                     }
                     else {
-                        const currentUsername = request.session.username
+                        const currentUsername = request.session.loggedInUsername
                         const bandObject = band
-                        const isCurrentUserBandLeader = sessionValidation.validateCurrentUserBandLeader(bandMembers, currentUsername)
+                        const isCurrentUserBandLeader = sessionValidation.validateCurrentUserBandLeader(bandMembers,currentUsername)
                         const model = {
                             bandMembers,
+                            bandId: bandObject.id,
                             bandname: bandObject.band_name,
                             biography: bandObject.band_biography,
                             profilePicture: bandObject.band_profile_picture,
-                            isCurrentUserBandLeader: isCurrentUserBandLeader
+                            isCurrentUserBandLeader
                         }
                         response.render("banddetail.hbs", model)
                     }
@@ -60,12 +61,40 @@ module.exports = function ({bandManager,bandMembershipManager,genreManager, sess
 
     })
 
-    router.get("/update/:bandname", function (request, response) {
-        response.render("manageband.hbs")
+    router.get("/update/:bandId", function (request, response) {
+        const bandId = request.params.bandId
+        bandManager.getBandById(bandId, function (bandError, band) {
+            if (bandError) {
+                response.send(bandError)
+            }
+            else{
+                genreManager.getAllGenres(function(error,genres){
+                    bandObject = band
+                    model={ 
+                        bandname: bandObject.band_name,
+                        biography: bandObject.band_biography,
+                        profilePicture: bandObject.band_profile_picture,
+                        genres
+                    }
+                    response.render("manageband.hbs", model)
+                })
+            }
+        })
     })
-
-    router.post("/update/:bandname", function (request, response) {
-
+    router.post("/update/:bandId", function (request, response) {
+        const bandId = request.params.bandId
+        const bandname = request.body.bandNameText
+        const bio = request.body.bioText
+        const genre = request.body.genre
+        
+        bandManager.updateBandById(bandId, bandname, bio, genre, function(bandError, bandId){
+            if(bandError){
+                response.send(bandError)
+            }
+            else{
+                response.redirect(`view/${bandId}`)
+            }
+        })
     })
 
     router.get("/create", function (request, response) {
@@ -77,7 +106,6 @@ module.exports = function ({bandManager,bandMembershipManager,genreManager, sess
                 const model = {
                     genres
                 }
-                console.log(genres)
                 response.render("manageband.hbs", model)
             }
         })
