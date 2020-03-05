@@ -23,14 +23,14 @@ module.exports = function ({bandManager,bandMembershipManager,genreManager}) {
                     if(membershipError){
                         response.send(membershipError)
                     }
-                    else{
+                    else {
                         const bandObject = band
-                        console.log("band object:", bandObject)
                         const model = {
                             bandMembers,
                             bandname: bandObject.band_name,
                             biography: bandObject.band_biography,
-                            profilePicture: bandObject.band_profile_picture
+                            profilePicture: bandObject.band_profile_picture,
+                            isCurrentUserBandLeader: true
                         }
                         response.render("banddetail.hbs", model)
                     }
