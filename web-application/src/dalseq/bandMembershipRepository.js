@@ -62,14 +62,6 @@ module.exports = function ({ db }) {
             .catch(error => {
                 callback(error, null)
             })
-
-                        /*bandMembershipModel.findAll({
-                include: [{
-                    model: db.model("band"),
-                    where: {band_id: db.model("band").id, username},
-                }],
-                raw: true
-            })*/
         },
 
         deleteBandMembership: function (username, bandId, callback) {
