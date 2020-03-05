@@ -48,28 +48,28 @@ module.exports = function ({ db }) {
             })
         },
 
-        getBandMembershipByUsername: function(username,callback){
-            console.log("Repo Username: ", username)
-            const bandMemberships = db.query(`SELECT * from band_membership INNER JOIN band ON band_membership.band_id = band.id
-            WHERE band_membership.username = ?`,
+        getBandMembershipByUsername: function(username,callback){            
+            db.query(`SELECT * FROM public.band_memberships AS membership 
+                      INNER JOIN public.bands AS band ON membership.band_id = band.id
+                      WHERE membership.username = ?`,
             {
-                replacments: [username],
+                replacements: [username],
                 type: db.QueryTypes.SELECT
             })
-            
-            /*bandMembershipModel.findAll({
-                include: [{
-                    model: db.model("band"),
-                    where: {band_id: db.model("band").id, username},
-                }],
-                raw: true
-            })*/
             .then(bandMemberships => {
                 callback(undefined, bandMemberships)
             })
             .catch(error => {
                 callback(error, null)
             })
+
+                        /*bandMembershipModel.findAll({
+                include: [{
+                    model: db.model("band"),
+                    where: {band_id: db.model("band").id, username},
+                }],
+                raw: true
+            })*/
         },
 
         deleteBandMembership: function (username, bandId, callback) {
