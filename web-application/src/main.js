@@ -69,6 +69,7 @@ const genreManager = require("./bll/genreManager")
 const proficiencyManager = require("./bll/proficiencyManager")
 const instrumentManager = require("./bll/instrumentManager")
 const proficiencyValidation = require("./bll/proficiencyValidation")
+const genreValidation = require("./bll/genreValidation")
 ///PRESENTATION LAYER
 const accountRouter = require("./pl/routers/accountRouter")
 const instrumentRouter = require("./pl/routers/instrumentRouter")
@@ -104,6 +105,7 @@ const theProficiencyRouter = container.resolve("proficiencyRouter")
 const theAccountRouter = container.resolve("accountRouter")
 const theInstrumentRouter = container.resolve("instrumentRouter")
 
+container.register("genreValidation", awilix.asFunction(genreValidation))
 container.register("genreRepository", awilix.asFunction(genreRepository))
 container.register("genreManager", awilix.asFunction(genreManager))
 
