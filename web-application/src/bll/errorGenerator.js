@@ -39,6 +39,23 @@ module.exports = function ({}) {
                 retainPage: true
             }
         },
+        getHttpCodeError: function(httpResponseCode) {
+            let retrievedHttpCode
+            
+            if ((httpResponseCode == null || httpResponseCode == undefined) && isNaN(httpResponseCode) == true) {
+                console.warn("ERRORGENERATOR Missuse of getHttpCodeError, responseCode is either undefined/null or not a number")
+                retrievedHttpCode = 500
+            }
+            else {
+                retrievedHttpCode = httpResponseCode
+            }
+
+            return {code: retrievedHttpCode, 
+                messages:[],
+                type: this.errorType.DANGER,
+                retainPage: false
+            }
+        },
         getSuccess: function() {
             return undefined
         }
