@@ -1,6 +1,6 @@
 const express = require("express")
 
-module.exports = function ({bandManager,bandMembershipManager,genreManager, sessionValidation}) {
+module.exports = function ({bandManager,bandMembershipManager,genreManager, sessionValidation, errorGenerator}) {
     const router = express.Router()
 
     //Get all
@@ -81,24 +81,33 @@ module.exports = function ({bandManager,bandMembershipManager,genreManager, sess
             }
         })
     })
-    router.post("/update/:bandId", function (request, response) {
+    router.post("/update/:bandId", function (request, response, next) {
         const bandId = request.params.bandId
         const bandname = request.body.bandNameText
         const bio = request.body.bioText
         const genre = request.body.genre
-        if(sessionValidation.validateAccountNameInSession()==true){
-            bandManager.updateBandById(bandId, bandname, bio, genre, function(bandError, bandId){
-                if(bandError){
-                    response.send(bandError)
+        bandMembershipManager.getBandMembershipByBandId(bandId, function(membershipError, bandMembers){
+            if(membershipError){
+                response.send(membershipError)
+            }
+            else{
+                const validated = sessionValidation.validateCurrentUserBandLeader(bandMembers, request.session.loggedInUsername)
+                console.log("was is dis: ", validated)
+                if(validated==true){
+                    bandManager.updateBandById(bandId, bandname, bio, genre, function(bandError, bandId){
+                        if(bandError){
+                            response.send(bandError)
+                        }
+                        else{
+                            response.redirect(`view/${bandId}`)
+                        }
+                    })
                 }
                 else{
-                    response.redirect(`view/${bandId}`)
+                    next(errorGenerator.getHttpCodeError(401))
                 }
-            })
-        }
-        else{
-            
-        }
+            }
+        })
     })
 
     router.get("/create", function (request, response) {
