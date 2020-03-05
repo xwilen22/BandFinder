@@ -1,7 +1,7 @@
 module.exports = function ({}) { 
     return {
         getInternalError: function(error) {
-            console.log(`%c ${error}`, "color:red")
+            console.error(error)
             return {code: 500, messages:["Internal error"]}
         },
         getClientError: function(errorArray) {
@@ -15,6 +15,9 @@ module.exports = function ({}) {
             }
             
             return {code: 400, messages:messageArray}
+        },
+        getSuccess: function() {
+            return undefined
         }
     }
 }
