@@ -1,36 +1,44 @@
 <div class="row m-3">
+{{#if showSignInPage}}
 <!--SIGN IN-->
-<section class="col-md-6">
+<section class="col-md-6 mx-auto">
     <p class="display-4 text-center">Sign in</p>
-    <form method="POST" action="account/signin">
+    <form method="POST">
         <div class="form-group">
             <label for="signin_username">Username</label>
-            <input class="form-control" type="text" id="signin_username" name="username">
+            <input class="form-control" type="text" id="signin_username" name="username" value="{{username}}">
         </div>
         <div class="form-group">
             <label for="signin_password">Password</label>
-            <input class="form-control" type="password" id="signin_password" name="password">
+            <input class="form-control" type="password" id="signin_password" name="password" value="{{password}}">
         </div>
         <input class="btn btn-primary" type="submit" value="Log in">
     </form>
 </section>
+{{else}}
 <!--SIGN UP-->
-<section class="col-md-6">
+<section class="col-md-6 mx-auto">
     <p class="display-4 text-center">Sign up</p>
-    <form method="POST" action="account/create">
+    <form method="POST">
         <div class="form-group">
             <label for="signup_username">Username</label>
-            <input class="form-control" type="text" id="signup_username" name="username">
+            <input class="form-control" type="text" id="signup_username" name="username" value="{{username}}">
         </div>
         <div class="form-group">
             <label for="signup_password">Password</label>
-            <input class="form-control" type="password" id="signup_password" name="password">
+            <input class="form-control" type="password" id="signup_password" name="password" value="{{password}}">
         </div>
         <div class="form-group">
             <label for="signup_passwordrepeat">Repeat</label>
-            <input class="form-control" type="password" id="signup_passwordrepeat">
+            <input class="form-control" type="password" id="signup_passwordrepeat" name="passwordRepeat" value="{{passwordRepeat}}">
         </div>
         <input class="btn btn-primary" type="submit" value="Create account">
     </form>
 </section>
+{{/if}}
 </div>
+{{#if error}}
+{{#each error.messages}}
+<div class="alert alert-{{../error.type}}" role="alert">{{this}}</div>
+{{/each}}
+{{/if}}
