@@ -1,6 +1,6 @@
 const express = require("express")
 
-module.exports = function ({bandManager,bandMembershipManager,genreManager}) {
+module.exports = function ({bandManager,bandMembershipManager,genreManager, sessionValidation}) {
     const router = express.Router()
 
     //Get all
@@ -23,14 +23,16 @@ module.exports = function ({bandManager,bandMembershipManager,genreManager}) {
                     if(membershipError){
                         response.send(membershipError)
                     }
-                    else{
+                    else {
+                        const currentUsername = request.session.username
                         const bandObject = band
-                        console.log("band object:", bandObject)
+                        const isCurrentUserBandLeader = sessionValidation.validateCurrentUserBandLeader(bandMembers, currentUsername)
                         const model = {
                             bandMembers,
                             bandname: bandObject.band_name,
                             biography: bandObject.band_biography,
-                            profilePicture: bandObject.band_profile_picture
+                            profilePicture: bandObject.band_profile_picture,
+                            isCurrentUserBandLeader: isCurrentUserBandLeader
                         }
                         response.render("banddetail.hbs", model)
                     }
