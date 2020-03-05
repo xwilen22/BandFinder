@@ -52,12 +52,12 @@ module.exports = function ({ sessionValidation, bandRepository, bandValidation, 
         },
 
         updateBandById: function (bandId, bandBio, bandName, bandGenre) {
-            bandRepository.updateBandById(bandId, bandName, bandBio, bandGenre, function (error) {
+            bandRepository.updateBandById(bandId, bandName, bandBio, bandGenre, function (error, bandId) {
                 if (error) {
                     callback(errorGenerator.getInternalError(error))
                 }
                 else {
-                    callback(errorGenerator.getSuccess())
+                    callback(errorGenerator.getSuccess(), bandId)
                 }
             })
 
