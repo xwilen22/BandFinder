@@ -51,22 +51,16 @@ module.exports = function ({ sessionValidation, bandRepository, bandValidation, 
             //TODO search and get genre & title in repo
         },
 
-        updateBand: function (bandId, sessionAccountName, bandInfo, bandName, bandGenre) {
-            if (sessionValidation.validateAccountnameInSession(accountname) == true) {
-                //Get band membership for specific band id and check if accountname got privledge
-                //Then do this
-                bandRepository.updateBandById(bandId, bandName, bandBio, bandGenre, function (error) {
-                    if(error) {
-                        callback(errorGenerator.getInternalError(error))
-                    } 
-                    else {
-                        callback(errorGenerator.getSuccess())
-                    }
-                })
-            }
-            else {
-                callback(ERROR_MESSAGE_OBJECT.FORBIDDEN)
-            }
+        updateBandById: function (bandId, bandInfo, bandName, bandGenre) {
+            bandRepository.updateBandById(bandId, bandName, bandBio, bandGenre, function (error) {
+                if (error) {
+                    callback(errorGenerator.getInternalError(error))
+                }
+                else {
+                    callback(errorGenerator.getSuccess())
+                }
+            })
+
         },
 
         deleteBand: function (bandId, sessionAccountName, bandInfo, bandName) {
