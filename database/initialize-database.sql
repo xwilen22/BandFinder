@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS instrument (
 );
 CREATE TABLE IF NOT EXISTS user_proficiency (
     username VARCHAR(20) NOT NULL,
-    instrument_name VARCHAR(20),
+    instrument_name VARCHAR(20) UNIQUE,
     proficiency_level TINYINT UNSIGNED NOT NULL,
     CONSTRAINT FOREIGN KEY (username) REFERENCES user(username),
     CONSTRAINT FOREIGN KEY (instrument_name) REFERENCES instrument(instrument_name)
