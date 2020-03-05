@@ -12,7 +12,7 @@ module.exports = function ({ sessionValidation, bandRepository, bandValidation, 
                         callback(errorGenerator.getInternalError(error), null)
                     }
                     else {
-                        callback([], bandId)
+                        callback(errorGenerator.getSuccess(), bandId)
                     }
                 })
             }
@@ -30,7 +30,7 @@ module.exports = function ({ sessionValidation, bandRepository, bandValidation, 
                         callback(errorGenerator.getInternalError(error))
                     }
                     else {
-                        callback([], bandObject)
+                        callback(errorGenerator.getSuccess(), bandObject)
                     }
                 })
             }
@@ -42,7 +42,7 @@ module.exports = function ({ sessionValidation, bandRepository, bandValidation, 
                     callback(errorGenerator.getInternalError(error))
                 }
                 else {
-                    callback([], allBands)
+                    callback(errorGenerator.getSuccess(), allBands)
                 }
             })
         },
@@ -60,7 +60,7 @@ module.exports = function ({ sessionValidation, bandRepository, bandValidation, 
                         callback(errorGenerator.getInternalError(error))
                     } 
                     else {
-                        callback()
+                        callback(errorGenerator.getSuccess())
                     }
                 })
             }

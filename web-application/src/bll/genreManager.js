@@ -1,35 +1,53 @@
-module.exports = function ({errorGenerator, genreRepository}) { 
+module.exports = function ({errorGenerator, genreRepository, genreValidation}) { 
     return {
         createGenre: function(genreName, callback) {
-            genreRepository.createGenre(genreName, function(error) {
-                if(error) {
-                    callback(errorGenerator.getInternalError(error))
-                } 
-                else {
-                    callback([])
-                }
-            })
+            const retrievedGenreName = genreValidation.getValidGenreName(genreName)
+            const nameValidationErrors = genreValidation.getNameValidationErrors(retrievedGenreName)
+
+            if (nameValidationErrors.length > 0) {
+                callback(errorGenerator.getClientError(nameValidationErrors))
+            }
+            else {
+                genreRepository.createGenre(retrievedGenreName, function (createError) {
+                    if (createError) {
+                        callback(errorGenerator.getInternalError(createError))
+                    }
+                    else {
+                        callback(errorGenerator.getSuccess())
+                    }
+                })
+            }
         },
         createSubGenreOf: function (parentGenreName, subGenreName, callback) {
-            genreRepository.getGenreByName(parentGenreName, function (getError, parentGenre) {
-                if (getError) {
-                    callback(errorGenerator.getInternalError(getError))
-                }
-                else if (parentGenre == null){
-                    callback(errorGenerator.getClientError(["Parent genre does not exist!"]))
-                }
-                else {
-                    const retrievedParentName = parentGenre[0].genre_name
-                    genreRepository.createSubGenreOf(retrievedParentName, subGenreName, function (createError) {
-                        if (createError) {
-                            callback(errorGenerator.getInternalError(createError))
-                        }
-                        else {
-                            callback([])
-                        }
-                    })
-                }
-            })
+            const retrievedChildGenreName = genreValidation.getValidGenreName(subGenreName)
+
+            const childNameValidationErrors = genreValidation.getNameValidationErrors(retrievedChildGenreName)
+            const parentNameValidationErrors = genreValidation.getNameValidationErrors(parentGenreName)
+
+            if (childNameValidationErrors.length > 0 || parentNameValidationErrors.length > 0) {
+                callback(errorGenerator.getClientError(childNameValidationErrors.concat(parentNameValidationErrors)))
+            }
+            else {
+                genreRepository.getGenreByName(parentGenreName, function (getError, parentGenre) {
+                    if (getError) {
+                        callback(errorGenerator.getInternalError(getError))
+                    }
+                    else if (parentGenre == null) {
+                        callback(errorGenerator.getClientError(["Parent genre does not exist!"]))
+                    }
+                    else {
+                        const retrievedParentName = parentGenre[0].genre_name
+                        genreRepository.createSubGenreOf(retrievedParentName, retrievedChildGenreName, function (createError) {
+                            if (createError) {
+                                callback(errorGenerator.getInternalError(createError))
+                            }
+                            else {
+                                callback(errorGenerator.getSuccess())
+                            }
+                        })
+                    }
+                })
+            }
         },
         deleteGenreByName: function(genreName, callback) {
             genreRepository.deleteGenreByName(genreName, function(error) {
@@ -37,7 +55,7 @@ module.exports = function ({errorGenerator, genreRepository}) {
                     callback(errorGenerator.getInternalError(error))
                 } 
                 else {
-                    callback([])
+                    callback(errorGenerator.getSuccess())
                 }
             })
         },
@@ -63,7 +81,7 @@ module.exports = function ({errorGenerator, genreRepository}) {
                         }
                     })
 
-                    callback([], returningGenres)
+                    callback(errorGenerator.getSuccess(), returningGenres)
                 }
             })
         },
@@ -73,7 +91,7 @@ module.exports = function ({errorGenerator, genreRepository}) {
                     callback(errorGenerator.getInternalError(error))
                 } 
                 else {
-                    callback([], subGenres)
+                    callback(errorGenerator.getSuccess(), subGenres)
                 }
             })
         },
@@ -83,7 +101,7 @@ module.exports = function ({errorGenerator, genreRepository}) {
                     callback(errorGenerator.getInternalError(error))
                 }
                 else {
-                    callback([], genre)
+                    callback(errorGenerator.getSuccess(), genre)
                 }
             })
         }

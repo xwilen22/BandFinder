@@ -9,7 +9,7 @@ module.exports = function ({errorGenerator}) {
                     callback(errorGenerator.getInternalError(error))
                 }
                 else {
-                    callback([], hashedPassword)
+                    callback(errorGenerator.getSuccess(), hashedPassword)
                 }
             })
         },
@@ -19,7 +19,7 @@ module.exports = function ({errorGenerator}) {
                     callback(errorGenerator.getInternalError(error))
                 }
                 else if (success == false) {
-                    callback(["Invalid password"])
+                    callback(errorGenerator.getClientError(["Invalid password"]))
                 }
                 else {
                     bcrypt.hash(newPassword, HASH_SALT_ROUNDS, function (error, hashedPassword) {
@@ -27,7 +27,7 @@ module.exports = function ({errorGenerator}) {
                             callback(errorGenerator.getInternalError(error))
                         }
                         else {
-                            callback([], hashedPassword)
+                            callback(errorGenerator.getSuccess(), hashedPassword)
                         }
                     })
                 }
@@ -39,10 +39,10 @@ module.exports = function ({errorGenerator}) {
                     callback(errorGenerator.getInternalError(error))
                 }
                 else if (success == false) {
-                    callback(["Invalid password"])
+                    callback(errorGenerator.getClientError(["Invalid password"]))
                 }
                 else {
-                    callback([], success)
+                    callback(errorGenerator.getSuccess(), success)
                 }
             })
         }
