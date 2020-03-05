@@ -26,8 +26,11 @@ module.exports = function ({ accountRepository, accountValidation, passwordManag
         },
         signInAccount: function (username, password, callback) {
             accountRepository.getUserByUsername(username, function (error, retrievedUserObject) {
-                if (error || retrievedUserObject.length <= 0) {
+                if (error) {
                     callback(errorGenerator.getInternalError(error), false)
+                }
+                else if (retrievedUserObject.length <= 0){
+                    callback(errorGenerator.getClientError(["No user with that username"]))
                 }
                 else {
                     const retrievedHashValue = retrievedUserObject[0].password

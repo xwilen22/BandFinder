@@ -1,20 +1,43 @@
 module.exports = function ({}) { 
     return {
-        getInternalError: function(error) {
-            console.error(error)
-            return {code: 500, messages:["Internal error"]}
+        errorType: {
+            WARNING: "warning",
+            DANGER: "danger",
+            SUCCESS: "success"
         },
-        getClientError: function(errorArray) {
+        getInternalError: function(error) {
+            console.error("ERRORGENERATOR FETCHED ERROR: ", error)
+            return {code: 500, 
+                messages:["Internal error"],
+                type: this.errorType.WARNING,
+                retainPage: false
+            }
+        },
+        getClientError: function(errorArray, httpCodeOverride) {
             let messageArray = []
-            
+            let retrievedHttpCode
+
             if (Array.isArray(errorArray) == false) {
+                console.warn("ERRORGENERATOR Potential missuse of getClientError (not an array): ", errorArray)
                 messageArray.push(errorArray)
             }
             else {
                 messageArray = errorArray
             }
-            
-            return {code: 400, messages:messageArray}
+
+            if ((httpCodeOverride == null || httpCodeOverride == undefined) && isNaN(httpCodeOverride) == true) {
+                retrievedHttpCode = 400
+            }
+            else {
+                retrievedHttpCode = httpCodeOverride
+            }
+
+
+            return {code: retrievedHttpCode, 
+                messages:messageArray,
+                type: this.errorType.DANGER,
+                retainPage: true
+            }
         },
         getSuccess: function() {
             return undefined
