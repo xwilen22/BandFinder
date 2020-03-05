@@ -4,8 +4,8 @@ module.exports = function({}) {
             return accountName == sessionAccountName
         },
 
-        validateIsCurrentUserBandLeader: function(bandmembers, sessionAccountName){
-            for (const member of bandmembers){
+        validateSsCurrentUserBandLeader: function(bandmembers, sessionAccountName){
+            for(const member in bandmembers){
                 if(member.username == sessionAccountName){
                     return member.is_band_leader
                 }
