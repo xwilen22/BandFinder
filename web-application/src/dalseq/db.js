@@ -9,7 +9,7 @@ module.exports = function({}) {
     })
 
     let connectionAuthenticated = false
-    const waitTimeMilliseconds = 3000
+    const waitTimeMilliseconds = 1000
     
     sequelizeClient.authenticate()
         .then(() => {
@@ -19,6 +19,12 @@ module.exports = function({}) {
         .catch(err => {
             console.error(`POSTGRESQL ERROR: ${err}`)
         })
+        
+    setTimeout(function() {
+        if(connectionAuthenticated == false) {
+            setTimeout(this, waitTimeMilliseconds)
+        }
+    }, waitTimeMilliseconds)
 
     //TABLES INITALIZING
     const user = sequelizeClient.define("user", {
@@ -130,12 +136,13 @@ module.exports = function({}) {
         }
     })
 
-    sequelizeClient.sync()        
+    sequelizeClient.sync()
         .then(() => {
             console.log("SYNCED")
         })
         .catch(err => {
             console.error(`POSTGRESQL ERROR: ${err}`)
         })
+
     return sequelizeClient
 }
