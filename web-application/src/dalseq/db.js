@@ -8,14 +8,20 @@ module.exports = function({}) {
         omitNull: true
     })
 
-    sequelizeClient.authenticate()
-        .then(() => {
-            console.log("POSTGRESQL & SEQUELIZE IS ALIVE!")
-        })
-        .catch(err => {
-            console.error(`POSTGRESQL ERROR: ${err}`)
-        })
+    let connectionAuthenticated = false
+    const waitTimeMilliseconds = 3000
     
+    while (connectionAuthenticated == false) {
+        setTimeout(sequelizeClient.authenticate()
+            .then(() => {
+                console.log("POSTGRESQL & SEQUELIZE IS ALIVE!")
+                connectionAuthenticated = true
+            })
+            .catch(err => {
+                console.error(`POSTGRESQL ERROR: ${err}`)
+            }), waitTimeMilliseconds)
+    }
+
     //TABLES INITALIZING
     const user = sequelizeClient.define("user", {
         username: {
