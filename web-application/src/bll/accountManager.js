@@ -4,9 +4,9 @@ module.exports = function ({ accountRepository, accountValidation, passwordManag
             const accountValidationErrors = accountValidation.getValidationErrors(password, username)
 
             if (accountValidationErrors.length <= 0) {
-                passwordManager.generatePasswordHash(password, function (hashErrors, hashedPassword) {
-                    if (hashErrors.length > 0) {
-                        callback(errorGenerator.getClientError(hashErrors))
+                passwordManager.generatePasswordHash(password, function (hashError, hashedPassword) {
+                    if (hashError) {
+                        callback(errorGenerator.getClientError(hashError))
                     }
                     else {
                         accountRepository.createNewUser(username, hashedPassword, function (error, createdUsername) {
@@ -31,8 +31,8 @@ module.exports = function ({ accountRepository, accountValidation, passwordManag
                 }
                 else {
                     const retrievedHashValue = retrievedUserObject[0].password
-                    passwordManager.comparePasswordPlainToHash(password, retrievedHashValue, function (compareErrors, success) {
-                        if(compareErrors.length > 0) {
+                    passwordManager.comparePasswordPlainToHash(password, retrievedHashValue, function (compareError, success) {
+                        if(compareError) {
                             callback(errorGenerator.getClientError(compareErrors))
                         } 
                         else {
@@ -88,7 +88,7 @@ module.exports = function ({ accountRepository, accountValidation, passwordManag
                     }
                     else {
                         passwordManager.comparePasswordPlainToHash(password, userObject[0].password, function (passwordCompareError, success) {
-                            if (passwordCompareError.length > 0) {
+                            if (passwordCompareError) {
                                 callback(errorGenerator.getInternalError(passwordCompareError))
                             }
                             else {
@@ -114,7 +114,7 @@ module.exports = function ({ accountRepository, accountValidation, passwordManag
         getAccountByUsername: function (username, callback) {
             const accountNameValidationErrors = accountValidation.getNameValidationErrors(username)
 
-            if (accountNameValidationErrors <= 0) {
+            if (accountNameValidationErrors.length <= 0) {
                 accountRepository.getUserByUsername(username, function (error, userObjects) {
                     if(userObjects == null || userObjects.length <= 0) {
                         callback(errorGenerator.getClientError(["No user with that name"]))
