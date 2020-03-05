@@ -65,7 +65,7 @@ module.exports = function ({ db }) {
         },
 
         deleteBandById: function(bandId) {
-            bandModel.delete({
+            bandModel.destroy({
                 where: {
                     id:bandId
                 }

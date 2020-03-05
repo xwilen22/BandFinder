@@ -36,7 +36,16 @@
         <ul class="list-unstyled list-inline">
             {{#each proficiencies}}
             <li class="list-inline-item bg-light p-2">
-                {{this.instrument_name}} {{this.proficiency_level}}
+                <div>
+                    {{this.instrument_name}} 
+                    <form method="POST" action="/proficiencies/update/{{username}}/{{this.instrument_name}}">
+                        <input type="number" value="{{this.proficiency_level}}" name="skillLevel">
+                        <input type="submit" value="Update skill" class="btn btn-primary">
+                    </form>
+                    <form method="POST" action="/proficiencies/delete/{{username}}/{{this.instrument_name}}">
+                        <input type="submit" value="Delete" class="btn btn-warning">
+                    </form>
+                </div>
             </li>
             {{/each}}
         </ul>

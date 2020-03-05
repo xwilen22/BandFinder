@@ -92,6 +92,7 @@ module.exports = function({}) {
         instrument_name: {
             type: DataTypes.STRING,
             allowNull: false,
+            unique: true,
             references: {
                 model: instrument,
                 key: "instrument_name"
