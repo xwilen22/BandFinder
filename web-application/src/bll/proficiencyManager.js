@@ -63,7 +63,7 @@ module.exports = function ({errorGenerator, proficiencyRepository, proficiencyVa
         },
         getAllProficienciesForUser(username, callback) {
             accountManager.getAccountByUsername(username, function(accountErrors, userObject) {
-                if(accountErrors.length > 0) {
+                if(accountErrors) {
                     callback(accountErrors)
                 }
                 else {
