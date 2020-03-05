@@ -1,6 +1,6 @@
 module.exports = function ({ db }) {
     const bandMembershipModel = db.model("band_membership")
-
+    
     return {
         createBandMembership: function (username, bandId, isBandleader, callback) {
             bandMembershipModel.create({
@@ -49,13 +49,21 @@ module.exports = function ({ db }) {
         },
 
         getBandMembershipByUsername: function(username,callback){
-            bandMembershipModel.findAll({
+            console.log("Repo Username: ", username)
+            const bandMemberships = db.query(`SELECT * from band_membership INNER JOIN band ON band_membership.band_id = band.id
+            WHERE band_membership.username = ?`,
+            {
+                replacments: [username],
+                type: db.QueryTypes.SELECT
+            })
+            
+            /*bandMembershipModel.findAll({
                 include: [{
                     model: db.model("band"),
-                    where: {band_id: id, username}
+                    where: {band_id: db.model("band").id, username},
                 }],
                 raw: true
-            })
+            })*/
             .then(bandMemberships => {
                 callback(undefined, bandMemberships)
             })
