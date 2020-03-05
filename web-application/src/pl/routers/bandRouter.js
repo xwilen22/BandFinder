@@ -92,14 +92,13 @@ module.exports = function ({bandManager,bandMembershipManager,genreManager, sess
             }
             else{
                 const validated = sessionValidation.validateCurrentUserBandLeader(bandMembers, request.session.loggedInUsername)
-                console.log("was is dis: ", validated)
                 if(validated==true){
-                    bandManager.updateBandById(bandId, bandname, bio, genre, function(bandError, bandId){
+                    bandManager.updateBandById(bandId, bio, bandname, genre, function(bandError, bandId){
                         if(bandError){
                             response.send(bandError)
                         }
                         else{
-                            response.redirect(`view/${bandId}`)
+                            response.redirect(`/bands/view/${bandId}`)
                         }
                     })
                 }
