@@ -51,9 +51,12 @@ module.exports = function ({accountManager, proficiencyManager, instrumentManage
             if (error) {
                 if(error.retainPage == true) {
                     const model = {
+                        username,
+                        password,
                         error,
                         showSignInPage: true
                     }
+                    console.log("Hello?", error)
                     response.render("signinup.hbs", model)
                 }
                 else {
@@ -137,10 +140,17 @@ module.exports = function ({accountManager, proficiencyManager, instrumentManage
     router.post("/signup", function (request, response) {
         const username = request.body.username
         const password = request.body.password
+        const passwordRepeat = request.body.passwordRepeat
 
         accountManager.signUpAccount(username, password, function (error, createdUsername) {
             if (error) {
-                response.send(error)
+                const model = {
+                    username,
+                    password,
+                    passwordRepeat,
+                    error
+                }
+                response.render("signinup.hbs", model)
             }
             else {
                 request.session.loggedInUsername = createdUsername
