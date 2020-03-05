@@ -12,15 +12,23 @@
     <div class="col-12">
         <ul class="list-unstyled list-inline">
             {{#each bandMembers}}
-                <li class="list-inline-item">
-                    <div class="card membercard">
-                        <img src="/images/PLACEHOLDER.jpg" class="card-img-top">
-                        <div class="card-body">
-                            <h5 class="card-title"><a href="/account/view/{{this.username}}">{{this.username}}</a></h5>
-                        </div>
+            <li class="list-inline-item">
+                <div class="card membercard">
+                    <img src="/images/PLACEHOLDER.jpg" class="card-img-top">
+                    <div class="card-body">
+                        <h5 class="card-title"><a href="/account/view/{{this.username}}">{{this.username}}</a></h5>
+                        {{#if this.is_band_leader}}
+                        <p class="text-break">Band Leader</p>
+                        {{/if}}
                     </div>
-                </li>
+                </div>
+            </li>
             {{/each}}
         </ul>
     </div>
+</section>
+<section>
+    {{#if isCurrentUserBandLeader}}
+    <p>TEST UFOFOF</p>
+    {{/if}}
 </section>
