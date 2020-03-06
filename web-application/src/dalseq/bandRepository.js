@@ -39,10 +39,8 @@ module.exports = function ({ db }) {
                     id
                 }
             })
-            .then(bandIds => {
-                //const band = resultBandEntity.get({plain: true})
-                console.log("ID!?!?!?!?!?!?!?!?!?!?", bandIds)
-                callback(undefined, bandIds[0])
+            .then(() => {
+                callback(undefined, id)
             })
             .catch(error => {
                 callback(error, null)

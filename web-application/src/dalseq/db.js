@@ -135,6 +135,24 @@ module.exports = function({}) {
             allowNull: false
         }
     })
+    const band_application = sequelizeClient.define("band_application", {
+        username: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            references: {
+                model: user,
+                key: "username"
+            }
+        },
+        band_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: band,
+                key: "id"
+            }
+        }
+    })
 
     sequelizeClient.sync()
         .then(() => {
