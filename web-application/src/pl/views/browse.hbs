@@ -14,20 +14,22 @@
         <input type="submit" class="btn btn-primary mx-sm-2" value="Search">
     </form>
 </section>
-<section class="row p-2 container-fluid">
+<section class="row p-2">
     <ul class="list-group w-100">
         {{#each bands}}
-        <li class="list-group-item row m-sm-2">
+        <li class="list-group-item row m-sm-2 container w-100">
             <img class="col-2 img-thumbnail m-0" src="/images/PLACEHOLDER.JPG">
-            <div class="col-10 m-0">
+            <div class="col-9 m-0">
                 <p class="h3">{{this.band_name}}</p>
                 <p class="text-break">{{this.band_biography}}</p>
                 <a href="bands/view/{{this.id}}" class="stretched-link"></a>
             </div>
+            {{#if ../loggedInUsername}}
             <form method="POST" action="applications/create/{{../loggedInUsername}}/{{this.id}}">
                 <input type="submit" value="Apply" class="btn btn-success">
                 <input type="hidden" value="{{../csrfToken}}" name="_csrf">
             </form>
+            {{/if}}
         </li>
         {{/each}}
     </ul>

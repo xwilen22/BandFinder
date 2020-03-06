@@ -5,15 +5,25 @@ module.exports = function ({bandManager,bandMembershipManager,genreManager, sess
 
     //Get all
     router.get("/", function (request, response, next) {
+        const sessionUsername = request.session.loggedInUsername
+
         bandManager.getAllBands(function(error, bands) {
             if(error) {
                 next(error)
             }
             else {
-                const model = {
-                    bands
-                }
-                response.render("browse.hbs", model)
+                bandMembershipManager.getBandMembershipByUsername(sessionUsername, function(membershipError, memberships) {
+                    if(membershipError) {
+                        next(membershipError)
+                    }
+                    else {
+                        const model = {
+                            bands,
+                            memberships
+                        }
+                        response.render("browse.hbs", model)
+                    }
+                })
             }
         })
     })
