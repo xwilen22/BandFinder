@@ -38,3 +38,9 @@ CREATE TABLE IF NOT EXISTS band_membership (
     CONSTRAINT FOREIGN KEY (username) REFERENCES user(username),
     CONSTRAINT FOREIGN KEY (band_id) REFERENCES band(band_id)
 );
+CREATE TABLE IF NOT EXISTS band_application (
+    username VARCHAR(20) NOT NULL,
+    band_id INT NOT NULL,
+    CONSTRAINT FOREIGN KEY (username) REFERENCES user(username),
+    CONSTRAINT FOREIGN KEY (band_id) REFERENCES band(band_id)
+)
