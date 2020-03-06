@@ -64,17 +64,22 @@ module.exports = function ({ sessionValidation, bandRepository, bandValidation, 
 
         },
 
-        deleteBand: function (bandId, sessionAccountName, bandInfo, bandName) {
-            if (sessionValidation.validateAccountnameInSession(accountname) == true) {
-                //Get band membership for specific band id and check if accountname got privledge
-                //Then do this
-                //TODO implement deleteband in repo
-                //Membership repo also
+        deleteBand: function (bandId) {
+            bandRepository.deleteBandById(bandId, function(error){
+                if(error){
+                    callback(errorGenerator.getInternalError(error))
+                }
+                else{
+                    callback(errorGenerator.getSuccess())
+                }
+            })
+            /*if (sessionValidation.validateAccountnameInSession(accountname, sessionAccountName) == true) {
+           
             }
             else {
                 let errorUnauthorized = "Forbidden"
                 callback(errorUnauthorized)
-            }
+            }*/
         }
     }
 }
