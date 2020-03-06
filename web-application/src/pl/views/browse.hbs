@@ -17,14 +17,16 @@
 </section>
 <section class="row p-2 container-fluid">
     <ul class="list-group w-100">
+        {{#each bands}}
         <li class="list-group-item row">
             <img class="col-2 img-thumbnail m-0" src="/images/PLACEHOLDER.JPG">
             <div class="col-10 m-0">
-                <p class="h3">BANDNAME</p>
-                <p class="text-break">BIO PLACEHOLDER AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</p>
+                <p class="h3">{{this.band_name}}</p>
+                <p class="text-break">{{this.band_biography}}</p>
                 <a href="#" class="stretched-link"></a>
             </div>
             <a class="btn btn-primary">Apply</a>
         </li>
+        {{/each}}
     </ul>
 </section>

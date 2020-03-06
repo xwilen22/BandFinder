@@ -4,8 +4,18 @@ module.exports = function ({bandManager,bandMembershipManager,genreManager, sess
     const router = express.Router()
 
     //Get all
-    router.get("/", function (request, response) {
-        response.render("browse.hbs")
+    router.get("/", function (request, response, next) {
+        bandManager.getAllBands(function(error, bands) {
+            if(error) {
+                next(error)
+            }
+            else {
+                const model = {
+                    bands
+                }
+                response.render("browse.hbs", model)
+            }
+        })
     })
 
     router.get("/noband", function (request, response){
