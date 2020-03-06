@@ -1,11 +1,9 @@
+<h2>Browse</h2>
 <section class="row container-fluid">
-    <form class="form-group">
-        <input type="text" placeholder="Search band title">
-        <input type="submit">
-    </form>
-    <form class="form-group">
-        <label>Sort by</label>
-        <select>
+    <form class="form-inline">
+        <input type="text" placeholder="Search band title" class="form-control">
+        <label for="sortBy" class="mx-sm-2">Sort by</label>
+        <select class="form-control" id="sortBy">
             <option>
                 PLACEHOLDER
             </option>
@@ -13,19 +11,23 @@
                 PLACEHOLDER
             </option>
         </select>
+        <input type="submit" class="btn btn-primary mx-sm-2" value="Search">
     </form>
 </section>
 <section class="row p-2 container-fluid">
     <ul class="list-group w-100">
         {{#each bands}}
-        <li class="list-group-item row">
+        <li class="list-group-item row m-sm-2">
             <img class="col-2 img-thumbnail m-0" src="/images/PLACEHOLDER.JPG">
             <div class="col-10 m-0">
                 <p class="h3">{{this.band_name}}</p>
                 <p class="text-break">{{this.band_biography}}</p>
-                <a href="#" class="stretched-link"></a>
+                <a href="bands/view/{{this.id}}" class="stretched-link"></a>
             </div>
-            <a class="btn btn-primary">Apply</a>
+            <form method="POST" action="applications/create/{{../loggedInUsername}}/{{this.id}}">
+                <input type="submit" value="Apply" class="btn btn-success">
+                <input type="hidden" value="{{../csrfToken}}" name="_csrf">
+            </form>
         </li>
         {{/each}}
     </ul>
