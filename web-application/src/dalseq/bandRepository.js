@@ -65,11 +65,13 @@ module.exports = function ({ db }) {
             })
         },
 
-        deleteBandById: function(bandId) {
-            bandModel.destroy({
-                where: {
-                    id:bandId
-                }
+        deleteBandById: function (bandId) {
+            db.query(`DELETE * FROM public.bands AS band 
+            INNER JOIN public.band_memberships AS membership ON membership.band_id = band.id
+            WHERE band.id = ?`,
+                {
+                    replacements: [bandId],
+                    type: db.QueryTypes.DELETE
             })
             .then(() => {
                 callback(undefined, null)
@@ -77,6 +79,6 @@ module.exports = function ({ db }) {
             .catch(error => {
                 callback(error, null)
             })
-        }
+        },
     }
 }

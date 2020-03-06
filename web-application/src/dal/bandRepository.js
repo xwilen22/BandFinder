@@ -36,10 +36,15 @@ module.exports = function ({ db }) {
         },
 
         deleteBandById: function(bandId, callback) {
-            let query = ``
-            let values = []
+            let query = `DELETE * FROM band 
+                         INNER JOIN band_membership
+                         ON band.band_id = band_membership.band_id
+                         WHERE band.band_id = ?`
+            let values = [bandId]
 
-            db.query(query, )
+            db.query(query,values, function(error){
+                callback(error)
+            })
         }
     }
 }
