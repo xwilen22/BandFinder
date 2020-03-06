@@ -54,6 +54,7 @@ module.exports = function ({ sessionValidation, bandRepository, bandValidation, 
         updateBandById: function (bandId, bandBio, bandName, bandGenre, callback) {
             bandRepository.updateBandById(bandId, bandName, bandBio, bandGenre, function (error, bandId) {
                 if (error) {
+                    console.log(error)
                     callback(errorGenerator.getInternalError(error))
                 }
                 else {

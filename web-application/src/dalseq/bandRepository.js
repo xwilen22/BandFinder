@@ -39,8 +39,10 @@ module.exports = function ({ db }) {
                     id
                 }
             })
-            .then(band => {
-                callback(undefined, band.band_id)
+            .then(bandIds => {
+                //const band = resultBandEntity.get({plain: true})
+                console.log("ID!?!?!?!?!?!?!?!?!?!?", bandIds)
+                callback(undefined, bandIds[0])
             })
             .catch(error => {
                 callback(error, null)
@@ -56,7 +58,6 @@ module.exports = function ({ db }) {
             })
             .then(resultBandEntity => {
                 const band = resultBandEntity.get({plain: true})
-                console.log("BAND CREATED ID: ", band.id)
                 callback(undefined, band.id)
             })
             .catch(error => {
@@ -64,11 +65,13 @@ module.exports = function ({ db }) {
             })
         },
 
-        deleteBandById: function(bandId) {
-            bandModel.destroy({
-                where: {
-                    id:bandId
-                }
+        deleteBandById: function (bandId) {
+            db.query(`DELETE * FROM public.bands AS band 
+            INNER JOIN public.band_memberships AS membership ON membership.band_id = band.id
+            WHERE band.id = ?`,
+                {
+                    replacements: [bandId],
+                    type: db.QueryTypes.DELETE
             })
             .then(() => {
                 callback(undefined, null)
@@ -76,6 +79,6 @@ module.exports = function ({ db }) {
             .catch(error => {
                 callback(error, null)
             })
-        }
+        },
     }
 }
