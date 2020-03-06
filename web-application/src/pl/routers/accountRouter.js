@@ -136,7 +136,7 @@ module.exports = function ({accountManager, proficiencyManager, instrumentManage
         }
         response.render("signinup.hbs", model)
     })
-    router.post("/signup", function (request, response) {
+    router.post("/signup", function (request, response, next) {
         const username = request.body.username
         const password = request.body.password
         const passwordRepeat = request.body.passwordRepeat
