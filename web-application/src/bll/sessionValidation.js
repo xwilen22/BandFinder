@@ -5,7 +5,6 @@ module.exports = function({}) {
         },
 
         validateCurrentUserBandLeader: function(bandmembers, sessionAccountName){
-            console.log("DAS MEMBERS: ",bandmembers)
             /*bandmembers.forEach(member => {
                 console.log("does it get here", sessionAccountName, member)
                 if(member.username == sessionAccountName){
@@ -17,7 +16,6 @@ module.exports = function({}) {
                 }
             })*/
             for(const member of bandmembers){
-                console.log("does it get here",sessionAccountName)
                 if(member.username == sessionAccountName){
                     return member.is_band_leader
                 }

@@ -1,3 +1,6 @@
+let connectionAuthenticated = false
+const waitTimeMilliseconds = 1000
+
 module.exports = function({}) {
     const {Sequelize, DataTypes} = require("sequelize")
 
@@ -7,9 +10,6 @@ module.exports = function({}) {
         database: 'postDatabase',
         omitNull: true
     })
-
-    let connectionAuthenticated = false
-    const waitTimeMilliseconds = 1000
     
     sequelizeClient.authenticate()
         .then(() => {
@@ -20,11 +20,7 @@ module.exports = function({}) {
             console.error(`POSTGRESQL ERROR: ${err}`)
         })
         
-    setTimeout(function() {
-        if(connectionAuthenticated == false) {
-            setTimeout(this, waitTimeMilliseconds)
-        }
-    }, waitTimeMilliseconds)
+    setTimeout(wait, waitTimeMilliseconds)
 
     //TABLES INITALIZING
     const user = sequelizeClient.define("user", {
@@ -135,6 +131,24 @@ module.exports = function({}) {
             allowNull: false
         }
     })
+    const band_application = sequelizeClient.define("band_application", {
+        username: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            references: {
+                model: user,
+                key: "username"
+            }
+        },
+        band_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: band,
+                key: "id"
+            }
+        }
+    })
 
     sequelizeClient.sync()
         .then(() => {
@@ -145,4 +159,9 @@ module.exports = function({}) {
         })
 
     return sequelizeClient
+}
+function wait() {
+    if (connectionAuthenticated == false) {
+        setTimeout(wait, waitTimeMilliseconds)
+    }
 }
