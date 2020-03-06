@@ -57,8 +57,17 @@ module.exports = function ({bandManager,bandMembershipManager,genreManager, sess
         })
     })
     
-    router.post("/delete/:bandname", function (request, response) {
-
+    router.post("/delete/:bandId", function (request, response) {
+        const bandId = request.params.bandId
+        console.log(bandId)
+        bandManager.deleteBand(bandId, function(bandError){
+            if(bandError){
+                response.send(bandError)
+            }
+            else{
+                response.redirect("/bands/browseuserbands")
+            }
+        })
     })
 
     router.get("/update/:bandId", function (request, response) {
@@ -70,7 +79,8 @@ module.exports = function ({bandManager,bandMembershipManager,genreManager, sess
             else{
                 genreManager.getAllGenres(function(error,genres){
                     bandObject = band
-                    model={ 
+                    model={
+                        bandId: bandObject.id, 
                         bandname: bandObject.band_name,
                         biography: bandObject.band_biography,
                         profilePicture: bandObject.band_profile_picture,

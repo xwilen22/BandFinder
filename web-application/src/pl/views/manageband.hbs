@@ -6,6 +6,11 @@
 <section class="row container-fluid">
     <div class="col-md-12 p-2 row">
         <img class="img-thumbnail membercard" src="/images/PLACEHOLDER.jpg">
+        {{#if bandname}}
+        <form method="POST" action="/bands/delete/{{bandId}}">
+            <button class="btn btn-primary" value="DELETE">DELETE</button>
+        </form>
+        {{/if}}
         <form class="form-group col-md-10" method="POST">
             <label>Edit Band name</label>
             <input class="form-control" type="text" name="bandNameText" value="{{bandname}}">
@@ -15,7 +20,6 @@
             </section>
             <label for="bioEditText">Edit band bio</label>
             <input class="form-control" type="text" id="bioEditText" name="bioText" value="{{biography}}">
-
             <input class="btn btn-primary" type="submit" value="Save changes">
             <section>
                 <label for="genreChoose">Choose your genre</label>
@@ -29,6 +33,7 @@
                     {{/each}}
                 </select>
             </section>
+            <input type="hidden" value="{{csrfToken}}" name="_csrf">
         </form> 
     </div>
 </section>
