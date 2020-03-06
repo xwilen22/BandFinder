@@ -2,9 +2,11 @@ const express = require("express")
 const handlebars = require("express-handlebars")
 const expressSession = require("express-session")
 const redis = require("redis")
+const csurf = require("csurf")
 
-const app = express()
 const bodyParser = require("body-parser")
+const app = express()
+const csrfProtection = csurf({cookie: false})
 
 const listenPort = 8080
 
@@ -26,21 +28,7 @@ app.use(expressSession({
     saveUninitialized: false,
     resave: false
 }))
-//SESSION HANDLING
-app.use(function(request, response, next) {
-    response.locals.loggedInUsername = request.session.loggedInUsername
-    next()
-})
 
-app.engine("hbs", handlebars({
-    defaultLayout: "main.hbs"
-}))
-
-app.listen(listenPort, function() {
-    console.log(`Listening on port ${listenPort}`)
-})
-
-//Jag har ingen aning om vad jag håller på med :^)
 const awilix = require("awilix")
 ///DATA ACCESS LAYER
 const dalSources = {
@@ -121,6 +109,20 @@ container.register("variousRouter", awilix.asFunction(variousRouter))
 
 const theVariousRouter = container.resolve("variousRouter")
 
+app.use("*", csrfProtection, function(request, response, next) {
+    request.session.csrfToken = request.csrfToken()
+    next()
+})
+
+//SESSION HANDLING
+app.use(function(request, response, next) {
+    response.locals.loggedInUsername = request.session.loggedInUsername
+    response.locals.csrfToken = request.session.csrfToken
+    next()
+})
+
+app.use(csrfProtection)
+
 app.use("/", theVariousRouter)
 app.use("/bands", theBandRouter)
 app.use("/account", theAccountRouter)
@@ -130,4 +132,12 @@ app.use("/proficiencies", theProficiencyRouter)
 app.use(function(error, request, response, next) {	
     console.log(error)
     response.render("error.hbs", error)
+})
+
+app.engine("hbs", handlebars({
+    defaultLayout: "main.hbs"
+}))
+
+app.listen(listenPort, function() {
+    console.log(`Listening on port ${listenPort}`)
 })
