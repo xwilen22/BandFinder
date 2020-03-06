@@ -1,7 +1,7 @@
-module.exports = function ({ accountRepository, errorGenerator }) {
+module.exports = function ({ applicationRepository, errorGenerator }) {
     return {
         createApplication: function(bandId, username, callback) {
-            accountRepository.createApplication(bandId, username, function(error) {
+            applicationRepository.createApplication(username, bandId, function(error) {
                 if(error) {
                     callback(errorGenerator.getInternalError(error))
                 }
@@ -11,7 +11,7 @@ module.exports = function ({ accountRepository, errorGenerator }) {
             })
         },
         getApplicationsByBandId: function(bandId, callback) {
-            accountRepository.getApplicationsByBandId(bandId, function(error, applications) {
+            applicationRepository.getApplicationsByBandId(bandId, function(error, applications) {
                 if(error) {
                     callback(errorGenerator.getInternalError(error))
                 }
@@ -21,7 +21,7 @@ module.exports = function ({ accountRepository, errorGenerator }) {
             })
         },
         getApplicationsByUsername: function(username, callback) {
-            accountRepository.getApplicationsByUsername(username, function(error, applications) {
+            applicationRepository.getApplicationsByUsername(username, function(error, applications) {
                 if(error) {
                     callback(errorGenerator.getInternalError(error))
                 }
@@ -31,7 +31,7 @@ module.exports = function ({ accountRepository, errorGenerator }) {
             })
         },
         deleteApplication: function(username, bandId, callback) {
-            accountRepository.deleteApplication(bandId, username, function(error) {
+            applicationRepository.deleteApplication(bandId, username, function(error) {
                 if(error) {
                     callback(errorGenerator.getInternalError(error))
                 }
