@@ -43,6 +43,7 @@ const instrumentRepository = require(`./${dalSource}/instrumentRepository`)
 const genreRepository = require(`./${dalSource}/genreRepository`)
 const bandMembershipRepository = require(`./${dalSource}/bandMembershipRepository`)
 const bandRepository = require(`./${dalSource}/bandRepository`)
+const applicationRepository = require(`./${dalSource}/applicationRepository`)
 const database = require(`./${dalSource}/db`)
 ///BUSINESS LOGIC LAYER
 const accountManager = require("./bll/accountManager")
@@ -58,6 +59,7 @@ const proficiencyManager = require("./bll/proficiencyManager")
 const instrumentManager = require("./bll/instrumentManager")
 const proficiencyValidation = require("./bll/proficiencyValidation")
 const genreValidation = require("./bll/genreValidation")
+const applicationManager = require("./bll/applicationManager")
 ///PRESENTATION LAYER
 const accountRouter = require("./pl/routers/accountRouter")
 const instrumentRouter = require("./pl/routers/instrumentRouter")
@@ -104,6 +106,9 @@ container.register("bandManager", awilix.asFunction(bandManager))
 container.register("bandRouter", awilix.asFunction(bandRouter))
 
 const theBandRouter = container.resolve("bandRouter")
+
+container.register("applicationRepository", awilix.asFunction(applicationRepository))
+container.register("applicationManager", awilix.asFunction(applicationManager))
 
 container.register("variousRouter", awilix.asFunction(variousRouter))
 
