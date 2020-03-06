@@ -64,7 +64,7 @@ module.exports = function ({ sessionValidation, bandRepository, bandValidation, 
 
         },
 
-        deleteBand: function (bandId) {
+        deleteBand: function (bandId, callback) {
             bandRepository.deleteBandById(bandId, function(error){
                 if(error){
                     callback(errorGenerator.getInternalError(error))
