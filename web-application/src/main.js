@@ -66,6 +66,7 @@ const instrumentRouter = require("./pl/routers/instrumentRouter")
 const bandRouter = require("./pl/routers/bandRouter")
 const variousRouter = require("./pl/routers/variousRouter")
 const proficiencyRouter = require("./pl/routers/proficiencyRouter")
+const applicationRouter = require("./pl/routers/applicationRouter")
 
 const container = awilix.createContainer()
 //High level dependency, these needs to be registered first
@@ -109,6 +110,9 @@ const theBandRouter = container.resolve("bandRouter")
 
 container.register("applicationRepository", awilix.asFunction(applicationRepository))
 container.register("applicationManager", awilix.asFunction(applicationManager))
+container.register("applicationRouter", awilix.asFunction(applicationRouter))
+
+const theApplicationRouter = container.resolve("applicationRouter")
 
 container.register("variousRouter", awilix.asFunction(variousRouter))
 
@@ -133,6 +137,7 @@ app.use("/bands", theBandRouter)
 app.use("/account", theAccountRouter)
 app.use("/instruments", theInstrumentRouter)
 app.use("/proficiencies", theProficiencyRouter)
+app.use("/applications", theApplicationRouter)
 
 app.use(function(error, request, response, next) {	
     console.log(error)
