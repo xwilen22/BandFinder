@@ -1,5 +1,8 @@
 const express = require("express")
-const handlebars = require("express-handlebars")
+
+const expressHandlebars = require("express-handlebars")
+const handlebars = require("handlebars")
+
 const expressSession = require("express-session")
 const redis = require("redis")
 const csurf = require("csurf")
@@ -97,12 +100,15 @@ const theProficiencyRouter = container.resolve("proficiencyRouter")
 const theAccountRouter = container.resolve("accountRouter")
 const theInstrumentRouter = container.resolve("instrumentRouter")
 
-container.register("adminRouter", awilix.asFunction(adminRouter))
-const theAdminRouter = container.resolve("adminRouter")
-
 container.register("genreValidation", awilix.asFunction(genreValidation))
 container.register("genreRepository", awilix.asFunction(genreRepository))
 container.register("genreManager", awilix.asFunction(genreManager))
+
+container.register("applicationRepository", awilix.asFunction(applicationRepository))
+container.register("applicationManager", awilix.asFunction(applicationManager))
+container.register("applicationRouter", awilix.asFunction(applicationRouter))
+
+const theApplicationRouter = container.resolve("applicationRouter")
 
 container.register("bandMembershipManager", awilix.asFunction(bandMembershipManager))
 container.register("bandMembershipRepository", awilix.asFunction(bandMembershipRepository))
@@ -112,11 +118,8 @@ container.register("bandRouter", awilix.asFunction(bandRouter))
 
 const theBandRouter = container.resolve("bandRouter")
 
-container.register("applicationRepository", awilix.asFunction(applicationRepository))
-container.register("applicationManager", awilix.asFunction(applicationManager))
-container.register("applicationRouter", awilix.asFunction(applicationRouter))
-
-const theApplicationRouter = container.resolve("applicationRouter")
+container.register("adminRouter", awilix.asFunction(adminRouter))
+const theAdminRouter = container.resolve("adminRouter")
 
 container.register("variousRouter", awilix.asFunction(variousRouter))
 
@@ -149,9 +152,32 @@ app.use(function(error, request, response, next) {
     response.render("error.hbs", error)
 })
 
-app.engine("hbs", handlebars({
+app.engine("hbs", expressHandlebars({
     defaultLayout: "main.hbs"
 }))
+
+handlebars.registerHelper('compare', function (leftVal, comparision, rightVal) {
+    console.log("HELPER VALS: " , leftVal, rightVal)
+    switch (comparision.toString()) {
+		case ">":
+			return (leftVal > rightVal)
+		case "<":
+			return (leftVal < rightVal)
+		case "==":
+			return (leftVal == rightVal)
+		case ">=":
+			return (leftVal >= rightVal)
+		case "<=":
+            return (leftVal <= rightVal)
+        case "&&":
+            return (leftVal && rightVal)
+        case "||":
+            return (leftVal || rightVal)
+		default:
+			console.log("HANDLEBARS ERROR! Invalid operator in compare")
+	}
+})
+
 
 app.use(function(errorModel, request, response, next) {
     if(errorModel != undefined || errorModel != null) {
