@@ -131,6 +131,10 @@ module.exports = function({}) {
             allowNull: false
         }
     })
+    band_membership.belongsTo(band,{
+        foreignKey: "id",
+        onDelete: "CASCADE"
+    })
     const band_application = sequelizeClient.define("band_application", {
         username: {
             type: DataTypes.STRING,

@@ -6,12 +6,6 @@ module.exports = function ({}) {
     router.get("/", function (request, response) {
         response.render("home.hbs")
     })
-    router.get("/noband", function (request, response) {
-        response.render("noband.hbs")
-    })
-    router.get("/admin", function (request, response) {
-
-    })
 
     return router
 }
