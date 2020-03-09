@@ -1,6 +1,6 @@
 const express = require("express")
 
-module.exports = function ({bandManager, bandMembershipManager, genreManager, sessionValidation, errorGenerator}) {
+module.exports = function ({bandManager, bandMembershipManager, genreManager, sessionValidation, applicationManager, errorGenerator}) {
     const router = express.Router()
 
     //Get all
@@ -17,11 +17,20 @@ module.exports = function ({bandManager, bandMembershipManager, genreManager, se
                         next(membershipError)
                     }
                     else {
-                        const model = {
-                            bands,
-                            memberships
-                        }
-                        response.render("browse.hbs", model)
+                        applicationManager.getApplicationsByUsername(sessionUsername, function(applicationError, applications) {
+                            if(applicationError) {
+                                next(applicationError)
+                            }
+                            else {
+                                console.log("Bands: ", bands, " Memberships: ", memberships, " Application: ", applications)
+                                const model = {
+                                    bands,
+                                    memberships,
+                                    applications
+                                }
+                                response.render("browse.hbs", model)
+                            }
+                        })
                     }
                 })
             }
@@ -107,6 +116,7 @@ module.exports = function ({bandManager, bandMembershipManager, genreManager, se
                         profilePicture: bandObject.band_profile_picture,
                         genres
                     }
+
                     response.render("manageband.hbs", model)
                 })
             }
@@ -121,7 +131,7 @@ module.exports = function ({bandManager, bandMembershipManager, genreManager, se
             if(membershipError){
                 response.send(membershipError)
             }
-            else{
+            else {
                 const validated = sessionValidation.validateCurrentUserBandLeader(bandMembers, request.session.loggedInUsername)
                 if(validated==true){
                     bandManager.updateBandById(bandId, bio, bandname, genre, function(bandError, bandId){

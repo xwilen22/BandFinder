@@ -25,10 +25,30 @@
                 <a href="bands/view/{{this.id}}" class="stretched-link"></a>
             </div>
             {{#if ../loggedInUsername}}
-            <form method="POST" action="applications/create/{{../loggedInUsername}}/{{this.id}}">
-                <input type="submit" value="Apply" class="btn btn-success">
-                <input type="hidden" value="{{../csrfToken}}" name="_csrf">
-            </form>
+                {{#if ../memberships.length}}
+                    {{#each ../memberships}}
+                        {{#if (compare this.band_id "==" ../id)}}
+                        <div class="alert alert-success" role="alert">
+                            Member of this band
+                        </div>
+                        {{/if}}
+                    {{/each}}
+                {{else}}
+                    <form method="POST" action="applications/create/{{../loggedInUsername}}/{{this.id}}">
+                        <input type="submit" value="Apply" class="btn btn-success">
+                        <input type="hidden" value="{{../csrfToken}}" name="_csrf">
+                    </form>
+                {{/if}}
+                {{#if ../applications.length}}
+                    {{#each ../applications}}
+                        {{#if (compare this.band_id "==" ../id)}}
+                        <div class="alert alert-success" role="alert">
+                            Applied!
+                        </div>
+                        
+                        {{/if}}
+                    {{/each}}
+                {{/if}}
             {{/if}}
         </li>
         {{/each}}
