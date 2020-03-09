@@ -9,11 +9,22 @@
     <p class="h3">Admin Tools</p>
     <div class="col-12">
         <form method="POST" action="/admin/creategenre">
-            <p class="h6">Input Parent Genre:</p>
+            <label for="genreText">Input Parent Genre</label>
             <input type="text" name="genreText" id="genreText" value="Genre">
-            <p class="h6">Input Sub Genre:</p>
-            <input type="text" name="subGenreText" id="subGenreText" value="Sub-Genre">
-            <input class="btn btn-primary" type="submit" value="Submit">
+            <input type="hidden" value="{{csrfToken}}" name="_csrf">
+            <input class="btn btn-primary" type="submit" value="Create Genre">
+        </form>
+    </div>
+    <div class="col-12">
+        <form method="POST" action="/admin/createsubgenre">
+            <label for="parentGenre">Choose your genre</label>
+            <select name="parentGenre" id="parentGenre">
+                {{#each parentGenres}}
+                <option value={{this.genre_name}}>{{this.genre_name}}</option>
+                {{/each}}
+            </select>
+            <input type="hidden" value="{{csrfToken}}" name="_csrf">
+            <input class="btn btn-primary" type="submit" value="Create Sub Genre">
         </form>
     </div>
     <div class="col-12">
