@@ -61,6 +61,7 @@ const proficiencyValidation = require("./bll/proficiencyValidation")
 const genreValidation = require("./bll/genreValidation")
 const applicationManager = require("./bll/applicationManager")
 ///PRESENTATION LAYER
+const adminRouter = require("./pl/routers/adminRouter")
 const accountRouter = require("./pl/routers/accountRouter")
 const instrumentRouter = require("./pl/routers/instrumentRouter")
 const bandRouter = require("./pl/routers/bandRouter")
@@ -95,6 +96,9 @@ const theProficiencyRouter = container.resolve("proficiencyRouter")
 
 const theAccountRouter = container.resolve("accountRouter")
 const theInstrumentRouter = container.resolve("instrumentRouter")
+
+container.register("adminRouter", awilix.asFunction(adminRouter))
+const theAdminRouter = container.resolve("adminRouter")
 
 container.register("genreValidation", awilix.asFunction(genreValidation))
 container.register("genreRepository", awilix.asFunction(genreRepository))
@@ -138,6 +142,7 @@ app.use("/account", theAccountRouter)
 app.use("/instruments", theInstrumentRouter)
 app.use("/proficiencies", theProficiencyRouter)
 app.use("/applications", theApplicationRouter)
+app.use("/admin", theAdminRouter)
 
 app.use(function(error, request, response, next) {	
     console.log(error)
