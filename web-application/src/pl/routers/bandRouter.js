@@ -1,6 +1,6 @@
 const express = require("express")
 
-module.exports = function ({bandManager,bandMembershipManager,genreManager, sessionValidation, errorGenerator}) {
+module.exports = function ({bandManager, bandMembershipManager, genreManager, sessionValidation, errorGenerator}) {
     const router = express.Router()
 
     //Get all
@@ -32,16 +32,16 @@ module.exports = function ({bandManager,bandMembershipManager,genreManager, sess
         response.render("noband.hbs")
     })
 
-    router.get("/view/:bandId", function (request, response) {
+    router.get("/view/:bandId", function (request, response, next) {
         const bandId = request.params.bandId
         bandManager.getBandById(bandId, function (bandError, band) {
             if (bandError) {
-                response.send(bandError)
+                next(bandError)
             }
             else {
                 bandMembershipManager.getBandMembershipByBandId(bandId,  function(membershipError, bandMembers){
                     if(membershipError){
-                        response.send(membershipError)
+                        next(bandError)
                     }
                     else {
                         const currentUsername = request.session.loggedInUsername
@@ -62,11 +62,11 @@ module.exports = function ({bandManager,bandMembershipManager,genreManager, sess
         })
     })
     
-    router.get("/browseuserbands", function(request, response) {
+    router.get("/browseuserbands", function(request, response, next) {
         const username = request.session.loggedInUsername
         bandMembershipManager.getBandMembershipByUsername(username, function(bandMembershipError, bandMemberships){
             if(bandMembershipError){
-                response.send(bandMembershipError)
+                next(bandMembershipError)
             }
             else{
                 const model = {
@@ -90,16 +90,17 @@ module.exports = function ({bandManager,bandMembershipManager,genreManager, sess
         })
     })
 
-    router.get("/update/:bandId", function (request, response) {
+    router.get("/update/:bandId", function (request, response, next) {
         const bandId = request.params.bandId
         bandManager.getBandById(bandId, function (bandError, band) {
             if (bandError) {
-                response.send(bandError)
+                next(bandError)
             }
             else{
                 genreManager.getAllGenres(function(error,genres){
                     bandObject = band
-                    model={
+                    
+                    const model = {
                         bandId: bandObject.id, 
                         bandname: bandObject.band_name,
                         biography: bandObject.band_biography,
