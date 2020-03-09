@@ -4,7 +4,7 @@ module.exports = function ({}) {
     
     return {
         getValidGenreName: function(genreName) {
-            const retrievedGenreName = String(genreName)
+            let retrievedGenreName = String(genreName)
             
             retrievedGenreName = retrievedGenreName.trim()
             retrievedGenreName = retrievedGenreName.replace("\s", "-")
