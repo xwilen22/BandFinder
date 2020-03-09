@@ -1,5 +1,8 @@
 {{#if bandMemberships}}
 <h2>My bands</h2>
+
+<a class="btn btn-primary" href="/bands/create">Create Band</a>
+
 <section class="row p-2 container-fluid">
     <ul class="list-group w-100">
         {{#each bandMemberships}}
@@ -14,9 +17,6 @@
         {{/each}}
     </ul>
     <div>
-    <div>
-        <a class="btn btn-primary" href="/bands/create">Create Band</a>
-    </div>
     </div>
 </section>
 {{else}}

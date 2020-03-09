@@ -1,14 +1,32 @@
 <section class="row container-fluid">
-    <img src="/images/PLACEHOLDER.jpg" class="col-md-2 rounded img-thumbnail img-fluid">
-    <div class="col-md-auto p-2">
+    <img src="/images/PLACEHOLDER.jpg" class="img-thumbnail img-fluid band-detail-image">
+    <div class="col p-2">
         <h2>{{bandname}}</h2>
         <p class="text-break">
             {{biography}}
         </p>
     </div>
     {{#if isCurrentUserBandLeader}}
-     <div>
+     <div class="col">
         <a class="btn btn-primary" href="/bands/update/{{bandId}}">EDIT</a>
+        <ul class="list-group">
+            {{#each bandApplications}}
+            <li class="list-group-item">
+                <a href="/account/view/{{this.username}}">{{this.username}}</a> wants to join!
+                <div class="float-right">
+                    <form method="POST" action="/bands/addMember/{{../bandId}}">
+                        <input type="submit" value="Accept" class="btn btn-success">
+                        <input type="hidden" value="{{this.username}}" name="username">
+                        <input type="hidden" value="{{../csrfToken}}" name="_csrf">
+                    </form>
+                    <form method="POST" action="/applications/delete/{{this.username}}/{{this.band_id}}">
+                        <input type="submit" value="Deny" class="btn btn-danger">
+                        <input type="hidden" value="{{../csrfToken}}" name="_csrf">
+                    </form>
+                </div>
+            </li>
+            {{/each}}
+        </ul>
     </div>
     {{/if}}
 </section>
