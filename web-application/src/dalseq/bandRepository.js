@@ -65,9 +65,9 @@ module.exports = function ({ db }) {
             })
         },
 
-        deleteBandById: function (bandId) {
-            db.query(`DELETE FROM public.bands AS bands
-                      USING pulic.band_memberships AS members
+        deleteBandById: function (bandId, callback) {
+            db.query(`DELETE FROM bands AS bands
+                      USING band_memberships AS members
                       WHERE bands.id = members.band_id
                       AND bands.id = ?`,
             {
