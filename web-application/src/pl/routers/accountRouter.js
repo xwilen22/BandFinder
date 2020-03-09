@@ -5,7 +5,6 @@ module.exports = function ({accountManager, proficiencyManager, instrumentManage
 
     //Redirects to account detail or login screen
     router.get("/", function (request, response) {
-        let username = 0
 
         //if not logged in
         //response.redirect(`/signinup`)
@@ -81,54 +80,70 @@ module.exports = function ({accountManager, proficiencyManager, instrumentManage
                 next(accountError)
             }
             else {
-                proficiencyManager.getAllProficienciesForUser(userObject.username, function(proficiencyError, proficiencies) {
-                    if(proficiencyError) {
-                        next(proficiencyError)
-                    }
-                    else {
-                        instrumentManager.getAllInstruments(function(instrumentError, instruments) {
-                            if(instrumentError) {
-                                next(proficiencyError)
-                            }
-                            else {
-                                let instrumentNames = []
-                                instruments.forEach(instrumentObject => instrumentNames.push(instrumentObject.instrument_name))
-
-                                const model = {
-                                    username: userObject.username,
-                                    biography: userObject.biography,
-                                    profilePicture: userObject.user_profile_picture,
-                                    proficiencies,
-                                    instruments:instrumentNames
+                const validated = sessionValidation.validateAccountNameInSession(userObject.username, request.session.loggedInUsername)
+                if (validated == true) {
+                    proficiencyManager.getAllProficienciesForUser(userObject.username, function (proficiencyError, proficiencies) {
+                        if (proficiencyError) {
+                            next(proficiencyError)
+                        }
+                        else {
+                            instrumentManager.getAllInstruments(function (instrumentError, instruments) {
+                                if (instrumentError) {
+                                    next(proficiencyError)
                                 }
-                                response.render("edituser.hbs", model)
-                            }
-                        })
-                    }
-                })
+                                else {
+                                    let instrumentNames = []
+                                    instruments.forEach(instrumentObject => instrumentNames.push(instrumentObject.instrument_name))
+
+                                    const model = {
+                                        username: userObject.username,
+                                        biography: userObject.biography,
+                                        profilePicture: userObject.user_profile_picture,
+                                        proficiencies,
+                                        instruments: instrumentNames
+                                    }
+                                    response.render("edituser.hbs", model)
+                                }
+                            })
+                        }
+                    })
+                }
+                else {
+                    next(errorGenerator.getHttpCodeError(401))
+                }
             }
         })
     })
     router.post("/update/:username", function (request, response, next) {
         const biography = request.body.biography
         const username = request.params.username
-
-        accountManager.updateAccountBiography(username, biography, function (error) {
-            if (error) {
-                next(error)
-            }
-            else {
-                response.redirect(`/account/view/${username}`)
-            }
-        })
+        const validated = sessionValidation.validateAccountNameInSession(username, request.session.loggedInUsername)
+        if (validated == true) {
+            accountManager.updateAccountBiography(username, biography, function (error) {
+                if (error) {
+                    next(error)
+                }
+                else {
+                    response.redirect(`/account/view/${username}`)
+                }
+            })
+        }
+        else {
+            next(errorGenerator.getHttpCodeError(401))
+        }
     })
     router.post("/delete/:username", function (request, response) {
         const username = request.params.username
         const password = request.body.password
-
-        accountManager.deleteAccount(username, password, function (error) {
-            //Do shit
-        })
+        const validated = sessionValidation.validateAccountNameInSession(username, request.session.loggedInUsername)
+        if (validated == true) {
+            accountManager.deleteAccount(username, password, function (error) {
+                //Do shit
+            })
+        }
+        else {
+            next(errorGenerator.getHttpCodeError(401))
+        }
     })
     router.get("/signup", function(request, response) {
         const model = {
