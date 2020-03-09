@@ -100,9 +100,6 @@ const theProficiencyRouter = container.resolve("proficiencyRouter")
 const theAccountRouter = container.resolve("accountRouter")
 const theInstrumentRouter = container.resolve("instrumentRouter")
 
-container.register("adminRouter", awilix.asFunction(adminRouter))
-const theAdminRouter = container.resolve("adminRouter")
-
 container.register("genreValidation", awilix.asFunction(genreValidation))
 container.register("genreRepository", awilix.asFunction(genreRepository))
 container.register("genreManager", awilix.asFunction(genreManager))
@@ -120,6 +117,9 @@ container.register("bandManager", awilix.asFunction(bandManager))
 container.register("bandRouter", awilix.asFunction(bandRouter))
 
 const theBandRouter = container.resolve("bandRouter")
+
+container.register("adminRouter", awilix.asFunction(adminRouter))
+const theAdminRouter = container.resolve("adminRouter")
 
 container.register("variousRouter", awilix.asFunction(variousRouter))
 

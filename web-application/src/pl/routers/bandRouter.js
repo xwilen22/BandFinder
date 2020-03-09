@@ -66,6 +66,7 @@ module.exports = function ({bandManager, bandMembershipManager, genreManager, se
                                     bandId: bandObject.id,
                                     bandname: bandObject.band_name,
                                     biography: bandObject.band_biography,
+                                    bandGenre: bandObject.band_genre,
                                     profilePicture: bandObject.band_profile_picture,
                                     bandApplications,
                                     isCurrentUserBandLeader
