@@ -27,8 +27,17 @@ module.exports = function ({instrumentManager, errorGenerator, sessionValidation
     router.get("/admindashboard", function(request,response,next){
         loggedInUsername = request.session.loggedInUsername
         if(loggedInUsername == adminName){
-            genreManager.getAllParentGenres()
-            response.render("admindashboard.hbs")
+            genreManager.getAllParentGenres(function(error,parentGenres){
+                if(error){
+                    next(error)
+                }
+                else{
+                    const model={
+                        parentGenres
+                    }
+                    response.render("admindashboard.hbs", model)
+                }
+            })
         }
         else{
             next(errorGenerator.getHttpCodeError(401))
