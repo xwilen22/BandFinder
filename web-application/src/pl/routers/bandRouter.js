@@ -77,19 +77,31 @@ module.exports = function ({bandManager, bandMembershipManager, genreManager, se
         })
     })
     
-    router.post("/delete/:bandId", function (request, response) {
+    router.post("/delete/:bandId", function (request, response, next) {
         const bandId = request.params.bandId
-        console.log(bandId)
-        bandManager.deleteBand(bandId, function(bandError){
-            if(bandError){
-                response.send(bandError)
+        bandMembershipManager.getBandMembershipByBandId(bandId, function (membershipError, bandMembers) {
+            if (membershipError) {
+                response.send(membershipError)
             }
-            else{
-                response.redirect("/bands/browseuserbands")
+            else {
+                const validated = sessionValidation.validateCurrentUserBandLeader(bandMembers, request.session.loggedInUsername)
+                console.log(validated)
+                if (validated == true) {
+                    bandManager.deleteBand(bandId, function (bandError) {
+                        if (bandError) {
+                            response.send(bandError)
+                        }
+                        else {
+                            response.redirect("/bands/browseuserbands")
+                        }
+                    })
+                }
+                else {
+                    next(errorGenerator.getHttpCodeError(401))
+                }
             }
         })
     })
-
     router.get("/update/:bandId", function (request, response, next) {
         const bandId = request.params.bandId
         bandManager.getBandById(bandId, function (bandError, band) {
