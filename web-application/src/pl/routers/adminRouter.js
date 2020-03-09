@@ -1,7 +1,7 @@
 const Express = require("express")
 const adminPassword = "$2b$10$HhNGA6nmc1i4j.6J.gUUm.SJurOj3Ac6JnGUyEuiKe3TUa0jmg3fe"
 const adminName = "Foo"
-module.exports = function ({accountManager, proficiencyManager, instrumentManager, errorGenerator, sessionValidation,passwordManager}){
+module.exports = function ({instrumentManager, errorGenerator, sessionValidation, passwordManager,genreManager}){
     const router = Express.Router()
     router.get("/", function(request, response){
         response.render("adminlogon.hbs")
@@ -15,7 +15,7 @@ module.exports = function ({accountManager, proficiencyManager, instrumentManage
                     next(error)
                 }
                 else{
-                    console.log(success)
+                    request.session.loggedInUsername = adminNameIn
                     response.redirect("admindashboard")
                 }
             })
@@ -23,6 +23,27 @@ module.exports = function ({accountManager, proficiencyManager, instrumentManage
         else{
             next(errorGenerator.getClientError("Wrong Username"))
         }
+    })
+    router.get("/admindashboard", function(request,response,next){
+        loggedInUsername = request.session.loggedInUsername
+        if(loggedInUsername == adminName){
+            genreManager.getAllParentGenres()
+            response.render("admindashboard.hbs")
+        }
+        else{
+            next(errorGenerator.getHttpCodeError(401))
+        }
+    })
+    router.post("/creategenre", function(request,response,next){
+        parentGenreName = request.body.genreText
+        genreManager.createGenre(parentGenreName, function(error){
+            if (error){
+                next(error)
+            }
+            else{
+                response.redirect("admindashboard")
+            }
+        })
     })
     return router
 }
