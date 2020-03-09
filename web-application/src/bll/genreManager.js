@@ -85,6 +85,16 @@ module.exports = function ({errorGenerator, genreRepository, genreValidation}) {
                 }
             })
         },
+        getAllParentGenres: function(callback){
+            genreRepository.getAllParentGenres(function(error, parentGenres){
+                if(error){
+                    callback(errorGenerator.getInternalError(error))
+                }
+                else{
+                    callback(errorGenerator.getSuccess(), parentGenres)
+                }
+            })
+        },
         getAllSubGenresOf: function(parentGenreName, callback) {
             genreRepository.getSubGenresByParentGenre(parentGenreName, function(error, subGenres) {
                 if(error) {
