@@ -148,6 +148,16 @@ app.engine("hbs", handlebars({
     defaultLayout: "main.hbs"
 }))
 
+app.use(function(errorModel, request, response, next) {
+    if(errorModel != undefined || errorModel != null) {
+        response.status(errorModel.code).render("error.hbs", errorModel)
+    }
+    else {
+        const fatalModel = errorGenerator.getInternalError(`UNHANDLED ERROR! A NULL ERROR MODEL RETRIEVED`)
+        response.status(fatalModel.code).render("error.hbs", fatalModel)
+    }
+})
+
 app.listen(listenPort, function() {
     console.log(`Listening on port ${listenPort}`)
 })
