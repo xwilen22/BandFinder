@@ -163,7 +163,11 @@ handlebars.registerHelper('compare', function (leftVal, comparision, rightVal) {
 		case ">=":
 			return (leftVal >= rightVal)
 		case "<=":
-			return (leftVal <= rightVal)
+            return (leftVal <= rightVal)
+        case "&&":
+            return (leftVal && rightVal)
+        case "||":
+            return (leftVal || rightVal)
 		default:
 			console.log("HANDLEBARS ERROR! Invalid operator in compare")
 	}
