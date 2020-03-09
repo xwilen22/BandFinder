@@ -18,11 +18,14 @@
     <ul class="list-group w-100">
         {{#each bands}}
         <li class="list-group-item row m-sm-2 container w-100">
-            <img class="col-2 img-thumbnail m-0" src="/images/PLACEHOLDER.JPG">
-            <div class="col-9 m-0">
-                <p class="h3">{{this.band_name}}</p>
-                <p class="text-break">{{this.band_biography}}</p>
-                <a href="bands/view/{{this.id}}" class="stretched-link"></a>
+            <div class="row p-2">
+                <img class="col-2 img-thumbnail m-0" src="/images/PLACEHOLDER.JPG">
+                <div class="col m-0">
+                    <p class="h3">{{this.band_name}}</p>
+                    <p class="text-break">{{this.band_biography}}</p>
+                    <p>Members -1/{{this.max_members}}</p>
+                    <a href="bands/view/{{this.id}}" class="stretched-link"></a>
+                </div>
             </div>
             {{#if ../loggedInUsername}}
                 {{#each ../memberships}}
