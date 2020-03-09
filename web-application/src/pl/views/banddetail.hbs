@@ -12,10 +12,11 @@
         <ul class="list-group">
             {{#each bandApplications}}
             <li class="list-group-item">
-                {{this.username}} wants to join!
+                <a href="/account/view/{{this.username}}">{{this.username}}</a> wants to join!
                 <div class="float-right">
-                    <form method="POST" action="">
+                    <form method="POST" action="/bands/addMember/{{../bandId}}">
                         <input type="submit" value="Accept" class="btn btn-success">
+                        <input type="hidden" value="{{this.username}}" name="username">
                         <input type="hidden" value="{{../csrfToken}}" name="_csrf">
                     </form>
                     <form method="POST" action="/applications/delete/{{this.username}}/{{this.band_id}}">

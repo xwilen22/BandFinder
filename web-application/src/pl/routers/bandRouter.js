@@ -201,6 +201,28 @@ module.exports = function ({bandManager, bandMembershipManager, genreManager, se
             }
         })
     })
+    router.post("/addmember/:forBandId", function(request, response, next) {
+        const username = request.body.username
+        const bandId = request.params.forBandId
+        const isBandLeader = false
+        //username, bandId, callback
+        applicationManager.deleteApplication(username, bandId, function(applicationError) {
+            if(applicationError) {
+                next(applicationError)
+            }
+            else {
+                bandMembershipManager.createBandMembership(username, bandId, isBandLeader, function(bandMembershipError) {
+                    if(bandMembershipError) {
+                        next(bandMembershipError)
+                    }
+                    else {
+                        response.redirect("back")
+                    }
+                })
+            }
+        })
+
+    })
 
     return router
 }
