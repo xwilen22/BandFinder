@@ -41,7 +41,7 @@ module.exports = function ({ proficiencyManager }) {
                 response.status(error.code).end()
             }
             else {
-                response.status(201).end()
+                response.status(204).end()
             }
         })
     })
