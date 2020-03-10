@@ -63,6 +63,26 @@ module.exports = function ({ db }) {
             })
         },
 
+        getUserInformationByUsername: function (username, callback) {
+            userModel.findAll({
+                where: {
+                    username
+                },
+                attribrutes: [
+                    "username",
+                    "biography",
+                    "user_profile_picture"
+                ],
+                raw: true
+            })
+            .then(userInfo => {
+                callback(undefined, userInfo)
+            })
+            .catch(error => {
+                callback(error, null)
+            })
+        },
+
         deleteUserByUsername: function (username, callback) {
             userModel.destroy({
                 where: {
