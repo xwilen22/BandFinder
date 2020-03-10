@@ -133,6 +133,26 @@ module.exports = function ({ accountRepository, accountValidation, passwordManag
             else {
                 callback(accountNameValidationErrors)
             }
+        },
+        getAccountInformationByUsername: function(username, callback) {
+            const accountNameValidationErrors = accountValidation.getNameValidationErrors(username)
+
+            if (accountNameValidationErrors.length <= 0) {
+                accountRepository.getUserInformationByUsername(username, function (error, userObjects) {
+                    if(userObjects == null || userObjects.length <= 0) {
+                        callback(errorGenerator.getHttpCodeError(404))
+                    }
+                    else if (error){
+                        callback(errorGenerator.getInternalError(error), null)
+                    } 
+                    else {
+                        callback(errorGenerator.getSuccess(), userObjects[0])
+                    }
+                })
+            }
+            else {
+                callback(accountNameValidationErrors)
+            }
         }
     }
 }
