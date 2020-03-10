@@ -68,7 +68,7 @@ module.exports = function ({ db }) {
                 where: {
                     username
                 },
-                attribrutes: [
+                attributes: [
                     "username",
                     "biography",
                     "user_profile_picture"
