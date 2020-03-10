@@ -71,6 +71,9 @@ module.exports = function ({errorGenerator, proficiencyRepository, proficiencyVa
                         if(error) {
                             callback(errorGenerator.getInternalError(error))
                         }
+                        else if(proficiencies.length <= 0) {
+                            callback(errorGenerator.getClientError(["No proficiencies found!"], 404))
+                        }
                         else {
                             console.log("BLL PROF: ", proficiencies)
                             callback(errorGenerator.getSuccess(), proficiencies)
