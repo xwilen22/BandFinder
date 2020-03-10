@@ -72,7 +72,7 @@ module.exports = function ({accountManager, accountValidation, errorGenerator, s
                         response.status(500).end()
                     }
                     else {
-                        jwt.sign({ sub: username, name: username }, "hjälpjagfårenstroke", function(error, idToken) {
+                        jwt.sign({ sub: username, name: username }, "4314314134315135130000", function(error, idToken) {
                             if(error) {
                                 response.status(500).end()
                             }
@@ -89,23 +89,29 @@ module.exports = function ({accountManager, accountValidation, errorGenerator, s
         })
     })
     //Update user
-    router.put("/:username", function (request, response) {
+    router.put("/:username", verifyAccessToken, function (request, response) {
         const username = request.params.username
         const biographyText = request.body.biography
 
         accountManager.updateAccountBiography(username, biographyText, function(error) {
             if(error) {
-
+                response.status(error.code).end()
             }
             else {
-
+                response.status(204).end()
             }
         })
     })
     //Delete user
-    router.delete("/:username", function (request, response) {
+    router.delete("/:username", verifyAccessToken, function (request, response) {
         const username = request.params.username
+        const password = request.body.password
 
+        accountManager.deleteAccount(username, password, function(error) {
+            if(error) {
+                response.status(error.code).end()
+            }
+        })
     })
     return router
 }
