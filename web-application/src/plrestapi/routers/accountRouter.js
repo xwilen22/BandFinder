@@ -2,36 +2,28 @@ const Express = require("express")
 
 module.exports = function ({accountManager, proficiencyManager, instrumentManager, errorGenerator, sessionValidation}) {
     const router = Express.Router()
-
-    //Redirects to account detail or login screen
+    //Get All
     router.get("/", function (request, response) {
 
     })
-    router.get("/view/:username", function (request, response, next) {
-        
-    })
-    router.get("/signin", function(request, response) {
-        
-    })
-    router.post("/signin", function (request, response, next) {
-        
-    })
-    router.get("/logout", function (request, response) {
-        
-    })
-    router.get("/update/:username", function (request, response, next) {
+    //Create
+    router.post("/", function(request, response) {
        
     })
-    router.post("/update/:username", function (request, response, next) {
+    //Get user
+    router.get("/:username", function (request, response, next) {
         
     })
-    router.post("/delete/:username", function (request, response) {
+    //Get access token
+    router.post("/tokens", function (request, response, next) {
         
     })
-    router.get("/signup", function(request, response) {
-       
+    //Update user
+    router.put("/:username", function (request, response, next) {
+        
     })
-    router.post("/signup", function (request, response, next) {
+    //Delete user
+    router.delete("/:username", function (request, response) {
         
     })
     return router
