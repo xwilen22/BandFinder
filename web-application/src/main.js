@@ -128,13 +128,13 @@ const theAdminRouter = container.resolve("adminRouter")
 container.register("variousRouter", awilix.asFunction(variousRouter))
 const theVariousRouter = container.resolve("variousRouter")
 
-container.register("apiAccountRouter", apiAccountRouter)
+container.register("apiAccountRouter", awilix.asFunction(apiAccountRouter))
 const theApiAccountRouter = container.resolve("apiAccountRouter")
 
-container.register("apiInstrumentRouter", apiInstrumentRouter)
+container.register("apiInstrumentRouter", awilix.asFunction(apiInstrumentRouter))
 const theApiInstrumentRouter = container.resolve("apiInstrumentRouter")
 
-container.register("apiProficiencyRouter", apiProficiencyRouter)
+container.register("apiProficiencyRouter", awilix.asFunction(apiProficiencyRouter))
 const theApiProficiencyRouter = container.resolve("apiProficiencyRouter")
 
 app.use("*", csrfProtection, function(request, response, next) {
