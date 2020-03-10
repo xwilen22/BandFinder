@@ -119,7 +119,7 @@ function verifyAccessToken(request, response, next) {
             return
         }
         else {
-            
+            next()
         }
     })
 }
