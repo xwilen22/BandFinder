@@ -9,7 +9,7 @@ module.exports = function ({accountManager, accountValidation, errorGenerator, s
     router.get("/:username", function (request, response) {
         const username = request.params.username
 
-        accountManager.getAccountByUsername(username, function(error, account) {
+        accountManager.getAccountInformationByUsername(username, function(error, account) {
             if(error) {
                 response.status(error.code).end()
             }
