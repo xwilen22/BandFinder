@@ -34,11 +34,11 @@ app.use(expressSession({
 
 const awilix = require("awilix")
 ///DATA ACCESS LAYER
-const dalSources = {
+const dalFolders = {
     MYSQL:"dal",
     SEQUELIZE:"dalseq"
 }
-const dalSource = dalSources.SEQUELIZE
+const dalSource = dalFolders.SEQUELIZE
 
 const proficiencyRepository = require(`./${dalSource}/proficiencyRepository`)
 const accountRepository = require(`./${dalSource}/accountRepository`)
@@ -71,6 +71,10 @@ const bandRouter = require("./pl/routers/bandRouter")
 const variousRouter = require("./pl/routers/variousRouter")
 const proficiencyRouter = require("./pl/routers/proficiencyRouter")
 const applicationRouter = require("./pl/routers/applicationRouter")
+///REST API PRESENTATION LAYER
+const apiAccountRouter = require("./plrestapi/routers/accountRouter")
+const apiInstrumentRouter = require("./plrestapi/routers/instrumentRouter")
+const apiProficiencyRouter = require("./plrestapi/routers/proficiencyRouter")
 
 const container = awilix.createContainer()
 //High level dependency, these needs to be registered first
@@ -122,8 +126,16 @@ container.register("adminRouter", awilix.asFunction(adminRouter))
 const theAdminRouter = container.resolve("adminRouter")
 
 container.register("variousRouter", awilix.asFunction(variousRouter))
-
 const theVariousRouter = container.resolve("variousRouter")
+
+container.register("apiAccountRouter", apiAccountRouter)
+const theApiAccountRouter = container.resolve("apiAccountRouter")
+
+container.register("apiInstrumentRouter", apiInstrumentRouter)
+const theApiInstrumentRouter = container.resolve("apiInstrumentRouter")
+
+container.register("apiProficiencyRouter", apiProficiencyRouter)
+const theApiProficiencyRouter = container.resolve("apiProficiencyRouter")
 
 app.use("*", csrfProtection, function(request, response, next) {
     request.session.csrfToken = request.csrfToken()
@@ -146,6 +158,10 @@ app.use("/instruments", theInstrumentRouter)
 app.use("/proficiencies", theProficiencyRouter)
 app.use("/applications", theApplicationRouter)
 app.use("/admin", theAdminRouter)
+
+app.use("/api/account", theApiAccountRouter)
+app.use("/api/instruments", theApiInstrumentRouter)
+app.use("/api/proficiencies", theApiProficiencyRouter)
 
 app.use(function(error, request, response, next) {	
     console.log(error)
@@ -177,7 +193,6 @@ handlebars.registerHelper('compare', function (leftVal, comparision, rightVal) {
 			console.log("HANDLEBARS ERROR! Invalid operator in compare")
 	}
 })
-
 
 app.use(function(errorModel, request, response, next) {
     if(errorModel != undefined || errorModel != null) {
