@@ -48,6 +48,7 @@ const bandMembershipRepository = require(`./${dalSource}/bandMembershipRepositor
 const bandRepository = require(`./${dalSource}/bandRepository`)
 const applicationRepository = require(`./${dalSource}/applicationRepository`)
 const database = require(`./${dalSource}/db`)
+
 ///BUSINESS LOGIC LAYER
 const accountManager = require("./bll/accountManager")
 const passwordManager = require("./bll/passwordManager")
@@ -63,6 +64,7 @@ const instrumentManager = require("./bll/instrumentManager")
 const proficiencyValidation = require("./bll/proficiencyValidation")
 const genreValidation = require("./bll/genreValidation")
 const applicationManager = require("./bll/applicationManager")
+
 ///PRESENTATION LAYER
 const adminRouter = require("./pl/routers/adminRouter")
 const accountRouter = require("./pl/routers/accountRouter")
@@ -71,7 +73,8 @@ const bandRouter = require("./pl/routers/bandRouter")
 const variousRouter = require("./pl/routers/variousRouter")
 const proficiencyRouter = require("./pl/routers/proficiencyRouter")
 const applicationRouter = require("./pl/routers/applicationRouter")
-///REST API PRESENTATION LAYER
+
+///-REST API PRESENTATION LAYER
 const apiAccountRouter = require("./plrestapi/routers/accountRouter")
 const apiInstrumentRouter = require("./plrestapi/routers/instrumentRouter")
 const apiProficiencyRouter = require("./plrestapi/routers/proficiencyRouter")
@@ -137,6 +140,10 @@ const theApiInstrumentRouter = container.resolve("apiInstrumentRouter")
 container.register("apiProficiencyRouter", awilix.asFunction(apiProficiencyRouter))
 const theApiProficiencyRouter = container.resolve("apiProficiencyRouter")
 
+app.use("/api/account", theApiAccountRouter)
+app.use("/api/instruments", theApiInstrumentRouter)
+app.use("/api/proficiencies", theApiProficiencyRouter)
+
 app.use("*", csrfProtection, function(request, response, next) {
     request.session.csrfToken = request.csrfToken()
     next()
@@ -158,10 +165,6 @@ app.use("/instruments", theInstrumentRouter)
 app.use("/proficiencies", theProficiencyRouter)
 app.use("/applications", theApplicationRouter)
 app.use("/admin", theAdminRouter)
-
-app.use("/api/account", theApiAccountRouter)
-app.use("/api/instruments", theApiInstrumentRouter)
-app.use("/api/proficiencies", theApiProficiencyRouter)
 
 app.use(function(error, request, response, next) {	
     console.log(error)
