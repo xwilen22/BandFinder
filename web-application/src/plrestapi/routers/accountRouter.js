@@ -85,25 +85,6 @@ module.exports = function ({accountManager, accountValidation, errorGenerator, s
                         })
                     }
                 })
-
-                /*jwt.sign(payload, serverSecret)
-                .then(accessToken => {
-                    jwt.sign({
-                        sub: username, name: username
-                    }, "hjälpjagfårenstroke")
-                    .then(idToken => {
-                        response.status(200).json({
-                            access_token: accessToken,
-                            id_token: idToken
-                        })
-                    })
-                    .catch(error => {
-                        response.status(500).end()
-                    })
-                })
-                .catch(error => {
-                    response.status(500).end()
-                })*/
             }
         })
     })
@@ -132,12 +113,13 @@ function verifyAccessToken(request, response, next) {
     const authorizationHeader = request.get('authorization')
     const accessToken = authorizationHeader.substr("Bearer ".length)
 
-    jwt.verify(accessToken, serverSecret)
-    .then(payload => {
-        
-    })
-    .catch(error => {
-        response.status(401).end()
-        next()
+    jwt.verify(accessToken, serverSecret, function(error, payload) {
+        if(error) {
+            response.status(401).end()
+            return
+        }
+        else {
+            
+        }
     })
 }
