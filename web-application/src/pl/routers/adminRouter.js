@@ -54,5 +54,28 @@ module.exports = function ({instrumentManager, errorGenerator, sessionValidation
             }
         })
     })
+    router.post("/createsubgenre", function(request,response,next){
+        parentGenreName = request.body.parentGenre
+        subGenreName = request.body.subGenreText
+        genreManager.createSubGenreOf(parentGenreName, subGenreName, function(error){
+            if (error){
+                next(error)
+            }
+            else{
+                response.redirect("admindashboard")
+            }
+        })
+    })
+    router.post("/createinstrument", function(request,response){
+        instrumentName = request.body.instrumentText
+        instrumentManager.createInstrument(instrumentName, function(error){
+            if(error){
+                next(error)
+            }
+            else{
+                response.redirect("admindashboard")
+            }
+        })
+    })
     return router
 }
