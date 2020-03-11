@@ -93,25 +93,37 @@ module.exports = function ({accountManager, accountValidation, errorGenerator, s
         const username = request.params.username
         const biographyText = request.body.biography
 
-        accountManager.updateAccountBiography(username, biographyText, function(error) {
-            if(error) {
-                response.status(error.code).end()
-            }
-            else {
-                response.status(204).end()
-            }
-        })
+        console.log("PAPA JUJU", request.userId)
+
+        if(sessionValidation.validateAccountNameInSession(username, request.userId) == true) {
+            accountManager.updateAccountBiography(username, biographyText, function(error) {
+                if(error) {
+                    response.status(error.code).end()
+                }
+                else {
+                    response.status(204).end()
+                }
+            })
+        }
+        else {
+            response.status(401).end()
+        }
     })
     //Delete user
     router.delete("/:username", verifyAccessToken, function (request, response) {
         const username = request.params.username
         const password = request.body.password
 
-        accountManager.deleteAccount(username, password, function(error) {
-            if(error) {
-                response.status(error.code).end()
-            }
-        })
+        if(sessionValidation.validateAccountNameInSession(username, request.userId) == true) {
+            accountManager.deleteAccount(username, password, function(error) {
+                if(error) {
+                    response.status(error.code).end()
+                }
+            })
+        }
+        else {
+            response.status(401).end()
+        }
     })
     return router
 }
@@ -125,6 +137,7 @@ function verifyAccessToken(request, response, next) {
             return
         }
         else {
+            request.userId = payload.id
             next()
         }
     })
