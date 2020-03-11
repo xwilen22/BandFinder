@@ -3,8 +3,8 @@ function signUpNewAccount(){
     const signUpForm = document.querySelector("#signup")
     signUpForm.addEventListener("submit", function(event){
         
-        const username = event.srcElement.username
-        const password = event.srcElement.password
+        const username = event.srcElement.elements[0].value
+        const password = event.srcElement.elements[1].value
 
         const account = {
             username,
