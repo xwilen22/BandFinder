@@ -2,12 +2,17 @@ function displayHomePage(parentElement) {
     const userUnOrderedList = parentElement.getElementsByTagName("ul")[0]
     fetchAllAccounts(function(error, accounts) {
         if(error) {
-
+            console.log(error)
         }
         else {
             for (account of accounts) {
                 const listItem = document.createElement("li")
-                listItem.innerText = account.username
+                const userPageAnchor = document.createElement("a")
+
+                userPageAnchor.href = `/account/view/${account.username}`
+                userPageAnchor.innerText = account.username
+
+                listItem.append(userPageAnchor)
                 userUnOrderedList.appendChild(listItem)
             }
         }
@@ -18,7 +23,13 @@ function fetchAllAccounts(callback) {
         "http://localhost:8080/api/account"
     )
     .then(response => {
-        return(response.json())
+        console.log("Hello? ", response)
+        if(response.status == 201) {
+            return(response.json())
+        }
+        else {
+            callback(["Unexpected result"])
+        }
     })
     .then(accounts => {
         console.log("FETCHED STUFF", accounts)
