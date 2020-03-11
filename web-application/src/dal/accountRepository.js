@@ -28,12 +28,10 @@ module.exports = function ({ db }) {
             })
         },
 
-        getUserInformationByPortion: function(userLimit, offset, callback) {
-            let query = `SELECT (username, biography, user_profile_picture) FROM user
-                         LIMIT ? OFFSET ?`
-            let values = [userLimit, offset]
+        getAllUserInformations: function(callback) {
+            let query = `SELECT (username, biography, user_profile_picture) FROM user`
             db.query(query, values, function(error, users) {
-                callback(error, user)
+                callback(error, users)
             })
         },
 
