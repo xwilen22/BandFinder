@@ -14,20 +14,24 @@
     <nav class="navbar navbar-light bg-light shadow-sm">
             <section class="nav nav-justified">
                 <header>
-                    <a class="navbar-brand" href="/" id="/">Band Together</a>
+                    <a class="navbar-brand" href="/" >Band Together</a>
                 </header>
             </section>
             <section class="nav justify-content-right">
                 <!--{{#if loggedInUsername}}-->
                 <!--<a class="nav-link" href="/account/view/{{loggedInUsername}}">{{loggedInUsername}}</a>-->
-                <a class="nav-link btn btn-primary btn-sm" href="/account/logout" id="/account/logout">Sign out</a>
+                <a class="nav-link btn btn-primary btn-sm" href="/account/logout" >Sign out</a>
                 <!--{{else}}-->
-                <a class="nav-link btn btn-secondary btn-sm mx-1" href="/account/signin" id="/account/signin">Sign in</a>
-                <a class="nav-link btn btn-primary btn-sm mx-1" href="/account/signup" id="/account/signup">Sign up</a>
+                <a class="nav-link btn btn-secondary btn-sm mx-1" href="/account/signin" >Sign in</a>
+                <a class="nav-link btn btn-primary btn-sm mx-1" href="/account/signup" >Sign up</a>
                 <!--{{/if}}-->
             </section>
     </nav>
     <main class="p-3 container-fluid">
+        <div id="/">Home</div> 
+        <div id="/account/signin">Sign in</div> 
+        <div id="/account/signup">Sign up</div>
+        <div id="/account/view">View account</div> 
     </main>
     <footer class="bg-light border-top m-auto p-2 h-auto">
     </footer>
