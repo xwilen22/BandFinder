@@ -16,7 +16,10 @@ function signInToAccount(parentElement){
         }
         ).then(function(response){
             return response.json()
-        }).then(function(body){
+        }).catch(function(error){
+            console.log(error)
+        })
+        .then(function(body){
             login(body.access_token)
         }).catch(function(error){
             console.log(error)
