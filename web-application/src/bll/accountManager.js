@@ -45,6 +45,16 @@ module.exports = function ({ accountRepository, accountValidation, passwordManag
                 }
             })
         },
+        getAllAccountsInformation: function(callback) {
+            accountRepository.getAllUserInformations(function (error, userInformationObjects) {
+                if (error) {
+                    callback(errorGenerator.getInternalError(error))
+                }
+                else {
+                    callback(errorGenerator.getSuccess(), userInformationObjects)
+                }
+            })
+        },
         updateAccountPassword: function (username, oldPassword, newPassword, callback) {
             accountRepository.getUserByUsername(username, function (error, userObject) {
                 if (error) {
@@ -131,7 +141,7 @@ module.exports = function ({ accountRepository, accountValidation, passwordManag
                 })
             }
             else {
-                callback(accountNameValidationErrors)
+                callback(errorGenerator.getClientError(accountNameValidationErrors))
             }
         },
         getAccountInformationByUsername: function(username, callback) {
@@ -151,7 +161,7 @@ module.exports = function ({ accountRepository, accountValidation, passwordManag
                 })
             }
             else {
-                callback(accountNameValidationErrors)
+                callback(errorGenerator.getClientError(accountNameValidationErrors))
             }
         }
     }

@@ -11,12 +11,14 @@ function displayHomePage(parentElement) {
         listItem.innerText = accountName
         userUnOrderedList.appendChild(listItem)
     }
+    fetchAllAccounts()
 }
 function fetchAllAccounts() {
     fetch(
         "https://localhost:8080/api/account"
     ).then(response => {
         console.log("FETCHED STUFF", response)
-        return response.json()
-    })
+    }).catch(error => {
+        console.log("FAILED", error)
+    })  
 }
