@@ -1,21 +1,26 @@
 const express = require("express")
 
-module.exports = function ({ proficiencyManager }) {
+module.exports = function ({ proficiencyManager, restApiManager }) {
     const router = express.Router()
     //Create for user
-    router.post("/", function (request, response, next) {
+    router.post("/", restApiManager.verifyAccessToken, function (request, response, next) {
         const username = request.body.username
         const instrumentName = request.body.instrumentName
         const skillLevelNumber = request.body.skillLevelNumber
 
-        proficiencyManager.createProficiency(username, instrumentName, skillLevelNumber, function(error) {
-            if(error) {
-                response.status(error.code).end()
-            }
-            else {
-                response.status(201).end()
-            }
-        })
+        if (sessionValidation.validateAccountNameInSession(username, request.userId) == true) {
+            proficiencyManager.createProficiency(username, instrumentName, skillLevelNumber, function (error) {
+                if (error) {
+                    response.status(error.code).end()
+                }
+                else {
+                    response.status(201).end()
+                }
+            })
+        }
+        else {
+            response.status(401).end()
+        }
 
     })
     //Get for username
@@ -31,33 +36,42 @@ module.exports = function ({ proficiencyManager }) {
         })
     })
     //Update
-    router.put("/:forUsername/:instrumentName", function(request, response) {
+    router.put("/:forUsername/:instrumentName", restApiManager.verifyAccessToken, function(request, response) {
         const username = request.params.forUsername
         const instrumentName = request.params.instrumentName
         const skillLevelNumber = request.body.skillLevelNumber
-
-        proficiencyManager.updateProficiencyLevelForUser(username, instrumentName, skillLevelNumber, function(error) {
-            if(error) {
-                response.status(error.code).end()
-            }
-            else {
-                response.status(204).end()
-            }
-        })
+        if (sessionValidation.validateAccountNameInSession(username, request.userId) == true) {
+            proficiencyManager.updateProficiencyLevelForUser(username, instrumentName, skillLevelNumber, function (error) {
+                if (error) {
+                    response.status(error.code).end()
+                }
+                else {
+                    response.status(204).end()
+                }
+            })
+        }
+        else {
+            response.status(401).end()
+        }
     })
     //Delete
-    router.delete("/:forUsername/:instrumentName", function (request, response) {
+    router.delete("/:forUsername/:instrumentName", restApiManager.verifyAccessToken, function (request, response) {
         const username = request.params.forUsername
         const instrumentName = request.params.instrumentName
-
-        proficiencyManager.deleteProficiencyForUser(username, instrumentName, function(error) {
-            if(error) {
-                response.status(error.code).end()
-            }
-            else {
-                response.status(204).end()
-            }
-        })
+        if (sessionValidation.validateAccountNameInSession(username, request.userId) == true) {
+            proficiencyManager.deleteProficiencyForUser(username, instrumentName, function (error) {
+                if (error) {
+                    response.status(error.code).end()
+                }
+                else {
+                    response.status(204).end()
+                }
+            })
+        }
+        else {
+            response.status(401).end()
+        }
     })
+    
     return router
 }

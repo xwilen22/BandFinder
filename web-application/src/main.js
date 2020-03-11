@@ -74,6 +74,8 @@ const variousRouter = require("./pl/routers/variousRouter")
 const proficiencyRouter = require("./pl/routers/proficiencyRouter")
 const applicationRouter = require("./pl/routers/applicationRouter")
 
+///-REST API BUSINESS LOGIC LAYER
+const restApiManager = require("./bll/restApiManager")
 ///-REST API PRESENTATION LAYER
 const apiAccountRouter = require("./plrestapi/routers/accountRouter")
 const apiInstrumentRouter = require("./plrestapi/routers/instrumentRouter")
@@ -131,6 +133,8 @@ const theAdminRouter = container.resolve("adminRouter")
 container.register("variousRouter", awilix.asFunction(variousRouter))
 const theVariousRouter = container.resolve("variousRouter")
 
+container.register("restApiManager", awilix.asFunction(restApiManager))
+
 container.register("apiAccountRouter", awilix.asFunction(apiAccountRouter))
 const theApiAccountRouter = container.resolve("apiAccountRouter")
 
@@ -139,6 +143,16 @@ const theApiInstrumentRouter = container.resolve("apiInstrumentRouter")
 
 container.register("apiProficiencyRouter", awilix.asFunction(apiProficiencyRouter))
 const theApiProficiencyRouter = container.resolve("apiProficiencyRouter")
+
+// TODO: Not a good idea to open up to entire world.
+// Better to only target the frontend application.
+app.use("/api*", function(request, response, next){
+	response.setHeader("Access-Control-Allow-Origin", "*")
+	response.setHeader("Access-Control-Allow-Methods", "*")
+	response.setHeader("Access-Control-Allow-Headers", "*")
+	response.setHeader("Access-Control-Expose-Headers", "*")
+	next()
+})
 
 app.use("/api/account", theApiAccountRouter)
 app.use("/api/instruments", theApiInstrumentRouter)
