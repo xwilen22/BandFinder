@@ -2,20 +2,34 @@ const Express = require("express")
 
 module.exports = function ({accountManager, accountValidation, restApiManager, sessionValidation}) {
     const router = Express.Router()
-    
-    router.get("/page/:pageNumber"), function (request, response) {
-        const pageNumber = request.params.pageNumber
+    //Get all accounts
+    router.get("/", function (request, response) {
+        const pageNumber = 0
         const userLimit = 20
 
-        accountManager.getAccountsByLimitOffset(userLimit, pageNumber, function(error, accounts) {
-            if(error) {
+        accountManager.getAccountsByLimitOffset(userLimit, pageNumber, function (error, accounts) {
+            if (error) {
                 response.status(error.code).end()
             }
             else {
                 response.status(201).json(accounts)
             }
         })
-    }
+    })
+    //Create
+    router.post("/", function (request, response) {
+        const username = request.body.username
+        const password = request.body.password
+
+        accountManager.signUpAccount(username, password, function (error, createdUsername) {
+            if (error) {
+                response.status(error.code).end()
+            }
+            else {
+                response.status(201).json(createdUsername)
+            }
+        })
+    })
     //Get user
     router.get("/:username", function (request, response) {
         const username = request.params.username
@@ -27,20 +41,6 @@ module.exports = function ({accountManager, accountValidation, restApiManager, s
             }
             else {
                 response.status(200).json(account)
-            }
-        })
-    })
-    //Create
-    router.post("/", function(request, response) {
-        const username = request.body.username
-        const password = request.body.password
-
-        accountManager.signUpAccount(username, password, function(error, createdUsername) {
-            if(error) {
-                response.status(error.code).end()
-            }
-            else {
-                response.status(201).json(createdUsername)
             }
         })
     })
