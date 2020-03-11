@@ -48,6 +48,23 @@ module.exports = function ({ db }) {
             })
         },
 
+        getAllUserInformations: function(callback) {
+            userModel.findAll({
+                raw: true,
+                attributes: [
+                    "username",
+                    "biography",
+                    "user_profile_picture"
+                ]
+            })
+            .then(users => {
+                callback(undefined, users)
+            })
+            .catch(error => {
+                callback(error, null)
+            })
+        },
+
         getUserByUsername: function (username, callback) {
             userModel.findAll({
                 where: {

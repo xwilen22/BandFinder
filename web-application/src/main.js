@@ -74,6 +74,8 @@ const variousRouter = require("./pl/routers/variousRouter")
 const proficiencyRouter = require("./pl/routers/proficiencyRouter")
 const applicationRouter = require("./pl/routers/applicationRouter")
 
+///-REST API BUSINESS LOGIC LAYER
+const restApiManager = require("./bll/restApiManager")
 ///-REST API PRESENTATION LAYER
 const apiAccountRouter = require("./plrestapi/routers/accountRouter")
 const apiInstrumentRouter = require("./plrestapi/routers/instrumentRouter")
@@ -130,6 +132,8 @@ const theAdminRouter = container.resolve("adminRouter")
 
 container.register("variousRouter", awilix.asFunction(variousRouter))
 const theVariousRouter = container.resolve("variousRouter")
+
+container.register("restApiManager", awilix.asFunction(restApiManager))
 
 container.register("apiAccountRouter", awilix.asFunction(apiAccountRouter))
 const theApiAccountRouter = container.resolve("apiAccountRouter")
