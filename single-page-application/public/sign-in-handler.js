@@ -1,5 +1,5 @@
 function signInToAccount(parentElement){
-    const apiUrl = "http://localhost:8080/api/tokens"
+    const apiUrl = "http://localhost:8080/api/account/tokens"
     const loginForm = document.querySelector("#signin")
     
     loginForm.addEventListener("submit",function(event){
