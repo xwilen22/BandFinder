@@ -43,11 +43,11 @@
                     <form method="POST" action="/proficiencies/update/{{username}}/{{this.instrument_name}}">
                         <input type="number" min="1" , max="5" value="{{this.proficiency_level}}" name="skillLevel">
                         <input type="submit" value="Update skill" class="btn btn-primary">
-                        <input type="hidden" value="{{csrfToken}}" name="_csrf">
+                        <input type="hidden" value="{{../csrfToken}}" name="_csrf">
                     </form>
                     <form method="POST" action="/proficiencies/delete/{{username}}/{{this.instrument_name}}">
                         <input type="submit" value="Delete" class="btn btn-warning">
-                        <input type="hidden" value="{{csrfToken}}" name="_csrf">
+                        <input type="hidden" value="{{../csrfToken}}" name="_csrf">
                     </form>
                 </div>
             </li>
