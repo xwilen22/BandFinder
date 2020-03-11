@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/index.css" type="text/css">
     
+    <script src="/sign-in-handler.js"></script>
     <script src="/home-page-handler.js"></script>
     <!--KEEP AT BOTTOM-->
     <script src="/navigation-handler.js"></script>
@@ -43,7 +44,18 @@
                 <li>dsadsa</li>
             </ul>
         </div> 
-        <div id="/account/signin">Sign in</div> 
+		<div id="/account/signin">
+			<h1>Sign In</h1>
+			<form id="signin" action="">
+				<div>
+					 Username: <input type="text" class="username">
+				</div>
+				<div>
+					 Password: <input type="text" class="password">
+				</div>  
+				<input type="submit" value="Login">
+			</form>
+		</div> 
         <div id="/account/signup">Sign up</div>
         <div id="/account/view">View account</div> 
     </main>
