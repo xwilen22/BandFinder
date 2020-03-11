@@ -4,10 +4,7 @@ module.exports = function ({accountManager, accountValidation, restApiManager, s
     const router = Express.Router()
     //Get all accounts
     router.get("/", function (request, response) {
-        const pageNumber = 0
-        const userLimit = 20
-
-        accountManager.getAccountsByLimitOffset(userLimit, pageNumber, function (error, accounts) {
+        accountManager.getAllAccountsInformation(function (error, accounts) {
             if (error) {
                 response.status(error.code).end()
             }
