@@ -1,9 +1,7 @@
 function displayHomePage(parentElement) {
     const userUnOrderedList = parentElement.getElementsByTagName("ul")[0]
     //Empties list
-    for (child of userUnOrderedList.children) {
-        userUnOrderedList.removeChild()
-    }
+    userUnOrderedList.innerHTML = ""
     fetchAllAccounts(function(error, accounts) {
         if(error) {
             console.log(error)
