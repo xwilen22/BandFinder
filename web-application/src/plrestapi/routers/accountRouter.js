@@ -1,7 +1,4 @@
 const Express = require("express")
-const jwt = require("jsonwebtoken")
-
-const serverSecret = "34_34b935325890A024"
 
 module.exports = function ({accountManager, accountValidation, restApiManager, sessionValidation}) {
     const router = Express.Router()
