@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken")
 
 const serverSecret = "34_34b935325890A024"
 
-module.exports = function ({accountManager, accountValidation, errorGenerator, sessionValidation}) {
+module.exports = function ({accountManager, accountValidation, restApiManager, sessionValidation}) {
     const router = Express.Router()
     //Get user
     router.get("/:username", function (request, response) {
@@ -63,37 +63,21 @@ module.exports = function ({accountManager, accountValidation, errorGenerator, s
                 }
             }
             else {
-                const payload = {
-                    id: username
-                }
-                jwt.sign(payload, serverSecret, function(error, accessToken) {
-                    console.log(error, accessToken)
+                restApiManager.getNewAccessToken(username, function(error, responsePayload) {
                     if(error) {
-                        response.status(500).end()
+                        response.status(error.code).end()
                     }
                     else {
-                        jwt.sign({ sub: username, name: username }, "4314314134315135130000", function(error, idToken) {
-                            if(error) {
-                                response.status(500).end()
-                            }
-                            else {
-                                response.status(200).json({
-                                    access_token: accessToken,
-                                    id_token: idToken
-                                })
-                            }
-                        })
+                        response.status(201).json(responsePayload)
                     }
                 })
             }
         })
     })
     //Update user
-    router.put("/:username", verifyAccessToken, function (request, response) {
+    router.put("/:username", restApiManager.verifyAccessToken, function (request, response) {
         const username = request.params.username
         const biographyText = request.body.biography
-
-        console.log("PAPA JUJU", request.userId)
 
         if(sessionValidation.validateAccountNameInSession(username, request.userId) == true) {
             accountManager.updateAccountBiography(username, biographyText, function(error) {
@@ -110,7 +94,7 @@ module.exports = function ({accountManager, accountValidation, errorGenerator, s
         }
     })
     //Delete user
-    router.delete("/:username", verifyAccessToken, function (request, response) {
+    router.delete("/:username", restApiManager.verifyAccessToken, function (request, response) {
         const username = request.params.username
         const password = request.body.password
 

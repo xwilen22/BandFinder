@@ -25,29 +25,5 @@ module.exports = function ({ instrumentManager }) {
             }
         })
     })
-    //Create
-    router.post("/", function (request, response) {
-        const instrumentName = request.body.instrumentName
-        instrumentManager.createInstrument(instrumentName, function(error) {
-            if(error) {
-                response.status(error.code).end()
-            }
-            else {
-                response.status(201).end()
-            }
-        })
-    })
-    //Delete
-    router.delete("/delete", function (request, response) {
-        instrumentManager.deleteInstrument(function(error) {
-            if(error) {
-                response.status(error.code).end()
-            }
-            else {
-                response.status(204).end()
-            }
-        })
-    })
-
     return router
 }
