@@ -12,8 +12,8 @@ document.addEventListener("DOMContentLoaded", function(){
 
 const pageLocations = [
     {uri: "/", method: displayHomePage},
-    {uri: "/account/signin", method: displaySignInPage},
-    {uri: "/account/signup", method: displayHomePage},
+    {uri: "/account/signin", method: signInToAccount},
+    {uri: "/account/signup", method: signUpNewAccount},
     {uri: "/account/view", method: displayHomePage},
 ]
 
