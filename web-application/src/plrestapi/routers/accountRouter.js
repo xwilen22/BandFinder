@@ -111,18 +111,3 @@ module.exports = function ({accountManager, accountValidation, restApiManager, s
     })
     return router
 }
-function verifyAccessToken(request, response, next) {
-    const authorizationHeader = request.get('authorization')
-    const accessToken = authorizationHeader.substr("Bearer ".length)
-
-    jwt.verify(accessToken, serverSecret, function(error, payload) {
-        if(error) {
-            response.status(401).end()
-            return
-        }
-        else {
-            request.userId = payload.id
-            next()
-        }
-    })
-}
