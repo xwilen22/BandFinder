@@ -51,8 +51,6 @@ module.exports = function ({ db }) {
         getAllUserInformations: function(callback) {
             userModel.findAll({
                 raw: true,
-                offset,
-                limit: userLimit,
                 attributes: [
                     "username",
                     "biography",
