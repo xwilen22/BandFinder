@@ -2,13 +2,13 @@ module.exports = function ({accountManager, instrumentManager}) {
     return {
         retrieveUsernameAndInstrumentName(username, instrumentName, callback) {
             accountManager.getAccountByUsername(username, function(accountErrors, userObject) {
-                if(accountErrors.length > 0) {
+                if(accountErrors) {
                     callback(accountError)
                 }
                 else {
                     console.log("Found user!")
                     instrumentManager.getInstrumentByName(instrumentName, function(instrumentErrors, instrumentObject) {
-                        if (instrumentErrors.length > 0) {
+                        if (instrumentErrors) {
                             callback(instrumentError)
                         }
                         else {
