@@ -148,7 +148,7 @@ module.exports = function ({ accountRepository, accountValidation, passwordManag
                 })
             }
             else {
-                callback(accountNameValidationErrors)
+                callback(errorGenerator.getClientError(accountNameValidationErrors))
             }
         },
         getAccountInformationByUsername: function(username, callback) {
@@ -168,7 +168,7 @@ module.exports = function ({ accountRepository, accountValidation, passwordManag
                 })
             }
             else {
-                callback(accountNameValidationErrors)
+                callback(errorGenerator.getClientError(accountNameValidationErrors))
             }
         }
     }
