@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/index.css" type="text/css">
     
+    <script src="/sign-up-handler.js"></script>
     <script src="/sign-in-handler.js"></script>
     <script src="/home-page-handler.js"></script>
     <!--KEEP AT BOTTOM-->
@@ -52,10 +53,21 @@
 				<div>
 					 Password: <input type="text" class="password">
 				</div>  
-				<input type="submit" value="Login">
+				<input type="submit" value="Sign In">
 			</form>
 		</div> 
-        <div id="/account/signup">Sign up</div>
+        <div id="/account/signup">
+            <h1>Sign Up</h1>
+            <form id="signup" action="">
+                <div>
+                     Username: <input type="text" class="username">
+                </div>
+                <div>
+                     Password: <input type="text" class="password">
+                </div>  
+                <input type="submit" value="Sign Up">
+            </form>
+        </div>
         <div id="/account/view">View account</div> 
     </main>
     <footer class="bg-light border-top m-auto p-2 h-auto">

@@ -1,4 +1,4 @@
-function displaySignInPage(parentElement){
+function signInToAccount(parentElement){
     const apiUrl = "http://192.168.99.100:8080/api/tokens"
     const loginForm = document.querySelector("#signin")
     loginForm.addEventListener("submit",function(event){
@@ -16,7 +16,10 @@ function displaySignInPage(parentElement){
         }
         ).then(function(response){
             return response.json()
-        }).then(function(body){
+        }).catch(function(error){
+            console.log(error)
+        })
+        .then(function(body){
             login(body.access_token)
         }).catch(function(error){
             console.log(error)
