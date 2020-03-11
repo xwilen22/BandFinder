@@ -48,11 +48,14 @@ module.exports = function ({ db }) {
             })
         },
 
-        getUserInformationByPortion: function(userLimit, offset, callback) {
+        getAllUserInformations: function(callback) {
             userModel.findAll({
                 raw: true,
-                offset,
-                limit: userLimit
+                attributes: [
+                    "username",
+                    "biography",
+                    "user_profile_picture"
+                ]
             })
             .then(users => {
                 callback(undefined, users)

@@ -45,22 +45,15 @@ module.exports = function ({ accountRepository, accountValidation, passwordManag
                 }
             })
         },
-        getAccountsByLimitOffset: function(userLimit, pageNumber, callback) {
-            const limit = parseInt(userLimit)
-            const offset = parseInt(pageNumber)
-            if (Number.isInteger(limit) && Number.isInteger(offset)) {
-                accountRepository.getUserInformationByPortion(limit, offset, function (error, userInformationObjects) {
-                    if (error) {
-                        callback(errorGenerator.getInternalError(error))
-                    }
-                    else {
-                        callback(errorGenerator.getSuccess(), userInformationObjects)
-                    }
-                })
-            }
-            else {
-                callback(errorGenerator.getClientError(["Bad offset or pageNumber"]))
-            }
+        getAllAccountsInformation: function(callback) {
+            accountRepository.getAllUserInformations(function (error, userInformationObjects) {
+                if (error) {
+                    callback(errorGenerator.getInternalError(error))
+                }
+                else {
+                    callback(errorGenerator.getSuccess(), userInformationObjects)
+                }
+            })
         },
         updateAccountPassword: function (username, oldPassword, newPassword, callback) {
             accountRepository.getUserByUsername(username, function (error, userObject) {
@@ -148,7 +141,7 @@ module.exports = function ({ accountRepository, accountValidation, passwordManag
                 })
             }
             else {
-                callback(accountNameValidationErrors)
+                callback(errorGenerator.getClientError(accountNameValidationErrors))
             }
         },
         getAccountInformationByUsername: function(username, callback) {
@@ -168,7 +161,7 @@ module.exports = function ({ accountRepository, accountValidation, passwordManag
                 })
             }
             else {
-                callback(accountNameValidationErrors)
+                callback(errorGenerator.getClientError(accountNameValidationErrors))
             }
         }
     }
