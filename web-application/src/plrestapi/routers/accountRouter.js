@@ -2,12 +2,27 @@ const Express = require("express")
 
 module.exports = function ({accountManager, accountValidation, restApiManager, sessionValidation}) {
     const router = Express.Router()
+    
+    router.get("/page/:pageNumber"), function (request, response) {
+        const pageNumber = request.params.pageNumber
+        const userLimit = 20
+
+        accountManager.getAccountsByLimitOffset(userLimit, pageNumber, function(error, accounts) {
+            if(error) {
+                response.status(error.code).end()
+            }
+            else {
+                response.status(201).json(accounts)
+            }
+        })
+    }
     //Get user
     router.get("/:username", function (request, response) {
         const username = request.params.username
 
         accountManager.getAccountInformationByUsername(username, function(error, account) {
             if(error) {
+                console.log(error)
                 response.status(error.code).end()
             }
             else {
