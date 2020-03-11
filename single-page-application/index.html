@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100 w-100">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="public/css/index.css" type="text/css">
+
+    <title>Band Together</title>
+</head>
+<body class="h-100 w-100">
+    <nav class="navbar navbar-light bg-light shadow-sm">
+            <section class="nav nav-justified">
+                <header>
+                    <a class="navbar-brand" href="/" id="/">Band Together</a>
+                </header>
+            </section>
+            <section class="nav justify-content-right">
+                <!--{{#if loggedInUsername}}-->
+                <!--<a class="nav-link" href="/account/view/{{loggedInUsername}}">{{loggedInUsername}}</a>-->
+                <a class="nav-link btn btn-primary btn-sm" href="/account/logout" id="/account/logout">Sign out</a>
+                <!--{{else}}-->
+                <a class="nav-link btn btn-secondary btn-sm mx-1" href="/account/signin" id="/account/signin">Sign in</a>
+                <a class="nav-link btn btn-primary btn-sm mx-1" href="/account/signup" id="/account/signup">Sign up</a>
+                <!--{{/if}}-->
+            </section>
+    </nav>
+    <main class="p-3 container-fluid">
+    </main>
+    <footer class="bg-light border-top m-auto p-2 h-auto">
+    </footer>
+</body>
+</html>
