@@ -1,5 +1,9 @@
 function displayHomePage(parentElement) {
     const userUnOrderedList = parentElement.getElementsByTagName("ul")[0]
+    //Empties list
+    for (child of userUnOrderedList.children) {
+        userUnOrderedList.removeChild()
+    }
     fetchAllAccounts(function(error, accounts) {
         if(error) {
             console.log(error)
@@ -23,7 +27,6 @@ function fetchAllAccounts(callback) {
         "http://localhost:8080/api/account"
     )
     .then(response => {
-        console.log("Hello? ", response)
         if(response.status == 201) {
             return(response.json())
         }
