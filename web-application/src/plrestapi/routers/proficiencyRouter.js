@@ -1,6 +1,6 @@
 const express = require("express")
 
-module.exports = function ({ proficiencyManager, restApiManager }) {
+module.exports = function ({ proficiencyManager, restApiManager, sessionValidation }) {
     const router = express.Router()
     //Create for user
     router.post("/", restApiManager.verifyAccessToken, function (request, response, next) {
