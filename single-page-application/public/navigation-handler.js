@@ -17,11 +17,18 @@ document.addEventListener("DOMContentLoaded", function(){
     }
 })
 
-const staticPageLocations = [
+const staticPageDestinations = [
+    //Destinations
     {uri: "/", method: displayHomePage, methodOnly: false},
     {uri: "/account/signin", method: signInToAccount, methodOnly: false},
     {uri: "/account/signup", method: signUpNewAccount, methodOnly: false},
+    //Actions
     {uri: "/account/signout", method: signOut, methodOnly: true}
+]
+const dynamicPageDestinations = [
+    //Regex specific destinations
+    {uri: "/account/view/*", method: displayUserDetailPageForUsername, methodOnly: false},
+    {uri: "/account/edit/*", method: displayUserDetailPageForUsername, methodOnly: false},
 ]
 
 function moveToPage(uri){
@@ -32,9 +39,11 @@ function moveToPage(uri){
         currentPage.classList.remove("current-page")
     }
     
-    const destinationIndex = staticPageLocations.findIndex((element) => element.uri == uri)
-    if (destinationIndex == -1) {
+    const staticDestinationIndex = staticPageDestinations.findIndex((element) => element.uri == uri)
+
+    if (staticDestinationIndex == -1) {
         //If user page
+        //const dynamicDestinationIndex = dynamicPageDestinations.find((element) => element.uri.contains())
         if(new RegExp("account\/view\/.+").test(uri)) {
             const parentElement = document.getElementById("/account/view")
             parentElement.classList.add("current-page")
@@ -42,13 +51,13 @@ function moveToPage(uri){
         }
     }
     else {
-        if(staticPageLocations[destinationIndex].methodOnly == false){
-            const parentElement = document.getElementById(staticPageLocations[destinationIndex].uri)
+        if(staticPageDestinations[staticDestinationIndex].methodOnly == false){
+            const parentElement = document.getElementById(staticPageDestinations[staticDestinationIndex].uri)
             parentElement.classList.add("current-page")
-            staticPageLocations[destinationIndex].method(parentElement)
+            staticPageDestinations[staticDestinationIndex].method(parentElement)
         }
         else{
-            staticPageLocations[destinationIndex].method()
+            staticPageDestinations[staticDestinationIndex].method()
         }
     }
 }
