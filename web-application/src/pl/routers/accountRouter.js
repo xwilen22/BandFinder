@@ -152,11 +152,13 @@ module.exports = function ({accountManager, proficiencyManager, instrumentManage
                     next(error)
                 }
                 else{
-                    response.redirect("../")
+                    request.session.loggedInUsername = null
+                    response.redirect("../../")
                 }
             })
         }
         else {
+            console.log("helllllooooo")
             next(errorGenerator.getHttpCodeError(401))
         }
     })
