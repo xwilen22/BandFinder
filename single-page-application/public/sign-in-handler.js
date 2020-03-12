@@ -12,6 +12,9 @@ function signInToAccount(parentElement){
                 console.log("ERROR ", error)
             }
             else {
+                const accountAnchor = document.querySelector("#account")
+                accountAnchor.href = `/account/view/${username}`
+                accountAnchor.innerText = username
                 moveToPage(`/account/view/${username}`)
             }
         })

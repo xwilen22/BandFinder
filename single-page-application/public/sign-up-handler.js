@@ -10,7 +10,7 @@ function signUpNewAccount(){
         const username = event.srcElement.elements[0].value
         const password = event.srcElement.elements[1].value
 
-        fetch(apiUrl.localhost, {
+        fetch(apiUrl.dockerIp, {
             method: "POST",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
