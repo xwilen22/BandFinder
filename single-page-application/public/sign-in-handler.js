@@ -22,11 +22,15 @@ function signInToAccount(parentElement){
 }
 function signOut(){
     localStorage.accessToken = ""
+    localStorage.username = ""
 	document.body.classList.remove("showIfSignedIn")
 	document.body.classList.add("showIfSingedOut")
 }
 
 function UiSignedInHelp(){
+    const accountAnchor = document.querySelector("#account")
+    accountAnchor.href = `/account/view/${localStorage.username}`
+    accountAnchor.innerText = localStorage.username
     document.body.classList.remove("showIfSingedOut")
     document.body.classList.add("showIfSignedIn")
 }
@@ -50,6 +54,7 @@ function signIn(username, password, callback){
     .then(body => {
         console.log(body)
         localStorage.accessToken = body.access_token
+        localStorage.username = username
         document.body.classList.remove("showIfSingedOut")
         document.body.classList.add("showIfSignedIn")
         callback(undefined, username)
