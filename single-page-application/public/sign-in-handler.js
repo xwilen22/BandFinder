@@ -32,12 +32,7 @@ function UiSignedInHelp(){
 }
 
 function signIn(username, password, callback){
-    const apiUrl = {
-        localhost: "http://localhost:8080/api/account/tokens",
-        dockerIp: "http://192.168.99.100:8080/api/account/tokens"
-    }
-
-    fetch(apiUrl.dockerIp, {
+    fetch(`${currentDomain}/api/account/tokens`, {
         method: "POST",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded"

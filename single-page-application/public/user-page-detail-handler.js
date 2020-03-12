@@ -19,7 +19,7 @@ function getUserInformation(username, callback) {
     let errorResponseCode = undefined
     
     fetch(
-        `http://localhost:8080/api/account/${username}`
+        `${currentDomain}/api/account/${username}`
     ).then(response => {
         if(response.ok) {
             return response.json()

@@ -1,3 +1,8 @@
+const domains = {
+    localhost: "http://localhost:8080",
+    dockerIp: "http://192.168.99.100:8080"
+}
+const currentDomain = domains.localhost
 
 document.addEventListener("DOMContentLoaded", function(){
     moveToPage(location.pathname)
@@ -25,11 +30,6 @@ const staticPageDestinations = [
     //Actions
     {uri: "/account/signout", method: signOut, methodOnly: true}
 ]
-const dynamicPageDestinations = [
-    //Regex specific destinations
-    {uri: "/account/view/*", method: displayUserDetailPageForUsername, methodOnly: false},
-    {uri: "/account/edit/*", method: displayUserDetailPageForUsername, methodOnly: false},
-]
 
 function moveToPage(uri){
     history.pushState({}, "", uri)
@@ -42,12 +42,18 @@ function moveToPage(uri){
     const staticDestinationIndex = staticPageDestinations.findIndex((element) => element.uri == uri)
 
     if (staticDestinationIndex == -1) {
-        //If user page
-        //const dynamicDestinationIndex = dynamicPageDestinations.find((element) => element.uri.contains())
         if(new RegExp("account\/view\/.+").test(uri)) {
-            const parentElement = document.getElementById("/account/view")
-            parentElement.classList.add("current-page")
+            const parentElement = document.getElementById("/account/view/")
             displayUserDetailPageForUsername(parentElement, uri.match("account\/view\/(.+)")[1])
+            parentElement.classList.add("current-page")
+        }
+        else if (new RegExp("account\/edit\/.+").test(uri)) {
+            const parentElement = document.getElementById("/account/edit/")
+            displayUserDetailPageForUsername(parentElement, uri.match("account\/edit\/(.+)")[1])
+            parentElement.classList.add("current-page")
+        }
+        else {
+            console.log("Nothing here 404")
         }
     }
     else {

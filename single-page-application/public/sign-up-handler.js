@@ -10,7 +10,7 @@ function signUpNewAccount(){
         const username = event.srcElement.elements[0].value
         const password = event.srcElement.elements[1].value
 
-        fetch(apiUrl.dockerIp, {
+        fetch(`${currentDomain}/api/account`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
@@ -22,7 +22,7 @@ function signUpNewAccount(){
         })
         .then(createdUsername => {
             console.log(createdUsername)
-            login(createdUsername, password, function(error, username) {
+            signIn(createdUsername, password, function(error, username) {
                 if(error) {
                     console.log(error)
                 }
