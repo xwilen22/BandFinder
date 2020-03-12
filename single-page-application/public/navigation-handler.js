@@ -1,6 +1,13 @@
 
 document.addEventListener("DOMContentLoaded", function(){
     moveToPage(location.pathname)
+    if(localStorage.accessToken){
+        UiSignedInHelp()
+    }
+    else{
+        signOut()
+    }
+
     const destinationAnchors = document.getElementsByTagName("a")
     for (anchor of destinationAnchors) {
         anchor.addEventListener("click", function(event) {
@@ -11,10 +18,10 @@ document.addEventListener("DOMContentLoaded", function(){
 })
 
 const staticPageLocations = [
-    {uri: "/", method: displayHomePage},
-    {uri: "/account/signin", method: signInToAccount},
-    {uri: "/account/signup", method: signUpNewAccount},
-    {uri: "/account/edit", method: null}
+    {uri: "/", method: displayHomePage, methodOnly: false},
+    {uri: "/account/signin", method: signInToAccount, methodOnly: false},
+    {uri: "/account/signup", method: signUpNewAccount, methodOnly: false},
+    {uri: "/account/signout", method: signOut, methodOnly: true}
 ]
 
 function moveToPage(uri){
@@ -35,8 +42,13 @@ function moveToPage(uri){
         }
     }
     else {
-        const parentElement = document.getElementById(staticPageLocations[destinationIndex].uri)
-        parentElement.classList.add("current-page")
-        staticPageLocations[destinationIndex].method(parentElement)
+        if(staticPageLocations[destinationIndex].methodOnly == false){
+            const parentElement = document.getElementById(staticPageLocations[destinationIndex].uri)
+            parentElement.classList.add("current-page")
+            staticPageLocations[destinationIndex].method(parentElement)
+        }
+        else{
+            staticPageLocations[destinationIndex].method()
+        }
     }
 }
