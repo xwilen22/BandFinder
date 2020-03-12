@@ -26,21 +26,34 @@ CREATE TABLE IF NOT EXISTS instrument (
 );
 CREATE TABLE IF NOT EXISTS user_proficiency (
     username VARCHAR(20) NOT NULL,
-    instrument_name VARCHAR(20) UNIQUE,
+    instrument_name VARCHAR(20),
     proficiency_level TINYINT UNSIGNED NOT NULL,
-    CONSTRAINT FOREIGN KEY (username) REFERENCES user(username),
-    CONSTRAINT FOREIGN KEY (instrument_name) REFERENCES instrument(instrument_name)
+    CONSTRAINT FOREIGN KEY (instrument_name) 
+        REFERENCES instrument(instrument_name),
+    CONSTRAINT FOREIGN KEY (username) 
+        REFERENCES user(username)
+        ON DELETE CASCADE
 );
+ALTER TABLE user_proficiency ADD UNIQUE `unique_proficiency`(`instrument_name`, `username`);
+
 CREATE TABLE IF NOT EXISTS band_membership (
     username VARCHAR(20) NOT NULL,
     band_id INT NOT NULL,
     is_band_leader BOOLEAN,
-    CONSTRAINT FOREIGN KEY (username) REFERENCES user(username),
-    CONSTRAINT FOREIGN KEY (band_id) REFERENCES band(band_id)
+    CONSTRAINT FOREIGN KEY (username) 
+       REFERENCES user(username)
+       ON DELETE CASCADE,
+    CONSTRAINT FOREIGN KEY (band_id) 
+      REFERENCES band(band_id)
+      ON DELETE CASCADE
 );
 CREATE TABLE IF NOT EXISTS band_application (
     username VARCHAR(20) NOT NULL,
     band_id INT NOT NULL,
-    CONSTRAINT FOREIGN KEY (username) REFERENCES user(username),
-    CONSTRAINT FOREIGN KEY (band_id) REFERENCES band(band_id)
-)
+    CONSTRAINT FOREIGN KEY (username) 
+        REFERENCES user(username)
+        ON DELETE CASCADE,
+    CONSTRAINT FOREIGN KEY (band_id) 
+        REFERENCES band(band_id)
+        ON DELETE CASCADE
+);
