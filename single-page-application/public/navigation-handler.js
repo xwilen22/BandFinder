@@ -49,7 +49,7 @@ function moveToPage(uri){
         }
         else if (new RegExp("account\/edit\/.+").test(uri)) {
             const parentElement = document.getElementById("/account/edit/")
-            displayUserDetailPageForUsername(parentElement, uri.match("account\/edit\/(.+)")[1])
+            displayEditPageForUser(parentElement, uri.match("account\/edit\/(.+)")[1])
             parentElement.classList.add("current-page")
         }
         else {

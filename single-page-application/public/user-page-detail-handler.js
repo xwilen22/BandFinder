@@ -3,15 +3,16 @@ function displayUserDetailPageForUsername(parentElement, username) {
     const bioparagraphElement = parentElement.getElementsByTagName("p")[0]
     const editUserAnchor = parentElement.getElementsByTagName("a")[0]
     
-    getUserInformation(username, function(error, accountInformation) {
+    editUserAnchor.hidden = (decodeURIComponent(username) != localStorage.username)
+
+    getUserInformation(username, function(error, accountInformationObject) {
         if(error) {
             console.log("ERROR", error)
         }
         else {
-            usernameHeader.innerText = accountInformation.username
-            bioparagraphElement.innerText = accountInformation.biography
-            //editUserAnchor.href = `/account/edit/${accountInformation.username}`
-            editUserAnchor.href = `/account/edit`
+            usernameHeader.innerText = accountInformationObject.username
+            bioparagraphElement.innerText = accountInformationObject.biography
+            editUserAnchor.href = `/account/edit/${accountInformationObject.username}`
         }
     })
 }

@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/index.css" type="text/css">
     
+    <script src="/edit-user-handler.js"></script>
     <script src="/user-page-detail-handler.js"></script>
     <script src="/sign-up-handler.js"></script>
     <script src="/sign-in-handler.js"></script>
@@ -68,26 +69,27 @@
             </form>
         </div>
         <div id="/account/view/">
-            <a class="btn btn-primary">Edit</a>
+            <a class="btn btn-primary showIfSignedIn">Edit</a>
             <h2></h2>
             <p></p>
         </div>
         <div id="/account/edit/">
+            <h2></h2>
             <section class="row container-fluid">
                 <div class="col-md-12 p-2 row">
+                    <!--BIO edit-->
                     <form method="POST" class="form-group col-md-10">
                         <label for="bioEditText">Bio</label>
                         <textarea class="form-control" type="text" id="bioEditText" name="biography" rows="4"></textarea>
-            
                         <input class="btn btn-primary" type="submit" value="Save changes">
                     </form>
                 </div>
             </section>
             <section class="row container-fluid">
+                <!--Proficiency add-->
                 <form method="POST" class="form-group" action="">
                     <label for="instrumentSelect">Instrument</label>
                     <select id="instrumentSelect" name="instrument">
-                        <option></option>
                     </select>
                     <label for="skillLevelNumber">Skill level</label>
                     <input type="number" min="1" , max="5" value="1" id="skillLevelNumber" name="skillLevel">
@@ -97,8 +99,10 @@
             <section class="row container-fluid p-4">
                 <p class="h3">Proficiencies</p>
                 <div class="col-12">
+                    <!--Proficiency list-->
                     <ul class="list-unstyled list-inline">
-                        <li class="list-inline-item bg-light p-2">
+                        <li class="list-inline-item bg-light p-2" id="proficiencyItem">
+                            <p>Hello</p>
                             <div class="inline">
                                 <form method="POST" action="">
                                     <input type="number" min="1" , max="5"  name="skillLevel">
