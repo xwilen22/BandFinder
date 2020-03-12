@@ -1,5 +1,8 @@
 function signUpNewAccount(){
-    const apiUrl = "http://localhost:8080/api/account"
+    const apiUrl = {
+        localhost: "http://localhost:8080/api/account/tokens",
+        dockerIp: "http://192.168.99.100:8080/api/account/tokens"
+    }
     const signUpForm = document.querySelector("#signup")
     signUpForm.addEventListener("submit", function(event){
         event.preventDefault()
@@ -26,6 +29,7 @@ function signUpNewAccount(){
         })
         .then(createdUsername => {
             console.log(createdUsername)
+            login()
             moveToPage(`account/view/${createdUsername}`)
         })
         .catch(error => {
