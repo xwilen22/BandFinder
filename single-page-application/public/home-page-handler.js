@@ -10,7 +10,10 @@ function displayHomePage(parentElement) {
             for (account of accounts) {
                 const listItem = document.createElement("li")
                 const userPageAnchor = document.createElement("a")
-
+                userPageAnchor.addEventListener("click", function(event) {
+                    event.preventDefault()
+                    moveToPage(event.target.getAttribute("href"))
+                })
                 userPageAnchor.href = `/account/view/${account.username}`
                 userPageAnchor.innerText = account.username
 
