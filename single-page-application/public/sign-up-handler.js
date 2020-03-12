@@ -6,15 +6,9 @@ function signUpNewAccount(){
     const signUpForm = document.querySelector("#signup")
     signUpForm.addEventListener("submit", function(event){
         event.preventDefault()
+        
         const username = event.srcElement.elements[0].value
         const password = event.srcElement.elements[1].value
-
-        const account = {
-            username,
-            password
-        }
-
-        console.log("Request body: ", JSON.stringify(account))
 
         fetch(apiUrl.localhost, {
             method: "POST",
