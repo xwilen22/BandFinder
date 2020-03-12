@@ -25,7 +25,7 @@ function displayHomePage(parentElement) {
 }
 function fetchAllAccounts(callback) {
     fetch(
-        "http://localhost:8080/api/account"
+        "http://192.168.99.100:8080/api/account"
     )
     .then(response => {
         if(response.status == 201) {
