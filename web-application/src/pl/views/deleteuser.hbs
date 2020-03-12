@@ -1,0 +1,8 @@
+<h2>Warning!</h2>
+<p>You're about to delete the account: {{loggedInUsername}}</p>
+<form action="" method="POST">
+    <label for="passwordCheck">Enter your password to confirm: </label>
+    <input type="password" name="passwordCheck" id="passwordCheck">
+    <input type="submit" value="Confirm">
+    <input type="hidden" value="{{csrfToken}}" name="_csrf">
+</form>
