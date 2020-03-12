@@ -48,6 +48,23 @@ module.exports = function ({ db }) {
             })
         },
 
+        getAllUserInformations: function(callback) {
+            userModel.findAll({
+                raw: true,
+                attributes: [
+                    "username",
+                    "biography",
+                    "user_profile_picture"
+                ]
+            })
+            .then(users => {
+                callback(undefined, users)
+            })
+            .catch(error => {
+                callback(error, null)
+            })
+        },
+
         getUserByUsername: function (username, callback) {
             userModel.findAll({
                 where: {
@@ -57,6 +74,26 @@ module.exports = function ({ db }) {
             })
             .then(user => {
                 callback(undefined, user)
+            })
+            .catch(error => {
+                callback(error, null)
+            })
+        },
+
+        getUserInformationByUsername: function (username, callback) {
+            userModel.findAll({
+                where: {
+                    username
+                },
+                attributes: [
+                    "username",
+                    "biography",
+                    "user_profile_picture"
+                ],
+                raw: true
+            })
+            .then(userInfo => {
+                callback(undefined, userInfo)
             })
             .catch(error => {
                 callback(error, null)

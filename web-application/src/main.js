@@ -48,6 +48,7 @@ const bandMembershipRepository = require(`./${dalSource}/bandMembershipRepositor
 const bandRepository = require(`./${dalSource}/bandRepository`)
 const applicationRepository = require(`./${dalSource}/applicationRepository`)
 const database = require(`./${dalSource}/db`)
+
 ///BUSINESS LOGIC LAYER
 const accountManager = require("./bll/accountManager")
 const passwordManager = require("./bll/passwordManager")
@@ -63,6 +64,7 @@ const instrumentManager = require("./bll/instrumentManager")
 const proficiencyValidation = require("./bll/proficiencyValidation")
 const genreValidation = require("./bll/genreValidation")
 const applicationManager = require("./bll/applicationManager")
+
 ///PRESENTATION LAYER
 const adminRouter = require("./pl/routers/adminRouter")
 const accountRouter = require("./pl/routers/accountRouter")
@@ -71,7 +73,10 @@ const bandRouter = require("./pl/routers/bandRouter")
 const variousRouter = require("./pl/routers/variousRouter")
 const proficiencyRouter = require("./pl/routers/proficiencyRouter")
 const applicationRouter = require("./pl/routers/applicationRouter")
-///REST API PRESENTATION LAYER
+
+///-REST API BUSINESS LOGIC LAYER
+const restApiManager = require("./bll/restApiManager")
+///-REST API PRESENTATION LAYER
 const apiAccountRouter = require("./plrestapi/routers/accountRouter")
 const apiInstrumentRouter = require("./plrestapi/routers/instrumentRouter")
 const apiProficiencyRouter = require("./plrestapi/routers/proficiencyRouter")
@@ -128,6 +133,8 @@ const theAdminRouter = container.resolve("adminRouter")
 container.register("variousRouter", awilix.asFunction(variousRouter))
 const theVariousRouter = container.resolve("variousRouter")
 
+container.register("restApiManager", awilix.asFunction(restApiManager))
+
 container.register("apiAccountRouter", awilix.asFunction(apiAccountRouter))
 const theApiAccountRouter = container.resolve("apiAccountRouter")
 
@@ -136,6 +143,20 @@ const theApiInstrumentRouter = container.resolve("apiInstrumentRouter")
 
 container.register("apiProficiencyRouter", awilix.asFunction(apiProficiencyRouter))
 const theApiProficiencyRouter = container.resolve("apiProficiencyRouter")
+
+// TODO: Not a good idea to open up to entire world.
+// Better to only target the frontend application.
+app.use("/api*", function(request, response, next){
+	response.setHeader("Access-Control-Allow-Origin", "*")
+	response.setHeader("Access-Control-Allow-Methods", "*")
+	response.setHeader("Access-Control-Allow-Headers", "*")
+	response.setHeader("Access-Control-Expose-Headers", "*")
+	next()
+})
+
+app.use("/api/account", theApiAccountRouter)
+app.use("/api/instruments", theApiInstrumentRouter)
+app.use("/api/proficiencies", theApiProficiencyRouter)
 
 app.use("*", csrfProtection, function(request, response, next) {
     request.session.csrfToken = request.csrfToken()
@@ -158,10 +179,6 @@ app.use("/instruments", theInstrumentRouter)
 app.use("/proficiencies", theProficiencyRouter)
 app.use("/applications", theApplicationRouter)
 app.use("/admin", theAdminRouter)
-
-app.use("/api/account", theApiAccountRouter)
-app.use("/api/instruments", theApiInstrumentRouter)
-app.use("/api/proficiencies", theApiProficiencyRouter)
 
 app.use(function(error, request, response, next) {	
     console.log(error)

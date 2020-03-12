@@ -25,6 +25,9 @@ module.exports = function ({errorGenerator, instrumentRepository}) {
                 if(error) {
                     callback(errorGenerator.getInternalError(error))
                 }
+                else if(instrument == undefined || instrument == null) {
+                    callback(errorGenerator.getClientError(["No instrument found!"], 404))
+                }
                 else {
                     callback(errorGenerator.getSuccess(), instrument)
                 }

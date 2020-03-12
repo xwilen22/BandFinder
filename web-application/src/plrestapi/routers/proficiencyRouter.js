@@ -1,50 +1,77 @@
 const express = require("express")
 
-module.exports = function ({ proficiencyManager }) {
+module.exports = function ({ proficiencyManager, restApiManager, sessionValidation }) {
     const router = express.Router()
+    //Create for user
+    router.post("/", restApiManager.verifyAccessToken, function (request, response, next) {
+        const username = request.body.username
+        const instrumentName = request.body.instrumentName
+        const skillLevelNumber = request.body.skillLevelNumber
 
-    router.post("/create/:forUsername", function (request, response, next) {
-        const username = request.params.forUsername
-        const instrumentName = request.body.instrument
-        const proficiencySkillLevel = request.body.skillLevel
+        if (sessionValidation.validateAccountNameInSession(username, request.userId) == true) {
+            proficiencyManager.createProficiency(username, instrumentName, skillLevelNumber, function (error) {
+                if (error) {
+                    response.status(error.code).end()
+                }
+                else {
+                    response.status(201).end()
+                }
+            })
+        }
+        else {
+            response.status(401).end()
+        }
 
-        console.log("CREATING PROF: ", username, instrumentName, proficiencySkillLevel)
-
-        proficiencyManager.createProficiency(username, instrumentName, proficiencySkillLevel, function(error) {
+    })
+    //Get for username
+    router.get("/:username", function(request, response) {
+        const username = request.params.username
+        proficiencyManager.getAllProficienciesForUser(username, function(error, proficiencies) {
             if(error) {
-                next(error)
+                response.status(error.code).end()
             }
             else {
-                response.redirect("back")
+                response.status(200).json(proficiencies)
             }
         })
     })
-    router.post("/delete/:forUsername/:instrumentName", function (request, response, next) {
+    //Update
+    router.put("/:forUsername/:instrumentName", restApiManager.verifyAccessToken, function(request, response) {
         const username = request.params.forUsername
         const instrumentName = request.params.instrumentName
-
-        proficiencyManager.deleteProficiencyForUser(username, instrumentName, function(error) {
-            if(error) {
-                next(error)
-            }
-            else {
-                response.redirect("back")
-            }
-        })
+        const skillLevelNumber = request.body.skillLevelNumber
+        if (sessionValidation.validateAccountNameInSession(username, request.userId) == true) {
+            proficiencyManager.updateProficiencyLevelForUser(username, instrumentName, skillLevelNumber, function (error) {
+                if (error) {
+                    response.status(error.code).end()
+                }
+                else {
+                    response.status(204).end()
+                }
+            })
+        }
+        else {
+            response.status(401).end()
+        }
     })
-    router.post("/update/:forUsername/:instrumentName", function(request, response, next) {
+    //Delete
+    router.delete("/:forUsername/:instrumentName", restApiManager.verifyAccessToken, function (request, response) {
         const username = request.params.forUsername
         const instrumentName = request.params.instrumentName
-        const newProficiencySkillLevel = request.body.skillLevel
-
-        proficiencyManager.updateProficiencyLevelForUser(username, instrumentName, newProficiencySkillLevel, function(error) {
-            if(error) {
-                next(error)
-            }
-            else {
-                response.redirect("back")
-            }
-        })
+        if (sessionValidation.validateAccountNameInSession(username, request.userId) == true) {
+            proficiencyManager.deleteProficiencyForUser(username, instrumentName, function (error) {
+                if (error) {
+                    response.status(error.code).end()
+                }
+                else {
+                    response.status(204).end()
+                }
+            })
+        }
+        else {
+            response.status(401).end()
+        }
     })
+    
     return router
 }

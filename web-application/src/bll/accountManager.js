@@ -45,6 +45,16 @@ module.exports = function ({ accountRepository, accountValidation, passwordManag
                 }
             })
         },
+        getAllAccountsInformation: function(callback) {
+            accountRepository.getAllUserInformations(function (error, userInformationObjects) {
+                if (error) {
+                    callback(errorGenerator.getInternalError(error))
+                }
+                else {
+                    callback(errorGenerator.getSuccess(), userInformationObjects)
+                }
+            })
+        },
         updateAccountPassword: function (username, oldPassword, newPassword, callback) {
             accountRepository.getUserByUsername(username, function (error, userObject) {
                 if (error) {
@@ -98,7 +108,7 @@ module.exports = function ({ accountRepository, accountValidation, passwordManag
                                 if (success == true) {
                                     accountRepository.deleteUserByUsername(username, function (accountDeleteError) {
                                         if (accountDeleteError) {
-                                            callback(accountDeleteError)
+                                            callback(errorGenerator.getInternalError(accountDeleteError))
                                         }
                                         else {
                                             callback(errorGenerator.getSuccess())
@@ -131,7 +141,27 @@ module.exports = function ({ accountRepository, accountValidation, passwordManag
                 })
             }
             else {
-                callback(accountNameValidationErrors)
+                callback(errorGenerator.getClientError(accountNameValidationErrors))
+            }
+        },
+        getAccountInformationByUsername: function(username, callback) {
+            const accountNameValidationErrors = accountValidation.getNameValidationErrors(username)
+
+            if (accountNameValidationErrors.length <= 0) {
+                accountRepository.getUserInformationByUsername(username, function (error, userObjects) {
+                    if(userObjects == null || userObjects.length <= 0) {
+                        callback(errorGenerator.getHttpCodeError(404))
+                    }
+                    else if (error){
+                        callback(errorGenerator.getInternalError(error), null)
+                    } 
+                    else {
+                        callback(errorGenerator.getSuccess(), userObjects[0])
+                    }
+                })
+            }
+            else {
+                callback(errorGenerator.getClientError(accountNameValidationErrors))
             }
         }
     }

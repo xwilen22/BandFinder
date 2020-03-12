@@ -1,14 +1,29 @@
 const express = require("express")
 
-module.exports = function ({instrumentManager}) {
+module.exports = function ({ instrumentManager }) {
     const router = express.Router()
-
-    router.post("/create", function (request, response) {
-
+    //Get all
+    router.get("/", function (request, response) {
+        instrumentManager.getAllInstruments(function(error, instruments) {
+            if(error) {
+                response.status(error.code).end()
+            }
+            else {
+                response.status(200).json(instruments)
+            }
+        })
     })
-    router.post("/delete", function (request, response) {
+    router.get("/:instrumentName", function (request, response) {
+        const instrumentName = request.params.instrumentName
 
+        instrumentManager.getInstrumentByName(instrumentName, function(error, instrument) {
+            if(error) {
+                response.status(error.code).end()
+            }
+            else {
+                response.status(200).json(instrument)
+            }
+        })
     })
-
     return router
 }
