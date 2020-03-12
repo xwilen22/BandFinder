@@ -1,11 +1,12 @@
 function displayUserDetailPageForUsername(parentElement, username) {
     console.log(username)
+    
     parentElement.getElementsByTagName("h2")[0].innerText = username
     const bioparagraphElement = parentElement.getElementsByTagName("p")[0]
 
     getUserInformation(username, function(error, accountInformation) {
         if(error) {
-
+            console.log(error)
         }
         else {
             bioparagraphElement.innerText = accountInformation.biography

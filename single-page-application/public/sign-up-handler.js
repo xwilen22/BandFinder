@@ -13,8 +13,7 @@ function signUpNewAccount(){
         fetch(apiUrl.localhost, {
             method: "POST",
             headers: {
-                "Content-Type": "application/x-www-form-urlencoded"/*,
-                "Authorization": "Bearer "+localStorage.accessToken*/
+                "Content-Type": "application/x-www-form-urlencoded"
             },
             body: `username=${username}&password=${password}`
         })
