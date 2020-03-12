@@ -4,10 +4,24 @@ function displayEditPageForUser(parentElement, username) {
     const biographyEditForm = document.getElementById("bioEditForm")
     const biographyTextarea = biographyEditForm.getElementsByTagName("textarea")[0]
     
-    const instrumentsSelect = document.getElementById("instrumentSelect")
-  
+    const proficiencyAddForm = document.getElementById("proficiencyAddForm")
+    const instrumentsSelect = proficiencyAddForm.getElementsByTagName("select")[0]
+    const addProficiencyLevelNumberInput = document.getElementById("skillLevelNumber")
+
     const proficienciesUnorderedList = parentElement.getElementsByTagName("ul")[0]
     const proficiencyListItemTemplate = document.getElementById("proficiencyItem")
+
+    proficiencyAddForm.addEventListener("submit", function(event) {
+        event.preventDefault()
+        addResourceAuth(`proficiencies`, {instrumentName: instrumentsSelect.value, skillLevelNumber:addProficiencyLevelNumberInput.value, username}, function(error) {
+            if(error) {
+                console.log("bad", error)
+            }
+            else {
+                console.log("ye")
+            }
+        })
+    })
 
     fetchResource(`account/${username}`, function(error, accountInformationObject) {
         if(error) {
@@ -19,7 +33,7 @@ function displayEditPageForUser(parentElement, username) {
 
             biographyEditForm.addEventListener("submit", function(event) {
                 event.preventDefault()
-                editBiographyForUsername(accountInformationObject.username, biographyTextarea.value, function(error) {
+                updateResourceAuth(`account/${username}`, {biography:biographyTextarea.value}, function(error) {
                     if(error) {
                         console.error("no", error)
                     }
@@ -64,8 +78,8 @@ function displayEditPageForUser(parentElement, username) {
                 updateForm.addEventListener("submit", function(event) {
                     event.preventDefault()
                     const proficiencyLevel = updateForm.getElementsByTagName("input")[0].value
-
-                    updateResourceAuth(`proficiencies/${username}/${instrumentName}`, {skillLevel:proficiencyLevel}, function(error) {
+                    console.log("LEVEL; ", proficiencyLevel)
+                    updateResourceAuth(`proficiencies/${username}/${instrumentName}`, {skillLevelNumber:proficiencyLevel}, function(error) {
                         if(error) {
                             console.log("bad", error)
                         }
@@ -73,21 +87,20 @@ function displayEditPageForUser(parentElement, username) {
                             console.log("Good")
                         }
                     })
-                    /*editProficiencyLevelForUsernameAndInstrument(username, proficiency.instrument_name, proficiencyLevel, function(error) {
-                        if(error) {
-                            console.log("Error", error)
-                        }
-                        else {
-                            console.log("Nice")
-                        }
-                    })*/
                 })
 
                 const deleteForm = proficiencyListItem.getElementsByTagName("form")[1]
                 //When user wants to delete prof
                 deleteForm.addEventListener("submit", function(event) {
                     event.preventDefault()
-                    updateResourceAuth("", {skillLevel:1, kuken:"hej"})
+                    deleteResourceAuth(`proficiencies/${username}/${instrumentName}`, function(error) {
+                        if(error) {
+                            console.log("bad", error)
+                        }
+                        else {
+                            document.removeChild(event.srcElement)
+                        }
+                    })
                 })
 
                 proficienciesUnorderedList.appendChild(proficiencyListItem)
@@ -110,11 +123,9 @@ function fetchResource(resourceUri, callback) {
         }
     })
     .then(instruments => {
-        console.log("FETCHED STUFF", instruments)
         callback(undefined, instruments)
     })
     .catch(error => {
-        console.log("FAILED", error)
         callback(error)
     })
 }
@@ -151,15 +162,14 @@ function updateResourceAuth(resourceUri, keyValueBodyObject, callback) {
         callback(error)
     })
 }
-function editBiographyForUsername(username, biographyText, callback) {
+function deleteResourceAuth(resourceUri, callback) {
     fetch(
-        `${currentDomain}/api/account/${username}`, {
-            method: "PUT",
+        `${currentDomain}/api/${resourceUri}`, {
+            method: "DELETE",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
                 "authorization": `Bearer ${localStorage.accessToken}`
             },
-            body: `biography=${biographyText}`
         }
     )
     .then(response => {
@@ -176,20 +186,27 @@ function editBiographyForUsername(username, biographyText, callback) {
         callback(error)
     })
 }
-function editProficiencyLevelForUsernameAndInstrument(username, instrumentName, proficiencyLevel, callback) {
+function addResourceAuth(resourceUri, keyValueBodyObject, callback) {
+    let body = ""
+    for(key in keyValueBodyObject) {
+        if(body.length > 0) {
+            body += "&"
+        }
+        body += `${key}=${keyValueBodyObject[key]}`
+    }
+
     fetch(
-        `${currentDomain}/api/proficiencies/${username}/${instrumentName}`,
-        {
-            method: "PUT",
+        `${currentDomain}/api/${resourceUri}`, {
+            method: "POST",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
                 "authorization": `Bearer ${localStorage.accessToken}`
             },
-            body: `skillLevel=${proficiencyLevel}`
+            body
         }
     )
     .then(response => {
-        if(response.status == 204) {
+        if(response.status == 201) {
             callback(undefined)
         }
         else {
@@ -201,10 +218,4 @@ function editProficiencyLevelForUsernameAndInstrument(username, instrumentName, 
         console.log("Error ", error)
         callback(error)
     })
-}
-function deleteProficiencyForUsernameAndInstrument(username, instrumentName, callback) {
-
-}
-function addProficiencyForUsername(username, instrumentName, proficiencyLevel, callback) {
-
 }
