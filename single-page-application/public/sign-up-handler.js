@@ -16,7 +16,7 @@ function signUpNewAccount(){
 
         console.log("Request body: ", JSON.stringify(account))
 
-        fetch(apiUrl, {
+        fetch(apiUrl.localhost, {
             method: "POST",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"/*,
