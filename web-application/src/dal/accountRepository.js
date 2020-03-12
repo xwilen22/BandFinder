@@ -55,9 +55,7 @@ module.exports = function ({ db }) {
         },
 
         deleteUserByUsername: function (username, callback) {
-            let query = `DELETE FROM (user, band_membership, user_proficiency) 
-                         USING user INNERJOIN band_membership INNERJOIN user_proficiency 
-                         WHERE user.username = ? AND band_membership.username = ? AND user_proficiency.username = ?`
+            let query = `DELETE FROM user WHERE username = ?`
             db.query(query, [username], function (error) {
                 callback(error)
             })
