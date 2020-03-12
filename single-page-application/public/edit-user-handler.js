@@ -8,7 +8,6 @@ function displayEditPageForUser(parentElement, username) {
     const instrumentsSelect = proficiencyAddForm.getElementsByTagName("select")[0]
     const addProficiencyLevelNumberInput = document.getElementById("skillLevelNumber")
 
-    const proficienciesUnorderedList = parentElement.getElementsByTagName("ul")[0]
     const proficiencyListItemTemplate = document.getElementById("proficiencyItem")
 
     proficiencyAddForm.addEventListener("submit", function(event) {
@@ -18,7 +17,15 @@ function displayEditPageForUser(parentElement, username) {
                 console.log("bad", error)
             }
             else {
-                console.log("ye")
+                fetchResource(`proficiencies/${username}`, function(error, proficiencies) {
+                    if(error) {
+                        console.error(error)
+                    }
+                    else {
+                        //This needs fix :***
+                        addProficiencyToList(proficiency, proficiencyListItemTemplate, proficienciesUnorderedList, username)
+                    }
+                })
             }
         })
     })
@@ -58,14 +65,16 @@ function displayEditPageForUser(parentElement, username) {
             }
         }
     })
-
     fetchResource(`proficiencies/${username}`, function(error, proficiencies) {
         if(error) {
             console.error(error)
         }
         else {
+            const proficienciesUnorderedList = parentElement.getElementsByTagName("ul")[0]
+            proficienciesUnorderedList.innerHTML = ""
+            
             for (proficiency of proficiencies) {
-                console.log(proficiency)
+                /*console.log(proficiency)
                 const proficiencyListItem = proficiencyListItemTemplate.cloneNode(true)
                 proficiencyListItem.getElementsByTagName("p")[0].innerText = proficiency.instrument_name
                 
@@ -73,12 +82,11 @@ function displayEditPageForUser(parentElement, username) {
                 updateForm.getElementsByTagName("input")[0].value = proficiency.proficiency_level
                 
                 const instrumentName = proficiency.instrument_name
-
+        
                 //When user wants to update prof level
                 updateForm.addEventListener("submit", function(event) {
                     event.preventDefault()
                     const proficiencyLevel = updateForm.getElementsByTagName("input")[0].value
-                    console.log("LEVEL; ", proficiencyLevel)
                     updateResourceAuth(`proficiencies/${username}/${instrumentName}`, {skillLevelNumber:proficiencyLevel}, function(error) {
                         if(error) {
                             console.log("bad", error)
@@ -88,7 +96,7 @@ function displayEditPageForUser(parentElement, username) {
                         }
                     })
                 })
-
+        
                 const deleteForm = proficiencyListItem.getElementsByTagName("form")[1]
                 //When user wants to delete prof
                 deleteForm.addEventListener("submit", function(event) {
@@ -98,17 +106,59 @@ function displayEditPageForUser(parentElement, username) {
                             console.log("bad", error)
                         }
                         else {
-                            document.removeChild(event.srcElement)
+                            proficienciesUnorderedList.removeChild(proficiencyListItem)
                         }
                     })
                 })
-
-                proficienciesUnorderedList.appendChild(proficiencyListItem)
+        
+                proficienciesUnorderedList.appendChild(proficiencyListItem)*/
+                addProficiencyToList(proficiency, proficiencyListItemTemplate, proficienciesUnorderedList, username)
             }
             proficiencyListItemTemplate.hidden = true
         }
     })
 }
+function addProficiencyToList(proficiencyObject, templateElement, proficienciesUnorderedList, username) {
+    console.log(proficiency)
+    const proficiencyListItem = templateElement.cloneNode(true)
+    proficiencyListItem.getElementsByTagName("p")[0].innerText = proficiencyObject.instrument_name
+
+    const updateForm = proficiencyListItem.getElementsByTagName("form")[0]
+    updateForm.getElementsByTagName("input")[0].value = proficiencyObject.proficiency_level
+
+    const instrumentName = proficiencyObject.instrument_name
+
+    //When user wants to update prof level
+    updateForm.addEventListener("submit", function (event) {
+        event.preventDefault()
+        const proficiencyLevel = updateForm.getElementsByTagName("input")[0].value
+        updateResourceAuth(`proficiencies/${username}/${instrumentName}`, { skillLevelNumber: proficiencyLevel }, function (error) {
+            if (error) {
+                console.log("bad", error)
+            }
+            else {
+                console.log("Good")
+            }
+        })
+    })
+
+    const deleteForm = proficiencyListItem.getElementsByTagName("form")[1]
+    //When user wants to delete prof
+    deleteForm.addEventListener("submit", function (event) {
+        event.preventDefault()
+        deleteResourceAuth(`proficiencies/${username}/${instrumentName}`, function (error) {
+            if (error) {
+                console.log("bad", error)
+            }
+            else {
+                proficienciesUnorderedList.removeChild(proficiencyListItem)
+            }
+        })
+    })
+
+    proficienciesUnorderedList.appendChild(proficiencyListItem)
+}
+
 
 function fetchResource(resourceUri, callback) {
     fetch(
