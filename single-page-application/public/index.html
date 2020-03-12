@@ -29,13 +29,11 @@
                 </header>
             </section>
             <section class="nav justify-content-right">
-                <!--{{#if loggedInUsername}}-->
-                <!--<a class="nav-link" href="/account/view/{{loggedInUsername}}">{{loggedInUsername}}</a>-->
-                <a class="nav-link btn btn-primary btn-sm" href="/account/logout" >Sign out</a>
-                <!--{{else}}-->
-                <a class="nav-link btn btn-secondary btn-sm mx-1" href="/account/signin" >Sign in</a>
-                <a class="nav-link btn btn-primary btn-sm mx-1" href="/account/signup" >Sign up</a>
-                <!--{{/if}}-->
+                <a class="nav-link showIfSignedIn" href="/account/view/">Test</a>
+                <a class="nav-link btn btn-primary btn-sm showIfSignedIn" href="/account/signout" >Sign out</a>
+                
+                <a class="nav-link btn btn-secondary btn-sm mx-1 showIfSingedOut" href="/account/signin" >Sign in</a>
+                <a class="nav-link btn btn-primary btn-sm mx-1 showIfSingedOut" href="/account/signup" >Sign up</a>
             </section>
     </nav>
     <main class="p-3 container-fluid">
