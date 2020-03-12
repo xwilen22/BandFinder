@@ -13,7 +13,8 @@ document.addEventListener("DOMContentLoaded", function(){
 const staticPageLocations = [
     {uri: "/", method: displayHomePage},
     {uri: "/account/signin", method: signInToAccount},
-    {uri: "/account/signup", method: signUpNewAccount}
+    {uri: "/account/signup", method: signUpNewAccount},
+    {uri: "/account/edit", method: null}
 ]
 
 function moveToPage(uri){

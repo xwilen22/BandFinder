@@ -70,8 +70,50 @@
             </form>
         </div>
         <div id="/account/view">
+            <a class="btn btn-primary">Edit</a>
             <h2></h2>
             <p></p>
+        </div>
+        <div id="/account/edit">
+            <section class="row container-fluid">
+                <div class="col-md-12 p-2 row">
+                    <form method="POST" class="form-group col-md-10">
+                        <label for="bioEditText">Bio</label>
+                        <textarea class="form-control" type="text" id="bioEditText" name="biography" rows="4"></textarea>
+            
+                        <input class="btn btn-primary" type="submit" value="Save changes">
+                    </form>
+                </div>
+            </section>
+            <section class="row container-fluid">
+                <form method="POST" class="form-group" action="">
+                    <label for="instrumentSelect">Instrument</label>
+                    <select id="instrumentSelect" name="instrument">
+                        <option></option>
+                    </select>
+                    <label for="skillLevelNumber">Skill level</label>
+                    <input type="number" min="1" , max="5" value="1" id="skillLevelNumber" name="skillLevel">
+                    <input class="btn btn-secondary" type="submit" value="Add proficiency">
+                </form>
+            </section>
+            <section class="row container-fluid p-4">
+                <p class="h3">Proficiencies</p>
+                <div class="col-12">
+                    <ul class="list-unstyled list-inline">
+                        <li class="list-inline-item bg-light p-2">
+                            <div class="inline">
+                                <form method="POST" action="">
+                                    <input type="number" min="1" , max="5"  name="skillLevel">
+                                    <input type="submit" value="Update skill" class="btn btn-primary">
+                                </form>
+                                <form method="POST" action="">
+                                    <input type="submit" value="Delete" class="btn btn-warning">
+                                </form>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </section>
         </div> 
     </main>
     <footer class="bg-light border-top m-auto p-2 h-auto">
