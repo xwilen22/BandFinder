@@ -11,16 +11,24 @@ function signUpNewAccount(){
             password
         }
 
+        console.log("Request body: ", JSON.stringify(account))
+
         fetch(apiUrl, {
             method: "POST",
             headers: {
-                "Content-Type": "application/json",
-                "Authorization": "Bearer "+localStorage.accessToken
+                "Content-Type": "application/x-www-form-urlencoded"/*,
+                "Authorization": "Bearer "+localStorage.accessToken*/
             },
-            body: JSON.stringify(account)
-        }).then(function(response){
-            console.log(response)
-        }).catch(function(error){
+            body: `username=${username}&password=${password}`
+        })
+        .then(response => {
+            return response.json()
+        })
+        .then(createdUsername => {
+            console.log(createdUsername)
+            moveToPage(`account/view/${createdUsername}`)
+        })
+        .catch(error => {
             console.log(error)
         })
     })
