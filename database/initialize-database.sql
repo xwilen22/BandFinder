@@ -12,13 +12,13 @@ CREATE TABLE IF NOT EXISTS genre (
         ON DELETE CASCADE
 );
 CREATE TABLE IF NOT EXISTS band (
-    band_id INT AUTO_INCREMENT NOT NULL,
+    id INT AUTO_INCREMENT NOT NULL,
     band_name VARCHAR(30) NOT NULL,
     band_biography TEXT,
     band_genre VARCHAR(20) NOT NULL,
     max_members TINYINT UNSIGNED NOT NULL,
     band_profile_picture BLOB,
-    PRIMARY KEY (band_id),
+    PRIMARY KEY (id),
     CONSTRAINT FOREIGN KEY (band_genre) REFERENCES genre(genre_name)
 );
 CREATE TABLE IF NOT EXISTS instrument (
@@ -34,6 +34,7 @@ CREATE TABLE IF NOT EXISTS user_proficiency (
         REFERENCES user(username)
         ON DELETE CASCADE
 );
+
 ALTER TABLE user_proficiency ADD UNIQUE `unique_proficiency`(`instrument_name`, `username`);
 
 CREATE TABLE IF NOT EXISTS band_membership (
@@ -44,7 +45,7 @@ CREATE TABLE IF NOT EXISTS band_membership (
        REFERENCES user(username)
        ON DELETE CASCADE,
     CONSTRAINT FOREIGN KEY (band_id) 
-      REFERENCES band(band_id)
+      REFERENCES band(id)
       ON DELETE CASCADE
 );
 CREATE TABLE IF NOT EXISTS band_application (
@@ -54,6 +55,6 @@ CREATE TABLE IF NOT EXISTS band_application (
         REFERENCES user(username)
         ON DELETE CASCADE,
     CONSTRAINT FOREIGN KEY (band_id) 
-        REFERENCES band(band_id)
+        REFERENCES band(id)
         ON DELETE CASCADE
 );
