@@ -2,30 +2,42 @@ const Express = require("express")
 
 module.exports = function ({accountManager, accountValidation, restApiManager, sessionValidation}) {
     const router = Express.Router()
+    //Get all accounts
+    router.get("/", function (request, response) {
+        accountManager.getAllAccountsInformation(function (error, accounts) {
+            if (error) {
+                response.status(error.code).end()
+            }
+            else {
+                response.status(201).json(accounts)
+            }
+        })
+    })
+    //Create
+    router.post("/", function (request, response) {
+        const username = request.body.username
+        const password = request.body.password
+
+        accountManager.signUpAccount(username, password, function (error, createdUsername) {
+            if (error) {
+                response.status(error.code).end()
+            }
+            else {
+                response.status(201).json(createdUsername)
+            }
+        })
+    })
     //Get user
     router.get("/:username", function (request, response) {
         const username = request.params.username
 
         accountManager.getAccountInformationByUsername(username, function(error, account) {
             if(error) {
+                console.log(error)
                 response.status(error.code).end()
             }
             else {
                 response.status(200).json(account)
-            }
-        })
-    })
-    //Create
-    router.post("/", function(request, response) {
-        const username = request.body.username
-        const password = request.body.password
-
-        accountManager.signUpAccount(username, password, function(error, createdUsername) {
-            if(error) {
-                response.status(error.code).end()
-            }
-            else {
-                response.status(201).json(createdUsername)
             }
         })
     })
