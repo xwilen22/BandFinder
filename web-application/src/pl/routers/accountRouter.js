@@ -1,6 +1,6 @@
 const Express = require("express")
 
-module.exports = function ({accountManager, proficiencyManager, instrumentManager, errorGenerator, sessionValidation}) {
+module.exports = function ({accountManager, proficiencyManager, instrumentManager, errorGenerator, sessionValidation, passwordManager}) {
     const router = Express.Router()
 
     //Redirects to account detail or login screen
@@ -68,7 +68,7 @@ module.exports = function ({accountManager, proficiencyManager, instrumentManage
             }
         })
     })
-    router.get("/logout", function (request, response) {
+    router.get("/signout", function (request, response) {
         request.session.loggedInUsername = null
         response.redirect("../")
     })
@@ -132,16 +132,33 @@ module.exports = function ({accountManager, proficiencyManager, instrumentManage
             next(errorGenerator.getHttpCodeError(401))
         }
     })
-    router.post("/delete/:username", function (request, response) {
+    router.get("/delete/:username", function (request, response) {
         const username = request.params.username
-        const password = request.body.password
         const validated = sessionValidation.validateAccountNameInSession(username, request.session.loggedInUsername)
         if (validated == true) {
+            response.render("deleteuser.hbs")
+        }
+        else {
+            next(errorGenerator.getHttpCodeError(401))
+        }
+    })
+    router.post("/delete/:username", function (request, response, next) {
+        const username = request.params.username
+        const password = request.body.passwordCheck
+        const validatedUsername = sessionValidation.validateAccountNameInSession(username, request.session.loggedInUsername)
+        if (validatedUsername == true) {
             accountManager.deleteAccount(username, password, function (error) {
-                //Do shit
+                if(error){
+                    next(error)
+                }
+                else{
+                    request.session.loggedInUsername = null
+                    response.redirect("../../")
+                }
             })
         }
         else {
+            console.log("helllllooooo")
             next(errorGenerator.getHttpCodeError(401))
         }
     })

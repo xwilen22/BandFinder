@@ -38,7 +38,7 @@ const dalFolders = {
     MYSQL:"dal",
     SEQUELIZE:"dalseq"
 }
-const dalSource = dalFolders.SEQUELIZE
+const dalSource = dalFolders.MYSQL
 
 const proficiencyRepository = require(`./${dalSource}/proficiencyRepository`)
 const accountRepository = require(`./${dalSource}/accountRepository`)
@@ -143,6 +143,16 @@ const theApiInstrumentRouter = container.resolve("apiInstrumentRouter")
 
 container.register("apiProficiencyRouter", awilix.asFunction(apiProficiencyRouter))
 const theApiProficiencyRouter = container.resolve("apiProficiencyRouter")
+
+// TODO: Not a good idea to open up to entire world.
+// Better to only target the frontend application.
+app.use("/api*", function(request, response, next){
+	response.setHeader("Access-Control-Allow-Origin", "*")
+	response.setHeader("Access-Control-Allow-Methods", "*")
+	response.setHeader("Access-Control-Allow-Headers", "*")
+	response.setHeader("Access-Control-Expose-Headers", "*")
+	next()
+})
 
 app.use("/api/account", theApiAccountRouter)
 app.use("/api/instruments", theApiInstrumentRouter)

@@ -108,7 +108,7 @@ module.exports = function ({ accountRepository, accountValidation, passwordManag
                                 if (success == true) {
                                     accountRepository.deleteUserByUsername(username, function (accountDeleteError) {
                                         if (accountDeleteError) {
-                                            callback(accountDeleteError)
+                                            callback(errorGenerator.getInternalError(accountDeleteError))
                                         }
                                         else {
                                             callback(errorGenerator.getSuccess())
