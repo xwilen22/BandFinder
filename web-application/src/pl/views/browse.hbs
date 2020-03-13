@@ -16,6 +16,7 @@
 </section>
 <section class="row p-2">
     <ul class="list-group w-100">
+        {{#if bands}}
         {{#each bands}}
         <li class="list-group-item row m-sm-2 container w-100">
             <div class="row p-2">
@@ -49,5 +50,8 @@
             {{/if}}
         </li>
         {{/each}}
+        {{else}}
+        <p>No bands here!</p>
+        {{/if}}
     </ul>
 </section>
