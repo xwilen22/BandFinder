@@ -7,3 +7,14 @@ function  getAlert(message, type){
     alertDiv.innerText = message
     return alertDiv
 }
+function getErrorPage(message, errorCode){
+    let errorDiv = document.createElement("div")
+    let errorHeader = document.createElement("h2")
+    let errorParagraph = document.createElement("p")
+    errorHeader.innerText = `That's an ${errorCode} Error`
+    errorParagraph.innerText = message
+    console.log("header is: ",errorHeader)
+    errorDiv.appendChild(errorHeader)
+    errorDiv.appendChild(errorParagraph)
+    return errorDiv
+}

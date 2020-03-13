@@ -2,12 +2,12 @@ function displayUserDetailPageForUsername(parentElement, username) {
     const usernameHeader = parentElement.getElementsByTagName("h2")[0]
     const bioparagraphElement = parentElement.getElementsByTagName("p")[0]
     const editUserAnchor = parentElement.getElementsByTagName("a")[0]
-    
+    const errorPage = document.getElementById("error-page")
     editUserAnchor.hidden = (decodeURIComponent(username) != localStorage.username)
-
+    errorPage.innerHTML = ""
     getUserInformation(username, function(error, accountInformationObject) {
         if(error) {
-            console.log("ERROR", error)
+            errorPage.appendChild(getErrorPage("Couldn't fetch the user, sorry about that!", error.status))
         }
         else {
             usernameHeader.innerText = accountInformationObject.username
@@ -17,22 +17,20 @@ function displayUserDetailPageForUsername(parentElement, username) {
     })
 }
 function getUserInformation(username, callback) {
-    let errorResponseCode = undefined
-    
     fetch(
         `${currentDomain}/api/account/${username}`
     ).then(response => {
-        if(response.ok) {
-            return response.json()
+        if(response.status == 200) {
+            response.json()
+            .then(accountInformation => {
+                callback(null, accountInformation)
+            })
+            .catch(error => {
+                callback(error, null)
+            })
         }
         else {
-            errorResponseCode = response.status
+            callback(["something went wrong"])
         }
-    })
-    .then(accountInformation => {
-        callback(errorResponseCode, accountInformation)
-    })
-    .catch(error => {
-        callback(error)
     })
 }
