@@ -2,6 +2,13 @@ function fetchResource(resourceUri, callback) {
     fetch(
         `${currentDomain}/api/${resourceUri}`
     )
+    .catch(timeoutError => {
+        console.log(timeoutError)
+        if(response.status == undefined) {
+            console.log("GOTTEM ", timeoutError)
+            callback({status: 400, message: "Timed out"})
+        }
+    })
     .then(response => {
         if(response.status == 200) {
             response.json()    

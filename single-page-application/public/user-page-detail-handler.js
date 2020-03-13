@@ -7,6 +7,7 @@ function displayUserDetailPageForUsername(parentElement, username) {
 
     fetchResource(`account/${username}`, function(error, accountInformationObject) {
         if(error) {
+            console.log("Uh oh stinky")
             errorPage.appendChild(getErrorPage("Couldn't fetch the user, sorry about that!", error.status))
         }
         else {

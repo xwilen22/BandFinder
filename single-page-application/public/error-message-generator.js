@@ -26,10 +26,15 @@ function getErrorPage(message, errorCode){
     let errorDiv = document.createElement("div")
     let errorHeader = document.createElement("h2")
     let errorParagraph = document.createElement("p")
-    errorHeader.innerText = `That's an ${errorCode} Error`
+    
+    errorHeader.innerText = `That's a ${errorCode} Error`
     errorParagraph.innerText = message
-    console.log("header is: ",errorHeader)
+    
     errorDiv.appendChild(errorHeader)
     errorDiv.appendChild(errorParagraph)
+    
     return errorDiv
+}
+function setLoadingPage(activate) {
+    document.getElementById("loading-indicator-page").style.opacity = (activate ? 1 : 0)
 }
