@@ -1,6 +1,7 @@
 module.exports = function ({ db }) {
     return {
         createUserProficiency: function (username, instrument, proficiency, callback) {
+            console.log("This is name ", instrument)
             let query = `INSERT INTO user_proficiency (username, instrument_name, proficiency_level) VALUES (? , ? , ?)`
             let values = [username, instrument, proficiency]
             db.query(query, values, function (error) {
@@ -19,7 +20,7 @@ module.exports = function ({ db }) {
         },
 
         deleteUserProficiency: function (username, instrument, callback) {
-            let query = `DELETE * FROM user_proficiency 
+            let query = `DELETE FROM user_proficiency 
                          WHERE username = ? AND instrument_name = ?`
             let values = [username, instrument]
             db.query(query, values, function (error) {

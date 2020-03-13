@@ -29,8 +29,8 @@ module.exports = function ({ db }) {
         },
 
         getAllUserInformations: function(callback) {
-            let query = `SELECT (username, biography, user_profile_picture) FROM user`
-            db.query(query, values, function(error, users) {
+            let query = `SELECT username, biography, user_profile_picture FROM user`
+            db.query(query, function(error, users) {
                 callback(error, users)
             })
         },
@@ -45,7 +45,7 @@ module.exports = function ({ db }) {
         },
 
         getUserInformationByUsername: function (username, callback) {
-            let query = `SELECT (username, biography, user_profile_picture) FROM user
+            let query = `SELECT username, biography, user_profile_picture FROM user
                          WHERE username = ?`
             let values = [username]
 
@@ -55,9 +55,7 @@ module.exports = function ({ db }) {
         },
 
         deleteUserByUsername: function (username, callback) {
-            let query = `DELETE FROM (user, band_membership, user_proficiency) 
-                         USING user INNERJOIN band_membership INNERJOIN user_proficiency 
-                         WHERE user.username = ? AND band_membership.username = ? AND user_proficiency.username = ?`
+            let query = `DELETE FROM user WHERE username = ?`
             db.query(query, [username], function (error) {
                 callback(error)
             })

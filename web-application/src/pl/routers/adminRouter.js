@@ -4,6 +4,9 @@ const adminName = "Foo"
 module.exports = function ({instrumentManager, errorGenerator, sessionValidation, passwordManager,genreManager}){
     const router = Express.Router()
     router.get("/", function(request, response){
+        response.redirect("login")
+    })
+    router.get("/login", function(request, response){
         response.render("adminlogon.hbs")
     })
     router.post("/login", function(request, response, next){
@@ -16,7 +19,7 @@ module.exports = function ({instrumentManager, errorGenerator, sessionValidation
                 }
                 else{
                     request.session.loggedInUsername = adminNameIn
-                    response.redirect("admindashboard")
+                    response.redirect("dashboard")
                 }
             })
         }
@@ -24,7 +27,7 @@ module.exports = function ({instrumentManager, errorGenerator, sessionValidation
             next(errorGenerator.getClientError("Wrong Username"))
         }
     })
-    router.get("/admindashboard", function(request,response,next){
+    router.get("/dashboard", function(request,response,next){
         loggedInUsername = request.session.loggedInUsername
         if(loggedInUsername == adminName){
             genreManager.getAllParentGenres(function(error,parentGenres){
@@ -50,7 +53,7 @@ module.exports = function ({instrumentManager, errorGenerator, sessionValidation
                 next(error)
             }
             else{
-                response.redirect("admindashboard")
+                response.redirect("dashboard")
             }
         })
     })
