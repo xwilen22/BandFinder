@@ -1,10 +1,12 @@
 function displayHomePage(parentElement) {
     const userUnOrderedList = parentElement.getElementsByTagName("ul")[0]
     const errorPage = document.getElementById("error-page")
+    setLoadingPage(true)
     //Empties list
     userUnOrderedList.innerHTML = ""
-    fetchAllAccounts(function(error, accounts) {
+    fetchResource(`account` ,function(error, accounts) {
         if(error) {
+            parentElement.classList.remove("current-page")
             errorPage.appendChild(getErrorPage("Couldn't fetch the users, sorry about that.",error.status))
         }
         else {
@@ -22,26 +24,6 @@ function displayHomePage(parentElement) {
                 userUnOrderedList.appendChild(listItem)
             }
         }
-    })
-}
-function fetchAllAccounts(callback) {
-    fetch(
-        `${currentDomain}/api/account`
-    )
-    .then(response => {
-        if(response.status == 201) {
-            response.json()
-            .then(accounts => {
-                console.log("FETCHED STUFF", accounts)
-                callback(undefined, accounts)
-            })
-            .catch(error => {
-                console.log("FAILED", error)
-                callback(error)
-            })
-        }
-        else {
-            callback(["Unexpected result"])
-        }
+        setLoadingPage(false)
     })
 }

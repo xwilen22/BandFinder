@@ -2,10 +2,12 @@ const domains = {
     localhost: "http://localhost:8080",
     dockerIp: "http://192.168.99.100:8080"
 }
-const currentDomain = domains.dockerIp
+const currentDomain = domains.localhost
 
 document.addEventListener("DOMContentLoaded", function(){
     moveToPage(location.pathname)
+    setLoadingPage(true)
+    //moveToPage("loading-indicator-page")
     if(localStorage.accessToken){
         UiSignedInHelp()
     }

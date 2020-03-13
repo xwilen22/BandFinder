@@ -13,6 +13,9 @@ main > div.current-page {
 main > #alert-holder{
     display: block;
 }
+main > #loading-indicator-page {
+    display: block;
+}
 main > #error-page{
     display: block;
 }
@@ -26,19 +29,40 @@ body.showIfSignedIn .showIfSingedOut{
 footer {
     min-height: 5%;
 }
-.bandcard {
-    margin-top: 1rem;
-    max-width: 18rem;
+#loading-indicator-spinner {
+    background-color: #00a2ff;
+    background-image: url("/images/bf.png");
+    background-size: contain;
+    background-position: center;
+
+    border-radius: 20px;
+    height: 6em; 
+    width: 6em;
+
+    position: fixed;
+
+    top: 50%;
+    left: 50%;
+    margin-top: -3em; 
+    margin-left: -3em;
+
+    animation-name: spin;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+
+    opacity: 1;
+    transition: opacity .25s ease-in-out;
+   -moz-transition: opacity .25s ease-in-out;
+   -webkit-transition: opacity .25s ease-in-out;
 }
-.membercard {
-    margin-top: 1rem;
-    max-width: 12rem;
-}
-.keepaspectratio {
-    width: 100%;
-    height: auto;
-}
-.band-detail-image {
-    height: 200px;
-    width: 200px
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    50% {
+        transform: rotate(360deg);
+    }
+    100% {
+        transform: rotate(0deg);
+    }
 }
