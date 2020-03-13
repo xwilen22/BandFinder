@@ -14,7 +14,8 @@ function displayEditPageForUser(parentElement, username) {
         event.preventDefault()
         addResourceAuth(`proficiencies`, {instrumentName: instrumentsSelect.value, skillLevelNumber:addProficiencyLevelNumberInput.value, username}, function(error) {
             if(error) {
-                console.log("bad", error)
+                document.getElementById("alert-holder").innerHTML = ""
+                document.getElementById("alert-holder").appendChild(getAlert("Failed to add proficiency!", "danger"))
             }
             else {
                 const proficiency = {
@@ -28,7 +29,7 @@ function displayEditPageForUser(parentElement, username) {
 
     fetchResource(`account/${username}`, function(error, accountInformationObject) {
         if(error) {
-            console.log("Bolloxed", error)
+            document.getElementById("alert-holder").appendChild(getAlert("Failed to fetch biography!", "danger"))
         }
         else {
             usernameHeader.innerText = accountInformationObject.username
@@ -38,10 +39,11 @@ function displayEditPageForUser(parentElement, username) {
                 event.preventDefault()
                 updateResourceAuth(`account/${username}`, {biography:biographyTextarea.value}, function(error) {
                     if(error) {
-                        console.error("no", error)
+                        document.getElementById("alert-holder").innerHTML = ""
+                        document.getElementById("alert-holder").appendChild(getAlert("Failed to update biography!", "danger"))
                     }
                     else {
-                        console.log("ye")
+                        document.getElementById("alert-holder").appendChild(getAlert("Biography updated", "success"))
                     }
                 })
             })
@@ -51,7 +53,7 @@ function displayEditPageForUser(parentElement, username) {
     instrumentsSelect.innerHTML = ""
     fetchResource("instruments" ,function(error, instruments) {
         if(error) {
-            console.log("Bolloxed", error)
+            document.getElementById("alert-holder").appendChild(getAlert("Failed to fetch instruments!", "danger"))
         }
         else {
             for (instrument of instruments) {
@@ -63,19 +65,21 @@ function displayEditPageForUser(parentElement, username) {
     })
     fetchResource(`proficiencies/${username}`, function(error, proficiencies) {
         if(error) {
-            console.error(error)
+            document.getElementById("alert-holder").innerHTML = ""
+            document.getElementById("alert-holder").appendChild(getAlert("Failed to fetch proficiencies!", "danger"))
         }
         else {
             const proficienciesUnorderedList = parentElement.getElementsByTagName("ul")[0]
             proficienciesUnorderedList.innerHTML = ""
             
             for (proficiency of proficiencies) {
-                addProficiencyToList(proficiency, proficiencyListItemTemplate, proficienciesUnorderedList, username)
+                addProficiencyToList(proficiency, proficiencyListItemTemplate, username)
             }
             proficiencyListItemTemplate.hidden = true
         }
     })
 }
+
 function addProficiencyToList(proficiencyObject, templateElement, username) {
     const proficienciesUnorderedList = document.getElementById("edit-proficiency-ul")
     const proficiencyListItem = templateElement.cloneNode(true)
@@ -93,10 +97,7 @@ function addProficiencyToList(proficiencyObject, templateElement, username) {
         const proficiencyLevel = updateForm.getElementsByTagName("input")[0].value
         updateResourceAuth(`proficiencies/${username}/${instrumentName}`, { skillLevelNumber: proficiencyLevel }, function (error) {
             if (error) {
-                console.log("bad", error)
-            }
-            else {
-                console.log("Good")
+                document.getElementById("alert-holder").appendChild(getAlert("Failed to update proficiency!", "danger"))
             }
         })
     })
@@ -107,7 +108,7 @@ function addProficiencyToList(proficiencyObject, templateElement, username) {
         event.preventDefault()
         deleteResourceAuth(`proficiencies/${username}/${instrumentName}`, function (error) {
             if (error) {
-                console.log("bad", error)
+                document.getElementById("alert-holder").appendChild(getAlert("Failed to delete proficiency!", "danger"))
             }
             else {
                 proficienciesUnorderedList.removeChild(proficiencyListItem)
@@ -116,116 +117,4 @@ function addProficiencyToList(proficiencyObject, templateElement, username) {
     })
     proficiencyListItem.hidden = false
     proficienciesUnorderedList.appendChild(proficiencyListItem)
-
-}
-
-
-function fetchResource(resourceUri, callback) {
-    fetch(
-        `${currentDomain}/api/${resourceUri}`
-    )
-    .then(response => {
-        if(response.status == 200) {
-            return(response.json())
-        }
-        else {
-            callback(["Unexpected result"])
-        }
-    })
-    .then(instruments => {
-        callback(undefined, instruments)
-    })
-    .catch(error => {
-        callback(error)
-    })
-}
-function updateResourceAuth(resourceUri, keyValueBodyObject, callback) {
-    let body = ""
-    for(key in keyValueBodyObject) {
-        if(body.length > 0) {
-            body += "&"
-        }
-        body += `${key}=${keyValueBodyObject[key]}`
-    }
-
-    fetch(
-        `${currentDomain}/api/${resourceUri}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-                "authorization": `Bearer ${localStorage.accessToken}`
-            },
-            body
-        }
-    )
-    .then(response => {
-        if(response.status == 204) {
-            callback(undefined)
-        }
-        else {
-            console.log("Error ", response)
-            callback(["Unexpected result"])
-        }
-    })
-    .catch(error => {
-        console.log("Error ", error)
-        callback(error)
-    })
-}
-function deleteResourceAuth(resourceUri, callback) {
-    fetch(
-        `${currentDomain}/api/${resourceUri}`, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-                "authorization": `Bearer ${localStorage.accessToken}`
-            },
-        }
-    )
-    .then(response => {
-        if(response.status == 204) {
-            callback(undefined)
-        }
-        else {
-            console.log("Error ", response)
-            callback(["Unexpected result"])
-        }
-    })
-    .catch(error => {
-        console.log("Error ", error)
-        callback(error)
-    })
-}
-function addResourceAuth(resourceUri, keyValueBodyObject, callback) {
-    let body = ""
-    for(key in keyValueBodyObject) {
-        if(body.length > 0) {
-            body += "&"
-        }
-        body += `${key}=${keyValueBodyObject[key]}`
-    }
-
-    fetch(
-        `${currentDomain}/api/${resourceUri}`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-                "authorization": `Bearer ${localStorage.accessToken}`
-            },
-            body
-        }
-    )
-    .then(response => {
-        if(response.status == 201) {
-            callback(undefined)
-        }
-        else {
-            console.log("Error ", response)
-            callback(["Unexpected result"])
-        }
-    })
-    .catch(error => {
-        console.log("Error ", error)
-        callback(error)
-    })
 }
