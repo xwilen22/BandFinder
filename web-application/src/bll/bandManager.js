@@ -22,12 +22,15 @@ module.exports = function ({ sessionValidation, bandRepository, bandValidation, 
             const bandIdValidationErrors = bandValidation.getBandIdValidationErrors(bandId)
 
             if(bandIdValidationErrors.length > 0) {
-                callback(bandIdValidationErrors)
+                callback(errorGenerator.getClientError(bandIdValidationErrors))
             }
             else {
                 bandRepository.getBandById(bandId, function (error, bandObject) {
                     if (error) {
                         callback(errorGenerator.getInternalError(error))
+                    }
+                    else if(bandObject == undefined) {
+                        callback(errorGenerator.getClientError(["Band not found!"], 404))
                     }
                     else {
                         callback(errorGenerator.getSuccess(), bandObject)
