@@ -9,7 +9,7 @@ module.exports = function ({accountManager, accountValidation, restApiManager, s
                 response.status(error.code).end()
             }
             else {
-                response.status(201).json(accounts)
+                response.status(200).json(accounts)
             }
         })
     })
