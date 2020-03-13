@@ -159,7 +159,6 @@ module.exports = function ({accountManager, proficiencyManager, instrumentManage
             })
         }
         else {
-            console.log("helllllooooo")
             next(errorGenerator.getHttpCodeError(401))
         }
     })
@@ -173,25 +172,37 @@ module.exports = function ({accountManager, proficiencyManager, instrumentManage
         const username = request.body.username
         const password = request.body.password
         const passwordRepeat = request.body.passwordRepeat
-
-        accountManager.signUpAccount(username, password, function (error, createdUsername) {
-            if (error) {
-                if (error.retainPage == true) {
-                    const model = {
-                        username,
-                        password,
-                        passwordRepeat,
-                        error
-                    }
-                    response.render("signinup.hbs", model)
+        passwordManager.comparePasswordPlainToPlain(password, passwordRepeat, function(compareError) {
+            if(compareError) {
+                const model = {
+                    username,
+                    password,
+                    passwordRepeat,
+                    error: compareError
                 }
-                else {
-                    next(error)
-                }
+                response.render("signinup.hbs", model)
             }
             else {
-                request.session.loggedInUsername = createdUsername
-                response.redirect(`view/${createdUsername}`)
+                accountManager.signUpAccount(username, password, function (error, createdUsername) {
+                    if (error) {
+                        if (error.retainPage == true) {
+                            const model = {
+                                username,
+                                password,
+                                passwordRepeat,
+                                error
+                            }
+                            response.render("signinup.hbs", model)
+                        }
+                        else {
+                            next(error)
+                        }
+                    }
+                    else {
+                        request.session.loggedInUsername = createdUsername
+                        response.redirect(`view/${createdUsername}`)
+                    }
+                })
             }
         })
     })
