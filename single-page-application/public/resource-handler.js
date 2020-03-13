@@ -4,17 +4,17 @@ function fetchResource(resourceUri, callback) {
     )
     .then(response => {
         if(response.status == 200) {
-            return(response.json())
+            response.json()    
+            .then(fetchedResource => {
+                callback(undefined, fetchedResource)
+            })
+            .catch(error => {
+                callback({status: 400, error})
+            })
         }
         else {
-            callback(["Unexpected result"])
+            callback(response)
         }
-    })
-    .then(instruments => {
-        callback(undefined, instruments)
-    })
-    .catch(error => {
-        callback(error)
     })
 }
 
@@ -42,18 +42,15 @@ function updateResourceAuth(resourceUri, keyValueBodyObject, callback) {
             callback(undefined)
         }
         else {
-            console.log("Error ", response)
-            callback(["Unexpected result"])
+            callback(response)
         }
     })
     .catch(error => {
-        console.log("Error ", error)
-        callback(error)
+        callback({status: 400, error})
     })
 }
 
 function deleteResourceAuth(resourceUri, callback) {
-    console.log("Tried?")
     fetch(
         `${currentDomain}/api/${resourceUri}`, {
             method: "DELETE",
@@ -68,13 +65,11 @@ function deleteResourceAuth(resourceUri, callback) {
             callback(undefined)
         }
         else {
-            console.log("Error ", response)
-            callback(["Unexpected result"])
+            callback(response)
         }
     })
     .catch(error => {
-        console.log("Error ", error)
-        callback(error)
+        callback({status: 400, error})
     })
 }
 
@@ -102,12 +97,10 @@ function addResourceAuth(resourceUri, keyValueBodyObject, callback) {
             callback(undefined)
         }
         else {
-            console.log("Error ", response)
-            callback(["Unexpected result"])
+            callback(response)
         }
     })
     .catch(error => {
-        console.log("Error ", error)
-        callback(error)
+        callback({status: 400, error})
     })
 }
