@@ -17,15 +17,11 @@ function displayEditPageForUser(parentElement, username) {
                 console.log("bad", error)
             }
             else {
-                fetchResource(`proficiencies/${username}`, function(error, proficiencies) {
-                    if(error) {
-                        console.error(error)
-                    }
-                    else {
-                        //This needs fix :***
-                        addProficiencyToList(proficiency, proficiencyListItemTemplate, proficienciesUnorderedList, username)
-                    }
-                })
+                const proficiency = {
+                    instrument_name: instrumentsSelect.value,
+                    proficiency_level: addProficiencyLevelNumberInput.value
+                }
+                addProficiencyToList(proficiency, proficiencyListItemTemplate, username)
             }
         })
     })
@@ -74,53 +70,16 @@ function displayEditPageForUser(parentElement, username) {
             proficienciesUnorderedList.innerHTML = ""
             
             for (proficiency of proficiencies) {
-                console.log(proficiency)
-                const proficiencyListItem = proficiencyListItemTemplate.cloneNode(true)
-                proficiencyListItem.getElementsByTagName("p")[0].innerText = proficiency.instrument_name
-                
-                const updateForm = proficiencyListItem.getElementsByTagName("form")[0]
-                updateForm.getElementsByTagName("input")[0].value = proficiency.proficiency_level
-                
-                const instrumentName = proficiency.instrument_name
-        
-                //When user wants to update prof level
-                updateForm.addEventListener("submit", function(event) {
-                    event.preventDefault()
-                    const proficiencyLevel = updateForm.getElementsByTagName("input")[0].value
-                    updateResourceAuth(`proficiencies/${username}/${instrumentName}`, {skillLevelNumber:proficiencyLevel}, function(error) {
-                        if(error) {
-                            console.log("bad", error)
-                        }
-                        else {
-                            console.log("Good")
-                        }
-                    })
-                })
-        
-                const deleteForm = proficiencyListItem.getElementsByTagName("form")[1]
-                //When user wants to delete prof
-                deleteForm.addEventListener("submit", function(event) {
-                    event.preventDefault()
-                    deleteResourceAuth(`proficiencies/${username}/${instrumentName}`, function(error) {
-                        if(error) {
-                            console.log("bad", error)
-                        }
-                        else {
-                            proficienciesUnorderedList.removeChild(proficiencyListItem)
-                        }
-                    })
-                })
-        
-                proficienciesUnorderedList.appendChild(proficiencyListItem)
-                //addProficiencyToList(proficiency, proficiencyListItemTemplate, proficienciesUnorderedList, username)
+                addProficiencyToList(proficiency, proficiencyListItemTemplate, proficienciesUnorderedList, username)
             }
             proficiencyListItemTemplate.hidden = true
         }
     })
 }
-function addProficiencyToList(proficiencyObject, templateElement, proficienciesUnorderedList, username) {
-    console.log(proficiency)
+function addProficiencyToList(proficiencyObject, templateElement, username) {
+    const proficienciesUnorderedList = document.getElementById("edit-proficiency-ul")
     const proficiencyListItem = templateElement.cloneNode(true)
+
     proficiencyListItem.getElementsByTagName("p")[0].innerText = proficiencyObject.instrument_name
 
     const updateForm = proficiencyListItem.getElementsByTagName("form")[0]
@@ -155,8 +114,9 @@ function addProficiencyToList(proficiencyObject, templateElement, proficienciesU
             }
         })
     })
-
+    proficiencyListItem.hidden = false
     proficienciesUnorderedList.appendChild(proficiencyListItem)
+
 }
 
 
