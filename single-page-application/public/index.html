@@ -13,6 +13,7 @@
     <script src="/sign-up-handler.js"></script>
     <script src="/sign-in-handler.js"></script>
     <script src="/home-page-handler.js"></script>
+    <script src="/error-message-generator.js"></script>
     <!--KEEP AT BOTTOM-->
     <script src="/navigation-handler.js"></script>
 
@@ -54,7 +55,7 @@
 					 Password: <input type="password" class="password">
 				</div>  
 				<input type="submit" value="Sign In">
-			</form>
+            </form>
 		</div> 
         <div id="/account/signup">
             <h1>Sign Up</h1>
@@ -116,7 +117,9 @@
                     </ul>
                 </div>
             </section>
-        </div> 
+        </div>
+        <div id="alert-holder">
+        </div>  
     </main>
     <footer class="bg-light border-top m-auto p-2 h-auto">
     </footer>

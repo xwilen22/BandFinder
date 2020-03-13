@@ -33,7 +33,8 @@ const staticPageDestinations = [
 
 function moveToPage(uri){
     history.pushState({}, "", uri)
-
+    const alertHolder = document.getElementById("alert-holder")
+    alertHolder.innerHTML=""
     const currentPage = document.getElementsByClassName("current-page")[0]
     if(currentPage){
         currentPage.classList.remove("current-page")
