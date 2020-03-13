@@ -1,7 +1,7 @@
 module.exports = function ({ db }) {
     return {
         createBandMembership: function (username, bandId, isBandleader, callback) {
-            let query = `INSERT INTO band_membership (username,band_id,is_band_leader) VALUES (? , ? , ?)`
+            let query = `INSERT INTO band_membership (username , band_id, is_band_leader) VALUES (? , ? , ?)`
             let values = [username, bandId, isBandleader]
             db.query(query, values, function (error) {
                 callback(error)
@@ -23,30 +23,23 @@ module.exports = function ({ db }) {
                          WHERE band_id = ?`
             let values = [bandId]
             db.query(query, values, function(error, members){
-                if(error){
-                    callback(error)
-                }
-                else{
-                    callback(members)
-                }
+                callback(error, members)
             })
         },
 
         getBandMembershipByUsername: function(username,callback){
-            let query = `SELECT band_membership.band_id, band.band_name, 
+            /*let query = `SELECT band_membership.band_id, band.band_name, 
                          band.band_biography
                          FROM band_membership
                          INNER JOIN band 
                          ON band_membership.band_id = band.band_id 
-                         AND band_membership.username = ?`
+                         WHERE band_membership.username = ?`*/
+            let query = `SELECT * FROM band_membership AS membership 
+                         INNER JOIN band ON membership.band_id = band.id
+                         WHERE membership.username = ?`
             let values = [username]
             db.query(query, values, function(error, bandMembership){
-                if(error){
-                    callback(error)
-                }
-                else{
-                    callback(bandMembership)
-                }
+                callback(error, bandMembership)
             })
         },
 

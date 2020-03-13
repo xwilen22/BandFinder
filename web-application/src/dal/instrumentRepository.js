@@ -1,7 +1,8 @@
 module.exports = function ({ db }) {
     return {
         createInstrument: function (instrument, callback) {
-            let query = `INSERT INTO instrument (instrument_name) VALUES (?)`
+            console.log(instrument)
+            let query = `INSERT INTO instrument VALUES (?)`
             db.query(query, [instrument], function (error) {
                 callback(error)
             })
@@ -18,7 +19,8 @@ module.exports = function ({ db }) {
             let query = `SELECT * FROM instrument 
                          WHERE instrument_name = ?`
             db.query(query, [instrumentName], function (error, instrument) {
-                callback(error, instrument)
+                console.log("Retrieved instrument ", instrument)
+                callback(error, instrument[0])
             })
         },
 
