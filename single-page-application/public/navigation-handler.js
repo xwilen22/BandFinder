@@ -3,7 +3,6 @@ const domains = {
     dockerIp: "http://192.168.99.100:8080"
 }
 const currentDomain = domains.dockerIp
-
 document.addEventListener("DOMContentLoaded", function(){
     moveToPage(location.pathname)
     if(localStorage.accessToken){
@@ -33,7 +32,8 @@ const staticPageDestinations = [
 
 function moveToPage(uri){
     history.pushState({}, "", uri)
-
+    const alertHolder = document.getElementById("alert-holder")
+    alertHolder.innerHTML=""
     const currentPage = document.getElementsByClassName("current-page")[0]
     if(currentPage){
         currentPage.classList.remove("current-page")

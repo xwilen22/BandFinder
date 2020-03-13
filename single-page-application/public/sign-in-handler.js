@@ -1,15 +1,15 @@
 function signInToAccount(parentElement){
     const loginForm = document.querySelector("#signin")
-    
+    const alertHolder = document.getElementById("alert-holder")
     loginForm.addEventListener("submit",function(event){
         event.preventDefault()
-
+        alertHolder.innerHTML=""
         const username = event.srcElement.elements[0].value
         const password = event.srcElement.elements[1].value
 
         signIn(username, password, function(error, username) {
             if(error) {
-                console.log("FEL HÄR ERROR ", error)
+                alertHolder.appendChild(getAlert("Failed to sign in","danger"))
                 signOut()
             }
             else {

@@ -10,6 +10,9 @@ main > div {
 main > div.current-page {
     display: block;
 }
+main > #alert-holder{
+    display: block;
+}
 body.showIfSingedOut .showIfSignedIn{
 	display: none;
 }
