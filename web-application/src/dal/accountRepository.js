@@ -30,7 +30,7 @@ module.exports = function ({ db }) {
 
         getAllUserInformations: function(callback) {
             let query = `SELECT (username, biography, user_profile_picture) FROM user`
-            db.query(query, values, function(error, users) {
+            db.query(query, function(error, users) {
                 callback(error, users)
             })
         },
