@@ -68,7 +68,6 @@ const applicationManager = require("./bll/applicationManager")
 ///PRESENTATION LAYER
 const adminRouter = require("./pl/routers/adminRouter")
 const accountRouter = require("./pl/routers/accountRouter")
-const instrumentRouter = require("./pl/routers/instrumentRouter")
 const bandRouter = require("./pl/routers/bandRouter")
 const variousRouter = require("./pl/routers/variousRouter")
 const proficiencyRouter = require("./pl/routers/proficiencyRouter")
@@ -93,7 +92,6 @@ container.register("sessionValidation", awilix.asFunction(sessionValidation))
 
 container.register("instrumentRepository", awilix.asFunction(instrumentRepository))
 container.register("instrumentManager", awilix.asFunction(instrumentManager))
-container.register("instrumentRouter", awilix.asFunction(instrumentRouter))
 
 container.register("accountRepository", awilix.asFunction(accountRepository))
 container.register("accountManager", awilix.asFunction(accountManager))
@@ -107,7 +105,6 @@ container.register("proficiencyRouter", awilix.asFunction(proficiencyRouter))
 const theProficiencyRouter = container.resolve("proficiencyRouter")
 
 const theAccountRouter = container.resolve("accountRouter")
-const theInstrumentRouter = container.resolve("instrumentRouter")
 
 container.register("genreValidation", awilix.asFunction(genreValidation))
 container.register("genreRepository", awilix.asFunction(genreRepository))
@@ -175,7 +172,6 @@ app.use(csrfProtection)
 app.use("/", theVariousRouter)
 app.use("/bands", theBandRouter)
 app.use("/account", theAccountRouter)
-app.use("/instruments", theInstrumentRouter)
 app.use("/proficiencies", theProficiencyRouter)
 app.use("/applications", theApplicationRouter)
 app.use("/admin", theAdminRouter)
@@ -212,13 +208,18 @@ handlebars.registerHelper('compare', function (leftVal, comparision, rightVal) {
 })
 
 app.use(function(errorModel, request, response, next) {
-    if(errorModel != undefined || errorModel != null) {
+    if(errorModel) {
         response.status(errorModel.code).render("error.hbs", errorModel)
     }
     else {
-        const fatalModel = errorGenerator.getInternalError(`UNHANDLED ERROR! A NULL ERROR MODEL RETRIEVED`)
-        response.status(fatalModel.code).render("error.hbs", fatalModel)
+        next()
     }
+})
+app.use(function(request, response) {
+    const errorModel = {
+        code: 404
+    }
+    response.status(errorModel.code).render("error.hbs", errorModel)
 })
 
 app.listen(listenPort, function() {

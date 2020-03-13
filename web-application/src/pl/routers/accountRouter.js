@@ -5,11 +5,12 @@ module.exports = function ({accountManager, proficiencyManager, instrumentManage
 
     //Redirects to account detail or login screen
     router.get("/", function (request, response) {
-
-        //if not logged in
-        //response.redirect(`/signinup`)
-        //else
-        response.redirect(`/view/${username}`)
+        if(request.session.loggedInUsername != null) {
+            response.redirect(`/account/view/${request.session.loggedInUsername}`)
+        }
+        else {
+            response.redirect(`/account/signin`)
+        }
     })
     router.get("/view/:username", function (request, response, next) {
         const username = request.params.username
