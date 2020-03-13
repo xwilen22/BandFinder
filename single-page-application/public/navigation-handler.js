@@ -2,12 +2,11 @@ const domains = {
     localhost: "http://localhost:8080",
     dockerIp: "http://192.168.99.100:8080"
 }
-const currentDomain = domains.dockerIp
+const currentDomain = domains.localhost
 
 document.addEventListener("DOMContentLoaded", function(){
     moveTo(location.pathname)
     setLoadingPage(true)
-    //moveToPage("loading-indicator-page")
     if(localStorage.accessToken){
         UiSignedInHelp()
     }
@@ -42,22 +41,17 @@ function moveTo(uri){
     history.pushState({}, "", uri)
     moveToPage(uri)
 }
-function onLoad() {
-    console.log("hellu?")
-    gapi.load('auth2', function() {
-      gapi.auth2.init();
-    });
-}
+
 function moveToPage(uri){
     const alertHolder = document.getElementById("alert-holder")
     alertHolder.innerHTML = ""
     const errorPage = document.getElementById("error-page")
     errorPage.innerHTML = ""
     const currentPage = document.getElementsByClassName("current-page")[0]
+    
     if(currentPage){
         currentPage.classList.remove("current-page")
     }
-    
     const staticDestinationIndex = staticPageDestinations.findIndex((element) => element.uri == uri)
     //If URI is "dynamic" i.e. references specific resource
     if (staticDestinationIndex == -1) {
@@ -82,6 +76,7 @@ function moveToPage(uri){
             staticPageDestinations[staticDestinationIndex].method(parentElement)
         }
         else{
+            console.log("Doing this")
             staticPageDestinations[staticDestinationIndex].method()
         }
     }

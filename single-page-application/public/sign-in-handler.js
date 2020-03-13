@@ -1,3 +1,10 @@
+function onLoad() {
+    gapi.load('auth2', function() {
+        gapi.auth2.init()
+        document.getElementById("sign-out-anchor").onclick = signOutGoogle
+    })
+}
+
 function signInToAccount(parentElement){
     const loginForm = document.querySelector("#signin")
     const alertHolder = document.getElementById("alert-holder")
@@ -13,7 +20,7 @@ function signInToAccount(parentElement){
                 signOut()
             }
             else {
-                UiSignedInHelp()
+                UiSignedInHelp(username)
                 moveToPage(`/account/view/${username}`)
             }
         })
@@ -24,11 +31,15 @@ function signOut(){
     localStorage.username = ""
 	document.body.classList.remove("showIfSignedIn")
     document.body.classList.add("showIfSingedOut")
+
+    moveTo("/")
+}
+
+function signOutGoogle() {
     var auth2 = gapi.auth2.getAuthInstance();
     auth2.signOut().then(function () {
       console.log('User signed out.');
     });
-
 }
 
 function UiSignedInHelp(username, googleUserId){
@@ -44,7 +55,6 @@ function UiSignedInHelp(username, googleUserId){
 }
 
 function onSignIn(googleUser){
-    
     googleProfile = googleUser.getBasicProfile()
     UiSignedInHelp(googleProfile.getName(),googleProfile.getId())
 }
