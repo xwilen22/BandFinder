@@ -74,7 +74,7 @@ function displayEditPageForUser(parentElement, username) {
             proficienciesUnorderedList.innerHTML = ""
             
             for (proficiency of proficiencies) {
-                /*console.log(proficiency)
+                console.log(proficiency)
                 const proficiencyListItem = proficiencyListItemTemplate.cloneNode(true)
                 proficiencyListItem.getElementsByTagName("p")[0].innerText = proficiency.instrument_name
                 
@@ -111,8 +111,8 @@ function displayEditPageForUser(parentElement, username) {
                     })
                 })
         
-                proficienciesUnorderedList.appendChild(proficiencyListItem)*/
-                addProficiencyToList(proficiency, proficiencyListItemTemplate, proficienciesUnorderedList, username)
+                proficienciesUnorderedList.appendChild(proficiencyListItem)
+                //addProficiencyToList(proficiency, proficiencyListItemTemplate, proficienciesUnorderedList, username)
             }
             proficiencyListItemTemplate.hidden = true
         }
