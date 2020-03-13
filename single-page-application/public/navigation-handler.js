@@ -2,10 +2,10 @@ const domains = {
     localhost: "http://localhost:8080",
     dockerIp: "http://192.168.99.100:8080"
 }
-const currentDomain = domains.localhost
+const currentDomain = domains.dockerIp
 
 document.addEventListener("DOMContentLoaded", function(){
-    moveToPage(location.pathname)
+    moveTo(location.pathname)
     setLoadingPage(true)
     //moveToPage("loading-indicator-page")
     if(localStorage.accessToken){
@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function(){
     for (anchor of destinationAnchors) {
         anchor.addEventListener("click", function(event) {
             event.preventDefault()
-            moveToPage(event.target.getAttribute("href"))
+            moveTo(event.target.getAttribute("href"))
         })
     }
 })
@@ -33,8 +33,22 @@ const staticPageDestinations = [
     {uri: "/account/signout", method: signOut, methodOnly: true}
 ]
 
-function moveToPage(uri){
+window.addEventListener("popstate",function(event){
+    const uri = location.pathname
+	moveToPage(uri)
+})
+
+function moveTo(uri){
     history.pushState({}, "", uri)
+    moveToPage(uri)
+}
+function onLoad() {
+    console.log("hellu?")
+    gapi.load('auth2', function() {
+      gapi.auth2.init();
+    });
+}
+function moveToPage(uri){
     const alertHolder = document.getElementById("alert-holder")
     alertHolder.innerHTML = ""
     const errorPage = document.getElementById("error-page")

@@ -4,11 +4,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="google-signin-client_id" content="837970210502-ifdlge7eb9239gq21mpo3sm03shorn9d.apps.googleusercontent.com">
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/index.css" type="text/css">
     <script src="/resource-handler.js"></script>
 
+    <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
     <script src="/edit-user-handler.js"></script>
     <script src="/user-page-detail-handler.js"></script>
     <script src="/sign-up-handler.js"></script>
@@ -17,11 +19,10 @@
     <script src="/error-message-generator.js"></script>
     <!--KEEP AT BOTTOM-->
     <script src="/navigation-handler.js"></script>
-
+   
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-
     <title>Band Together</title>
 </head>
 <body class="h-100 w-100">
@@ -34,7 +35,7 @@
             <section class="nav justify-content-right">
                 <a class="nav-link showIfSignedIn" href="/account/view/" id="account">Test</a>
                 <a class="nav-link btn btn-primary btn-sm showIfSignedIn" href="/account/signout" >Sign out</a>
-                
+                <div class="g-signin2 showIfSingedOut" data-onsuccess="onSignIn"></div>
                 <a class="nav-link btn btn-secondary btn-sm mx-1 showIfSingedOut" href="/account/signin" >Sign in</a>
                 <a class="nav-link btn btn-primary btn-sm mx-1 showIfSingedOut" href="/account/signup" >Sign up</a>
             </section>
@@ -45,7 +46,7 @@
             <p>Here are some funny users</p>
             <ul>
             </ul>
-        </div> 
+        </div>
 		<div id="/account/signin">
 			<h1>Sign In</h1>
 			<form id="signin" action="">
