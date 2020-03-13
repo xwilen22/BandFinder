@@ -2,7 +2,7 @@ const domains = {
     localhost: "http://localhost:8080",
     dockerIp: "http://192.168.99.100:8080"
 }
-const currentDomain = domains.localhost
+const currentDomain = domains.dockerIp
 
 document.addEventListener("DOMContentLoaded", function(){
     moveToPage(location.pathname)
