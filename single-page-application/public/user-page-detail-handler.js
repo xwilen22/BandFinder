@@ -1,27 +1,19 @@
 function displayUserDetailPageForUsername(parentElement, username) {
-    console.log(username)
-    parentElement.getElementsByTagName("h2")[0].innerText = username
+    const usernameHeader = parentElement.getElementsByTagName("h2")[0]
     const bioparagraphElement = parentElement.getElementsByTagName("p")[0]
+    const editUserAnchor = parentElement.getElementsByTagName("a")[0]
+    const errorPage = document.getElementById("error-page")
+    editUserAnchor.hidden = (decodeURIComponent(username) != localStorage.username)
 
-    getUserInformation(username, function(error, accountInformation) {
+    fetchResource(`account/${username}`, function(error, accountInformationObject) {
         if(error) {
-
+            console.log("Uh oh stinky")
+            errorPage.appendChild(getErrorPage("Couldn't fetch the user, sorry about that!", error.status))
         }
         else {
-            bioparagraphElement.innerText = accountInformation.biography
+            usernameHeader.innerText = accountInformationObject.username
+            bioparagraphElement.innerText = accountInformationObject.biography
+            editUserAnchor.href = `/account/edit/${accountInformationObject.username}`
         }
-    })
-}
-function getUserInformation(username, callback) {
-    fetch(
-        `http://localhost:8080/api/account/${username}`
-    ).then(response => {
-        return response.json()
-    })
-    .then(accountInformation => {
-        callback(undefined, accountInformation)
-    })
-    .catch(error => {
-        callback(error)
     })
 }
