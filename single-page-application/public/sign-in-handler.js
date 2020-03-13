@@ -9,12 +9,11 @@ function signInToAccount(parentElement){
 
         signIn(username, password, function(error, username) {
             if(error) {
-                console.log("ERROR ", error)
+                console.log("FEL HÄR ERROR ", error)
+                signOut()
             }
             else {
-                const accountAnchor = document.querySelector("#account")
-                accountAnchor.href = `/account/view/${username}`
-                accountAnchor.innerText = username
+                UiSignedInHelp()
                 moveToPage(`/account/view/${username}`)
             }
         })
@@ -44,17 +43,20 @@ function signIn(username, password, callback){
         body: `grant_type=password&username=${username}&password=${password}`
     })
     .then(response => {
-        return response.json()
-    })
-    .then(body => {
-        console.log(body)
-        localStorage.accessToken = body.access_token
-        localStorage.username = username
-        document.body.classList.remove("showIfSingedOut")
-        document.body.classList.add("showIfSignedIn")
-        callback(undefined, username)
-    })
-    .catch(error => {
-        callback(error)
+        if(response.status==201){
+            response.json()
+            .then(body => {
+                console.log(body)
+                localStorage.accessToken = body.access_token
+                localStorage.username = username
+                callback(undefined, username)
+            }) 
+            .catch(error => {
+                callback(error)
+            })
+        }
+        else{
+            callback(["Unexpected result"])
+        }
     })
 }
