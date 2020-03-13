@@ -46,7 +46,7 @@ module.exports = function ({errorGenerator}) {
                 }
             })
         },
-        comparePasswordPlainToPlainSync: function(password, passwordRepeat, callback) {
+        comparePasswordPlainToPlain: function(password, passwordRepeat, callback) {
             if (password == passwordRepeat) {
                 callback(errorGenerator.getSuccess())
             }
