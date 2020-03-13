@@ -45,6 +45,9 @@ module.exports = function ({errorGenerator}) {
                     callback(errorGenerator.getSuccess(), success)
                 }
             })
+        },
+        comparePasswordPlainToPlainSync: function(password, passwordRepeat) {
+            return password == passwordRepeat
         }
     }
 }
