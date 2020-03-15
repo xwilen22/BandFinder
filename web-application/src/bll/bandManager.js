@@ -51,6 +51,7 @@ module.exports = function ({ sessionValidation, bandRepository, bandValidation, 
         },
 
         searchAndGetBandByTitleAndGenre: function (bandName, genreName, callback) {
+            console.log("Band Name Length", String(bandName).length, " Genre name", genreName)
             if(String(bandName).length > 0) {
                 bandRepository.getBandsBySearchTitle(bandName, function(error, foundBands) {
                     if(error) {
@@ -102,15 +103,17 @@ module.exports = function ({ sessionValidation, bandRepository, bandValidation, 
 }
 function getPairBandsWithGenre(bands, genreName) {
     let returningBands = []
-    if (genreName != null || genreName != undefined || genreName.length > 0 ) {
+    console.log("Incoming bands ", bands, " Name length is ", genreName.length, " Is this true? ", (genreName.length > 0))
+    if (genreName != undefined && genreName.length > 0) {
         for (band of bands) {
             if(band.band_genre == genreName) {
                 returningBands.push(band)
             }
         }
+        return returningBands
     }
     else {
-        returningBands = foundBands
+        console.log("Returning wo genre ", bands)
+        return bands
     }
-    return returningBands
 }
