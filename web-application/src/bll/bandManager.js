@@ -51,25 +51,27 @@ module.exports = function ({ sessionValidation, bandRepository, bandValidation, 
         },
 
         searchAndGetBandByTitleAndGenre: function (bandName, genreName, callback) {
-            bandRepository.getBandsBySearchTitle(bandName, function(error, foundBands) {
-                if(error) {
-                    errorGenerator.getInternalError(error)
-                }
-                else {
-                    let returningBands = []
-                    if (genreName != null || genreName != undefined || genreName.length > 0 ) {
-                        for (band of foundBands) {
-                            if(band.band_genre == genreName) {
-                                returningBands.push(band)
-                            }
-                        }
+            if(String(bandName).length > 0) {
+                bandRepository.getBandsBySearchTitle(bandName, function(error, foundBands) {
+                    if(error) {
+                        errorGenerator.getInternalError(error)
                     }
                     else {
-                        returningBands = foundBands
+                        const returningBands = getPairBandsWithGenre(foundBands, genreName)
+                        callback(errorGenerator.getSuccess(), returningBands)
                     }
-                    callback(errorGenerator.getSuccess(), returningBands)
-                }
-            })
+                })
+            }
+            else {
+                bandRepository.getAllBands(function (error, allBands) {
+                    if(error) {
+                        callback(errorGenerator.getInternalError(error))
+                    }
+                    else {
+                        callback(errorGenerator.getSuccess(), allBands)
+                    }
+                })
+            }
         },
 
         updateBandById: function (bandId, bandBio, bandName, bandGenre, callback) {
@@ -96,4 +98,18 @@ module.exports = function ({ sessionValidation, bandRepository, bandValidation, 
             })
         }
     }
+}
+function getPairBandsWithGenre(bands, genreName) {
+    let returningBands = []
+    if (genreName != null || genreName != undefined || genreName.length > 0 ) {
+        for (band of bands) {
+            if(band.band_genre == genreName) {
+                returningBands.push(band)
+            }
+        }
+    }
+    else {
+        returningBands = foundBands
+    }
+    return returningBands
 }
