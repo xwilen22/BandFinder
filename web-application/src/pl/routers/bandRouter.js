@@ -70,7 +70,9 @@ module.exports = function ({bandManager, bandMembershipManager, genreManager, se
                                             bands: foundBands,
                                             memberships,
                                             applications,
-                                            genres
+                                            genres,
+                                            bandName,
+                                            genreName
                                         }
                                         response.render("browse.hbs", model)
                                     }

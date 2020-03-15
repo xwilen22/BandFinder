@@ -1,7 +1,7 @@
 <h2>Browse</h2>
 <section class="row container-fluid">
     <form class="form-inline" method="GET" action="/bands/search">
-        <input type="text" placeholder="Search band title" class="form-control" name="bandName">
+        <input type="text" placeholder="Search band title" class="form-control" name="bandName" value="{{bandName}}">
         <label for="sortBy" class="mx-sm-2">By genre</label>
         {{#if genres}}
         <select name="genreName" id="genre">
@@ -9,7 +9,7 @@
         {{#each genres}}
         <optgroup label={{this.headGenreName}}>
             {{#each this.subGenres}}
-            <option value={{this}}>{{this}}</option>
+            <option {{#if (compare this "==" ../../genreName)}}selected{{/if}} value={{this}}>{{this}}</option>
             {{/each}}
         </optgroup>
         {{/each}}
