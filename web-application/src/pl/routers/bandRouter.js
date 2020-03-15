@@ -21,13 +21,20 @@ module.exports = function ({bandManager, bandMembershipManager, genreManager, se
                                 next(applicationError)
                             }
                             else {
-                                console.log("Bands: ", bands, " Memberships: ", memberships, " Application: ", applications)
-                                const model = {
-                                    bands,
-                                    memberships,
-                                    applications
-                                }
-                                response.render("browse.hbs", model)
+                                genreManager.getAllGenres(function(genreError, genres) {
+                                    if(genreError) {
+                                        next(genreError)
+                                    }
+                                    else {
+                                        const model = {
+                                            bands,
+                                            memberships,
+                                            applications,
+                                            genres
+                                        }
+                                        response.render("browse.hbs", model)
+                                    }
+                                })
                             }
                         })
                     }
