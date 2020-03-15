@@ -50,8 +50,21 @@ module.exports = function ({ sessionValidation, bandRepository, bandValidation, 
             })
         },
 
-        searchAndGetBandByTitleOrGenre: function (bandname, genre) {
-            //TODO search and get genre & title in repo
+        searchAndGetBandByTitleAndGenre: function (bandName, genreName) {
+            bandRepository.getBandsBySearchTitle(bandName, function(error, foundBands) {
+                if(error) {
+                    errorGenerator.getInternalError(error)
+                }
+                else {
+                    let returningBands = []
+                    for (band of foundBands) {
+                        if(band.band_genre == genreName) {
+                            returningBands.push(band)
+                        }
+                    }
+                    callback(errorGenerator.getSuccess(), returningBands)
+                }
+            })
         },
 
         updateBandById: function (bandId, bandBio, bandName, bandGenre, callback) {
