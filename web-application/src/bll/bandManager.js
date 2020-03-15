@@ -57,10 +57,15 @@ module.exports = function ({ sessionValidation, bandRepository, bandValidation, 
                 }
                 else {
                     let returningBands = []
-                    for (band of foundBands) {
-                        if(band.band_genre == genreName) {
-                            returningBands.push(band)
+                    if (genreName != null || genreName != undefined) {
+                        for (band of foundBands) {
+                            if(band.band_genre == genreName) {
+                                returningBands.push(band)
+                            }
                         }
+                    }
+                    else {
+                        returningBands = foundBands
                     }
                     callback(errorGenerator.getSuccess(), returningBands)
                 }
@@ -89,13 +94,6 @@ module.exports = function ({ sessionValidation, bandRepository, bandValidation, 
                     callback(errorGenerator.getSuccess())
                 }
             })
-            /*if (sessionValidation.validateAccountnameInSession(accountname, sessionAccountName) == true) {
-           
-            }
-            else {
-                let errorUnauthorized = "Forbidden"
-                callback(errorUnauthorized)
-            }*/
         }
     }
 }
