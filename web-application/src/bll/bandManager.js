@@ -50,7 +50,7 @@ module.exports = function ({ sessionValidation, bandRepository, bandValidation, 
             })
         },
 
-        searchAndGetBandByTitleAndGenre: function (bandName, genreName) {
+        searchAndGetBandByTitleAndGenre: function (bandName, genreName, callback) {
             bandRepository.getBandsBySearchTitle(bandName, function(error, foundBands) {
                 if(error) {
                     errorGenerator.getInternalError(error)
