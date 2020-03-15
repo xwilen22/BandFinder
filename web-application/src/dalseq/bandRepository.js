@@ -34,7 +34,7 @@ module.exports = function ({ db }) {
                              WHERE band_name @@ plainto_tsquery('english', :query)`, 
             {
                 model: bandModel,
-                replacements: { query: bandName }
+                replacements: { query: [bandName] }
             })
             .then(bands => {
                 callback(undefined, bands)
