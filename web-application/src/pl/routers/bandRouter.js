@@ -6,9 +6,9 @@ module.exports = function ({bandManager, bandMembershipManager, genreManager, se
     //Get all
     router.get("/", function (request, response, next) {
         const sessionUsername = request.session.loggedInUsername
-        bandManager.getAllBands(function(error, bands) {
-            if(error) {
-                next(error)
+        bandManager.getAllBands(function(retrieveError, bands) {
+            if(retrieveError) {
+                next(retrieveError)
             }
             else {
                 bandMembershipManager.getBandMembershipByUsername(sessionUsername, function(membershipError, memberships) {
@@ -32,6 +32,39 @@ module.exports = function ({bandManager, bandMembershipManager, genreManager, se
                         })
                     }
                 })
+            }
+        })
+    })
+    router.get("/search?:query", function(request, response, next) {
+        const bandName = request.query.name
+        const genreName = request.query.query
+        console.log("Searchin: ", bandName, genreName)
+        bandManager.searchAndGetBandByTitleAndGenre(bandName, genreName, function(retrieveError, foundBands) {
+            if(retrieveError) {
+                next(retrieveError)
+            }
+            else {
+                bandMembershipManager.getBandMembershipByUsername(sessionUsername, function(membershipError, memberships) {
+                    if(membershipError) {
+                        next(membershipError)
+                    }
+                    else {
+                        applicationManager.getApplicationsByUsername(sessionUsername, function(applicationError, applications) {
+                            if(applicationError) {
+                                next(applicationError)
+                            }
+                            else {
+                                console.log("Bands: ", bands, " Memberships: ", memberships, " Application: ", applications)
+                                const model = {
+                                    foundBands,
+                                    memberships,
+                                    applications
+                                }
+                                response.render("browse.hbs", model)
+                            }
+                        })
+                    }
+                }) 
             }
         })
     })
