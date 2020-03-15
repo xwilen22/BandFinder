@@ -38,7 +38,7 @@ const dalFolders = {
     MYSQL:"dal",
     SEQUELIZE:"dalseq"
 }
-const dalSource = dalFolders.MYSQL
+const dalSource = dalFolders.SEQUELIZE
 
 const proficiencyRepository = require(`./${dalSource}/proficiencyRepository`)
 const accountRepository = require(`./${dalSource}/accountRepository`)

@@ -16,6 +16,16 @@ module.exports = function ({ db }) {
             })
         },
 
+        getBandsBySearchTitle: function(bandName, callback) {
+            let query = `SELECT * FROM band WHERE MATCH(band.band_name)
+                         AGAINST('*?*' IN BOOLEAN MODE)`
+            let values = [bandName]
+
+            db.query(query, values, function(error, bandMatchArray) {
+                callback(error, bandMatchArray)
+            })
+        },
+
         updateBandById: function (id, bandname, bandbio, genre, callback) {
             let query = `UPDATE band 
                          SET band_name = ?, band_biography = ?, band_genre = ? 

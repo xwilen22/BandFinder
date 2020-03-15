@@ -29,6 +29,21 @@ module.exports = function ({ db }) {
             })
         },
 
+        getBandsBySearchTitle: function(bandName, callback) {
+            db.query(`SELECT * FROM bands 
+                             WHERE band_name @@ plainto_tsquery('english', :query)`, 
+            {
+                model: bandModel,
+                replacements: { query: bandName }
+            })
+            .then(bands => {
+                callback(undefined, bands)
+            })
+            .catch(error => {
+                callback(error, null)
+            })
+        },
+
         updateBandById: function (id, bandname, bandbio, genre, callback) {
             bandModel.update({
                 band_name:bandname,
@@ -40,8 +55,6 @@ module.exports = function ({ db }) {
                 }
             })
             .then(bandIds => {
-                //const band = resultBandEntity.get({plain: true})
-                console.log("ID!?!?!?!?!?!?!?!?!?!?", bandIds)
                 callback(undefined, bandIds[0])
             })
             .catch(error => {
