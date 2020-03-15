@@ -1,16 +1,20 @@
 <h2>Browse</h2>
 <section class="row container-fluid">
-    <form class="form-inline" method="GET" action="bands/search">
+    <form class="form-inline" method="GET" action="/bands/search">
         <input type="text" placeholder="Search band title" class="form-control" name="bandName">
-        <label for="sortBy" class="mx-sm-2">Sort by</label>
-        <select class="form-control" id="sortBy">
-            <option>
-                PLACEHOLDER
-            </option>
-            <option>
-                PLACEHOLDER
-            </option>
+        <label for="sortBy" class="mx-sm-2">By genre</label>
+        {{#if genres}}
+        <select name="genreName" id="genre">
+        <option value="">All genres</option>
+        {{#each genres}}
+        <optgroup label={{this.headGenreName}}>
+            {{#each this.subGenres}}
+            <option value={{this}}>{{this}}</option>
+            {{/each}}
+        </optgroup>
+        {{/each}}
         </select>
+        {{/if}}
         <input type="submit" class="btn btn-primary mx-sm-2" value="Search">
     </form>
 </section>

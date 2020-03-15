@@ -39,7 +39,6 @@ module.exports = function ({bandManager, bandMembershipManager, genreManager, se
         const bandName = request.query.bandName
         const genreName = request.query.genreName
         const sessionUsername = request.session.loggedInUsername
-        console.log("Searchin: ", bandName, genreName)
         bandManager.searchAndGetBandByTitleAndGenre(bandName, genreName, function(retrieveError, foundBands) {
             if(retrieveError) {
                 next(retrieveError)
@@ -55,13 +54,20 @@ module.exports = function ({bandManager, bandMembershipManager, genreManager, se
                                 next(applicationError)
                             }
                             else {
-                                console.log("Bands: ", foundBands, " Memberships: ", memberships, " Application: ", applications)
-                                const model = {
-                                    foundBands,
-                                    memberships,
-                                    applications
-                                }
-                                response.render("browse.hbs", model)
+                                genreManager.getAllGenres(function(genreError, genres) {
+                                    if(genreError) {
+                                        next(genreError)
+                                    }
+                                    else {
+                                        const model = {
+                                            bands: foundBands,
+                                            memberships,
+                                            applications,
+                                            genres
+                                        }
+                                        response.render("browse.hbs", model)
+                                    }
+                                })
                             }
                         })
                     }

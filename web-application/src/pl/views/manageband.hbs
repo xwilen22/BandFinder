@@ -24,6 +24,7 @@
             <input class="btn btn-primary" type="submit" value="Save changes">
             <section>
                 <label for="genreChoose">Choose your genre</label>
+                {{#if genres}}
                 <select name="genre" id="genre">
                     {{#each genres}}
                         <optgroup label={{this.headGenreName}}>
@@ -33,6 +34,7 @@
                         </optgroup>
                     {{/each}}
                 </select>
+                {{/if}}
             </section>
             <input type="hidden" value="{{csrfToken}}" name="_csrf">
         </form> 
