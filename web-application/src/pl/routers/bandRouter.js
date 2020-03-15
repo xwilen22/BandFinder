@@ -36,8 +36,9 @@ module.exports = function ({bandManager, bandMembershipManager, genreManager, se
         })
     })
     router.get("/search?:query", function(request, response, next) {
-        const bandName = request.query.name
-        const genreName = request.query.query
+        const bandName = request.query.bandName
+        const genreName = request.query.genreName
+        const sessionUsername = request.session.loggedInUsername
         console.log("Searchin: ", bandName, genreName)
         bandManager.searchAndGetBandByTitleAndGenre(bandName, genreName, function(retrieveError, foundBands) {
             if(retrieveError) {
@@ -54,7 +55,7 @@ module.exports = function ({bandManager, bandMembershipManager, genreManager, se
                                 next(applicationError)
                             }
                             else {
-                                console.log("Bands: ", bands, " Memberships: ", memberships, " Application: ", applications)
+                                console.log("Bands: ", foundBands, " Memberships: ", memberships, " Application: ", applications)
                                 const model = {
                                     foundBands,
                                     memberships,
