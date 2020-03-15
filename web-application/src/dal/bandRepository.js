@@ -17,11 +17,12 @@ module.exports = function ({ db }) {
         },
 
         getBandsBySearchTitle: function(bandName, callback) {
-            let query = `SELECT * FROM band WHERE MATCH(band.band_name)
-                         AGAINST('*?*' IN BOOLEAN MODE)`
-            let values = [bandName]
+            let query = `SELECT * FROM band WHERE MATCH band_name
+                         AGAINST (? IN BOOLEAN MODE)`
+            let values = [`*${bandName}*`]
 
             db.query(query, values, function(error, bandMatchArray) {
+                console.log(bandMatchArray)
                 callback(error, bandMatchArray)
             })
         },

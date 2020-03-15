@@ -21,6 +21,9 @@ CREATE TABLE IF NOT EXISTS band (
     PRIMARY KEY (id),
     CONSTRAINT FOREIGN KEY (band_genre) REFERENCES genre(genre_name)
 );
+
+ALTER TABLE band ADD FULLTEXT(band_name);
+
 CREATE TABLE IF NOT EXISTS instrument (
     instrument_name VARCHAR(20) PRIMARY KEY
 );
