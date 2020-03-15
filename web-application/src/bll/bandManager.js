@@ -57,7 +57,7 @@ module.exports = function ({ sessionValidation, bandRepository, bandValidation, 
                 }
                 else {
                     let returningBands = []
-                    if (genreName != null || genreName != undefined || genreName.length <= 0 ) {
+                    if (genreName != null || genreName != undefined || genreName.length > 0 ) {
                         for (band of foundBands) {
                             if(band.band_genre == genreName) {
                                 returningBands.push(band)
