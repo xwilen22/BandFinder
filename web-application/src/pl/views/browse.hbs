@@ -29,7 +29,7 @@
                     <p class="h3">{{this.band_name}}</p>
                     <p class="text-break">{{this.band_biography}}</p>
                     <p>Members -1/{{this.max_members}}</p>
-                    <a href="bands/view/{{this.id}}" class="stretched-link"></a>
+                    <a href="/bands/view/{{this.id}}" class="stretched-link"></a>
                 </div>
             </div>
             {{#if ../loggedInUsername}}
@@ -47,7 +47,7 @@
                     </div>
                     {{/if}}
                 {{/each}}
-                <form method="POST" action="applications/create/{{../loggedInUsername}}/{{this.id}}">
+                <form method="POST" action="/applications/create/{{../loggedInUsername}}/{{this.id}}">
                     <input type="submit" value="Apply" class="btn btn-success">
                     <input type="hidden" value="{{../csrfToken}}" name="_csrf">
                 </form>

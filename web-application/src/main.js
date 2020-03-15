@@ -186,7 +186,6 @@ app.engine("hbs", expressHandlebars({
 }))
 
 handlebars.registerHelper('compare', function (leftVal, comparision, rightVal) {
-    console.log("HELPER VALS: " , leftVal, rightVal)
     switch (comparision.toString()) {
 		case ">":
 			return (leftVal > rightVal)
