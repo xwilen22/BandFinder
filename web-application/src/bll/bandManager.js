@@ -68,7 +68,8 @@ module.exports = function ({ sessionValidation, bandRepository, bandValidation, 
                         callback(errorGenerator.getInternalError(error))
                     }
                     else {
-                        callback(errorGenerator.getSuccess(), allBands)
+                        const returningBands = getPairBandsWithGenre(allBands, genreName)
+                        callback(errorGenerator.getSuccess(), returningBands)
                     }
                 })
             }
