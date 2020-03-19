@@ -1,4 +1,5 @@
 const express = require("express")
+const multer = require("multer")
 
 module.exports = function ({bandManager, bandMembershipManager, genreManager, sessionValidation, applicationManager, errorGenerator}) {
     const router = express.Router()
@@ -238,7 +239,23 @@ module.exports = function ({bandManager, bandMembershipManager, genreManager, se
         
     })
 
-    router.post("/create", function (request, response) {
+    const bandImageUpload = multer({
+        dest: "../public/images/profile",
+        limits: {
+            fileSize: 10000000, //1mb filesize limit upon upload
+            fieldNameSize: 50 //50 characters limit on filename
+        },
+        fileFilter: function (request, file, callback) {
+            if (file.mimetype != "image/png" && file.mimetype != "image/gif" && file.mimetype != "image/jpeg") {
+                validationError = new Error("Unsupported filetype!");
+                request.fileValidationError = validationError.message;
+                return callback(validationError, false)
+            }
+            return callback(null, true)
+        }
+    })
+    let bandProfileImageUpload = bandImageUpload.single("bandProfile")
+    router.post("/create", bandProfileImageUpload, function (request, response) {
         
         const bandname = request.body.bandNameText
         const username = request.session.loggedInUsername
