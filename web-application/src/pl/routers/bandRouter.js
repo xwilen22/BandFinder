@@ -223,10 +223,10 @@ module.exports = function ({bandManager, bandMembershipManager, genreManager, se
         })
     })
 
-    router.get("/create", function (request, response) {
+    router.get("/create", function (request, response, next) {
         genreManager.getAllGenres(function(error, genres){
             if(error){
-                response.send(error)
+                next(error)
             }
             else{
                 const model = {
@@ -238,8 +238,7 @@ module.exports = function ({bandManager, bandMembershipManager, genreManager, se
         
     })
 
-    router.post("/create", function (request, response) {
-        
+    router.post("/create", function (request, response, next) {
         const bandname = request.body.bandNameText
         const username = request.session.loggedInUsername
         const bio = request.body.bioText
@@ -249,7 +248,25 @@ module.exports = function ({bandManager, bandMembershipManager, genreManager, se
         
         bandManager.createBand(bandname, bio, genre, maxMembers,function(bandError, bandId){
             if(bandError){
-                response.send(bandError)
+                if(bandError.retainPage == true) {
+                    genreManager.getAllGenres(function(genreError, genres){
+                        if(genreError){
+                            next(genreError)
+                        }
+                        else{
+                            const model = {
+                                bandname,
+                                biography: bio,
+                                genre,
+                                genres
+                            }
+                            response.render("manageband.hbs", model)
+                        }
+                    })
+                }
+                else {
+                    next(bandError)
+                }
             }
             else{
                 bandMembershipManager.createBandMembership(username, bandId, isBandLeader, function(bandMembershipError){
