@@ -52,10 +52,12 @@
                         <p class="card-text">Band Leader</p>
                         {{/if}}
                         {{#if ../isCurrentUserBandLeader}}
+                        {{#unless (compare this.username "==" ../loggedInUsername)}}
                         <form method="POST" action="/bands/removemember/{{../bandId}}/{{this.username}}">
                             <input type="submit" class="btn btn-danger" value="Kick">
                             <input type="hidden" value="{{../csrfToken}}" name="_csrf">
                         </form>
+                        {{/unless}}
                         {{/if}}
                     </div>
                 </div>

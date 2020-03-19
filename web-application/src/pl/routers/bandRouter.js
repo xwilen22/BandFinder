@@ -285,7 +285,6 @@ module.exports = function ({bandManager, bandMembershipManager, genreManager, se
         })
     })
     router.post("/removemember/:forBandId/:username", function(request, response, next) {
-        console.log("Dö, skit i allt då fan")
         const username = request.params.username
         const bandId = request.params.forBandId
 
