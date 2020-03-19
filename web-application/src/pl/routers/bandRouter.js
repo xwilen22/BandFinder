@@ -267,20 +267,34 @@ module.exports = function ({bandManager, bandMembershipManager, genreManager, se
         const username = request.body.username
         const bandId = request.params.forBandId
         const isBandLeader = false
-        //username, bandId, callback
-        applicationManager.deleteApplication(username, bandId, function(applicationError) {
-            if(applicationError) {
-                next(applicationError)
+        
+        bandMembershipManager.getBandMembershipByBandId(bandId, function(membershipError, bandMembers) {
+            if(membershipError){
+                response.send(membershipError)
             }
             else {
-                bandMembershipManager.createBandMembership(username, bandId, isBandLeader, function(bandMembershipError) {
-                    if(bandMembershipError) {
-                        next(bandMembershipError)
-                    }
-                    else {
-                        response.redirect("back")
-                    }
-                })
+                const validated = sessionValidation.validateCurrentUserBandLeader(bandMembers, request.session.loggedInUsername)
+                if (validated == true) {
+                    //username, bandId, callback
+                    applicationManager.deleteApplication(username, bandId, function (applicationError) {
+                        if (applicationError) {
+                            next(applicationError)
+                        }
+                        else {
+                            bandMembershipManager.createBandMembership(username, bandId, isBandLeader, function (bandMembershipError) {
+                                if (bandMembershipError) {
+                                    next(bandMembershipError)
+                                }
+                                else {
+                                    response.redirect("back")
+                                }
+                            })
+                        }
+                    })
+                }
+                else{
+                    next(errorGenerator.getHttpCodeError(401))
+                }
             }
         })
     })
@@ -288,12 +302,25 @@ module.exports = function ({bandManager, bandMembershipManager, genreManager, se
         const username = request.params.username
         const bandId = request.params.forBandId
 
-        bandMembershipManager.deleteBandMembership(username, bandId, function(error) {
-            if(error) {
-                next(error)
+        bandMembershipManager.getBandMembershipByBandId(bandId, function(membershipError, bandMembers){
+            if(membershipError){
+                response.send(membershipError)
             }
             else {
-                response.redirect("back")
+                const validated = sessionValidation.validateCurrentUserBandLeader(bandMembers, request.session.loggedInUsername) || sessionValidation.validateAccountNameInSession(username, request.session.loggedInUsername)
+                if(validated == true){
+                    bandMembershipManager.deleteBandMembership(username, bandId, function(error) {
+                        if(error) {
+                            next(error)
+                        }
+                        else {
+                            response.redirect("back")
+                        }
+                    })
+                }
+                else{
+                    next(errorGenerator.getHttpCodeError(401))
+                }
             }
         })
     })

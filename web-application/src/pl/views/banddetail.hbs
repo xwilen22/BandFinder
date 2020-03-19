@@ -37,6 +37,13 @@
         <p>No applications yet!</p>
         {{/if}}
     </div>
+    {{else}}
+    {{#if (contains bandMembers loggedInUsername "username")}}
+    <form method="POST" action="/bands/removemember/{{bandId}}/{{loggedInUsername}}">
+        <input type="hidden" value="{{csrfToken}}" name="_csrf">
+        <input class="btn btn-warning" type="submit" value="Leave band"></input>
+    </form>
+    {{/if}}
     {{/if}}
 </section>
 <section class="row container-fluid p-4">
