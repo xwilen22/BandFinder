@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS band (
     band_biography TEXT,
     band_genre VARCHAR(20) NOT NULL,
     max_members TINYINT UNSIGNED NOT NULL,
-    band_profile_picture BLOB,
+    band_profile_picture TEXT,
     PRIMARY KEY (id),
     CONSTRAINT FOREIGN KEY (band_genre) REFERENCES genre(genre_name)
 );
