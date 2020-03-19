@@ -31,10 +31,11 @@ module.exports = function ({ db }) {
 
         getBandsBySearchTitle: function(bandName, callback) {
             db.query(`SELECT * FROM bands 
-                             WHERE band_name @@ plainto_tsquery('english', :query)`, 
+                      WHERE band_name @@ plainto_tsquery('english', :query)`, 
             {
                 model: bandModel,
-                replacements: { query: [bandName] }
+                replacements: { query: [bandName] },
+                raw: true
             })
             .then(bands => {
                 callback(undefined, bands)
