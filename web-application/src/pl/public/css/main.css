@@ -19,7 +19,7 @@ footer {
     width: 100%;
     height: auto;
 }
-.band-detail-image {
-    height: 200px;
-    width: 200px
+.bandmembercard {
+    max-width: 20em;
+    min-height: 8em;
 }
