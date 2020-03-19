@@ -23,3 +23,9 @@ footer {
     max-width: 20em;
     min-height: 8em;
 }
+.optionParent {
+    font-weight: bold;
+}
+.optionChild {
+    font-weight: lighter;
+}

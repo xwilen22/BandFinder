@@ -1,56 +1,57 @@
-<h2>Browse</h2>
+<h2>{{#if bandName}}Search results for {{bandName}}{{else}}Browse{{/if}}</h2>
 <section class="row container-fluid">
     <form class="form-inline" method="GET" action="/bands/search">
         <input type="text" placeholder="Search band title" class="form-control" name="bandName" value="{{bandName}}">
-        <label for="sortBy" class="mx-sm-2">By genre</label>
         {{#if genres}}
-        <select name="genreName" id="genre">
-        <option value="">All genres</option>
-        {{#each genres}}
-        <optgroup label={{this.headGenreName}}>
-            {{#each this.subGenres}}
-            <option {{#if (compare this "==" ../../genreName)}}selected{{/if}} value={{this}}>{{this}}</option>
+        <label for="sortBy" class="mx-sm-2">By genre</label>
+        <select class="form-control" name="genreName" id="genre">
+            <option value="">All genres</option>
+            {{#each genres}}
+            <option class="optionParent" value={{this.headGenreName}} {{#if (compare this.headGenreName "==" ../genreName)}}selected{{/if}}>{{this.headGenreName}}</option>
+                {{#each this.subGenres}}
+                <option class="optionChild" {{#if (compare this "==" ../../genreName)}}selected{{/if}} value={{this}}>-   {{this}}</option>
+                {{/each}}
             {{/each}}
-        </optgroup>
-        {{/each}}
         </select>
         {{/if}}
-        <input type="submit" class="btn btn-primary mx-sm-2" value="Search">
+        <input class="btn btn-primary mx-2" type="submit" value="Search">
     </form>
 </section>
 <section class="row p-2">
     <ul class="list-group w-100">
         {{#if bands}}
         {{#each bands}}
-        <li class="list-group-item row m-sm-2 container w-100">
-            <div class="row p-2">
-                <img class="col-2 img-thumbnail m-0" src="/images/PLACEHOLDER.JPG">
-                <div class="col m-0">
-                    <p class="h3">{{this.band_name}}</p>
-                    <p class="text-break">{{this.band_biography}}</p>
-                    <p>Members -1/{{this.max_members}}</p>
-                    <a href="/bands/view/{{this.id}}" class="stretched-link"></a>
+        <li class="list-group-item mx-2">
+            <div class="row">
+                <img class="col-2 img-thumbnail img-fluid m-0" src="/images/placeholder.png">
+                <div class="col-10 m-0">
+                    <a class="h3 stretched-link" href="/bands/view/{{this.id}}">{{this.band_name}}</a>
+                    <p class="lead">{{this.band_genre}}</p>
                 </div>
             </div>
             {{#if ../loggedInUsername}}
                 {{#each ../memberships}}
                     {{#if (compare this.band_id "==" ../id)}}
-                    <div class="alert alert-success" role="alert">
+                    <div class="alert alert-success my-2 w-100" role="alert">
                         Member of this band
                     </div>
                     {{/if}}
                 {{/each}}
                 {{#each ../applications}}
                     {{#if (compare this.band_id "==" ../id)}}
-                    <div class="alert alert-success" role="alert">
+                    <div class="alert alert-success my-2 w-100" role="alert">
                         Applied!
                     </div>
                     {{/if}}
                 {{/each}}
+                {{#unless (contains ../memberships this.id "band_id")}}
+                {{#unless (contains ../applications this.id "band_id")}}
                 <form method="POST" action="/applications/create/{{../loggedInUsername}}/{{this.id}}">
                     <input type="submit" value="Apply" class="btn btn-success">
                     <input type="hidden" value="{{../csrfToken}}" name="_csrf">
                 </form>
+                {{/unless}}
+                {{/unless}}
             {{/if}}
         </li>
         {{/each}}

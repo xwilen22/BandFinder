@@ -186,7 +186,6 @@ app.engine("hbs", expressHandlebars({
 }))
 
 handlebars.registerHelper("compare", function (leftVal, comparision, rightVal) {
-    console.log(leftVal, comparision, rightVal)
     switch (comparision.toString()) {
 		case ">":
 			return (leftVal > rightVal)
@@ -207,13 +206,23 @@ handlebars.registerHelper("compare", function (leftVal, comparision, rightVal) {
 	}
 })
 
-handlebars.registerHelper("contains", function(array, value) {
-    console.log(array, value)
+handlebars.registerHelper("contains", function(array, value, optionalObjectKey) {
+    console.log("Contains: ", array, value)
     if (Array.isArray(array) == false) {
         console.log("HANDLEBARS ERROR! Invalid array in contains")
     }
-
-    return array.includes(value)
+    
+    if(optionalObjectKey == undefined || optionalObjectKey == null) {
+        console.log("Contains is ", array.includes(value))
+        return array.includes(value)
+    }
+    else {
+        let arrayForKey = []
+        for (element of array) {
+            arrayForKey.push(element[optionalObjectKey])
+        }
+        return arrayForKey.includes(value)
+    }
 })
 //Error is specific
 app.use(function(errorModel, request, response, next) {
