@@ -11,7 +11,7 @@
         {{#if bandname}}
         <form method="POST" action="/bands/delete/{{bandId}}">
             <input type="hidden" value="{{csrfToken}}" name="_csrf">
-            <button class="btn btn-primary" value="DELETE">DELETE</button>
+            <input class="btn btn-primary" type="submit" value="Delete band">
         </form>
         {{/if}}
         <form class="form-group w-100" method="POST">
