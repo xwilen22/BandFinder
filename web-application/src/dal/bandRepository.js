@@ -22,7 +22,6 @@ module.exports = function ({ db }) {
             let values = [`*${bandName}*`]
 
             db.query(query, values, function(error, bandMatchArray) {
-                console.log(bandMatchArray)
                 callback(error, bandMatchArray)
             })
         },
@@ -32,8 +31,7 @@ module.exports = function ({ db }) {
                          SET band_name = ?, band_biography = ?, band_genre = ? 
                          WHERE id = ?`
             let values = [bandname, bandbio, genre, id]
-            db.query(query, values, function (error, bandArray) {
-                console.log(bandArray)
+            db.query(query, values, function (error) {
                 callback(error, id)
             })
         },
