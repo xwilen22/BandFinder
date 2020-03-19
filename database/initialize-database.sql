@@ -1,8 +1,7 @@
 CREATE TABLE IF NOT EXISTS user (
     username VARCHAR(20) PRIMARY KEY,
     password VARCHAR(80) NOT NULL,
-    biography TEXT,
-    user_profile_picture BLOB
+    biography TEXT
 );
 CREATE TABLE IF NOT EXISTS genre (
     genre_name VARCHAR(20) PRIMARY KEY,
