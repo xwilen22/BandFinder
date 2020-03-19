@@ -9,11 +9,16 @@
                 <p class="h3" class="card-title"><a href="/bands/view/{{this.id}}" class="stretched-link">{{this.band_name}}</a></p>
                 <p class="lead">{{this.band_genre}}</p>
             </div>
-            {{#if this.is_band_leader}}
             <div class="col-2">
+                {{#if this.is_band_leader}}
                 <a class="btn btn-primary" href="/bands/edit/{{this.id}}">Edit</a>
+                {{else}}
+                <form method="POST" action="/bands/removemember/{{this.id}}/{{../loggedInUsername}}">
+                    <input type="hidden" value="{{../csrfToken}}" name="_csrf">
+                    <input class="btn btn-warning" type="submit" value="Leave band"></input>
+                </form>
+                {{/if}}
             </div>
-            {{/if}}
         </li>
         {{/each}}
     </ul>
