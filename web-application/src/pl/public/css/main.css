@@ -1,11 +1,20 @@
 nav {
-    min-height: 5%;
+    min-height: 7%;
+    position: sticky;
 }
 main {
-    min-height: 90%;
+    min-height: 87%;
 }
 footer {
     min-height: 5%;
+}
+body {
+    width: 100%;
+    height: 100%;
+}
+html {
+    width: 100%;
+    height: 100%;
 }
 .bandcard {
     margin-top: 1rem;
