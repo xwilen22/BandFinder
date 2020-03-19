@@ -215,7 +215,7 @@ handlebars.registerHelper("contains", function(array, value) {
 
     return array.includes(value)
 })
-
+//Error is specific
 app.use(function(errorModel, request, response, next) {
     if(errorModel) {
         response.status(errorModel.code).render("error.hbs", errorModel)

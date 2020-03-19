@@ -13,7 +13,7 @@ footer {
 }
 .membercard {
     margin-top: 1rem;
-    max-width: 12rem;
+    max-width: 100%;
 }
 .keepaspectratio {
     width: 100%;
