@@ -149,7 +149,7 @@ module.exports = function ({bandManager, bandMembershipManager, genreManager, se
         const bandId = request.params.bandId
         bandMembershipManager.getBandMembershipByBandId(bandId, function (membershipError, bandMembers) {
             if (membershipError) {
-                response.send(membershipError)
+                next(membershipError)
             }
             else {
                 const validated = sessionValidation.validateCurrentUserBandLeader(bandMembers, request.session.loggedInUsername)
@@ -157,7 +157,7 @@ module.exports = function ({bandManager, bandMembershipManager, genreManager, se
                 if (validated == true) {
                     bandManager.deleteBand(bandId, function (bandError) {
                         if (bandError) {
-                            response.send(bandError)
+                            next(bandError)
                         }
                         else {
                             response.redirect("/bands/browseuserbands")
@@ -202,14 +202,14 @@ module.exports = function ({bandManager, bandMembershipManager, genreManager, se
         
         bandMembershipManager.getBandMembershipByBandId(bandId, function(membershipError, bandMembers){
             if(membershipError){
-                response.send(membershipError)
+                next(membershipError)
             }
             else {
                 const validated = sessionValidation.validateCurrentUserBandLeader(bandMembers, request.session.loggedInUsername)
                 if(validated == true){
                     bandManager.updateBandById(bandId, bio, bandname, genre, function(bandError, bandId){
                         if(bandError){
-                            response.send(bandError)
+                            next(bandError)
                         }
                         else{
                             response.redirect(`/bands/view/${bandId}`)
@@ -271,7 +271,7 @@ module.exports = function ({bandManager, bandMembershipManager, genreManager, se
             else{
                 bandMembershipManager.createBandMembership(username, bandId, isBandLeader, function(bandMembershipError){
                     if(bandMembershipError){
-                        response.send(bandMembershipError)
+                        next(bandMembershipError)
                     }
                     else{
                         response.redirect(`view/${bandId}`)
@@ -287,7 +287,7 @@ module.exports = function ({bandManager, bandMembershipManager, genreManager, se
         
         bandMembershipManager.getBandMembershipByBandId(bandId, function(membershipError, bandMembers) {
             if(membershipError){
-                response.send(membershipError)
+                next(membershipError)
             }
             else {
                 const validated = sessionValidation.validateCurrentUserBandLeader(bandMembers, request.session.loggedInUsername)
@@ -321,7 +321,7 @@ module.exports = function ({bandManager, bandMembershipManager, genreManager, se
 
         bandMembershipManager.getBandMembershipByBandId(bandId, function(membershipError, bandMembers){
             if(membershipError){
-                response.send(membershipError)
+                next(membershipError)
             }
             else {
                 const validated = sessionValidation.validateCurrentUserBandLeader(bandMembers, request.session.loggedInUsername) || sessionValidation.validateAccountNameInSession(username, request.session.loggedInUsername)
