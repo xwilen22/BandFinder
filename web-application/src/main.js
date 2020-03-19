@@ -185,7 +185,7 @@ app.engine("hbs", expressHandlebars({
     defaultLayout: "main.hbs"
 }))
 
-handlebars.registerHelper('compare', function (leftVal, comparision, rightVal) {
+handlebars.registerHelper("compare", function (leftVal, comparision, rightVal) {
     console.log(leftVal, comparision, rightVal)
     switch (comparision.toString()) {
 		case ">":
@@ -205,6 +205,15 @@ handlebars.registerHelper('compare', function (leftVal, comparision, rightVal) {
 		default:
 			console.log("HANDLEBARS ERROR! Invalid operator in compare")
 	}
+})
+
+handlebars.registerHelper("contains", function(array, value) {
+    console.log(array, value)
+    if (Array.isArray(array) == false) {
+        console.log("HANDLEBARS ERROR! Invalid array in contains")
+    }
+
+    return array.includes(value)
 })
 
 app.use(function(errorModel, request, response, next) {
