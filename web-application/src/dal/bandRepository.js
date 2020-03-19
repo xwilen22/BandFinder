@@ -33,7 +33,8 @@ module.exports = function ({ db }) {
                          WHERE id = ?`
             let values = [bandname, bandbio, genre, id]
             db.query(query, values, function (error, bandArray) {
-                callback(error, bandArray[0].id)
+                console.log(bandArray)
+                callback(error, id)
             })
         },
 
