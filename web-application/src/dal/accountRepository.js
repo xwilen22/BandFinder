@@ -10,9 +10,9 @@ module.exports = function ({ db }) {
 
         updateUserInfoByUsername: function (username, bio, userPicture, callback) {
             let query = `UPDATE user 
-                         SET biography = ?, user_profile_picture = ? 
+                         SET biography = ?
                          WHERE username = ?`
-            let values = [bio, userPicture, username]
+            let values = [bio, username]
             db.query(query, values, function (error) {
                 callback(error, username)
             })
@@ -29,7 +29,7 @@ module.exports = function ({ db }) {
         },
 
         getAllUserInformations: function(callback) {
-            let query = `SELECT username, biography, user_profile_picture FROM user`
+            let query = `SELECT username, biography FROM user`
             db.query(query, function(error, users) {
                 callback(error, users)
             })
@@ -45,7 +45,7 @@ module.exports = function ({ db }) {
         },
 
         getUserInformationByUsername: function (username, callback) {
-            let query = `SELECT username, biography, user_profile_picture FROM user
+            let query = `SELECT username, biography FROM user
                          WHERE username = ?`
             let values = [username]
 

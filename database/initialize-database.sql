@@ -1,8 +1,7 @@
 CREATE TABLE IF NOT EXISTS user (
     username VARCHAR(20) PRIMARY KEY,
     password VARCHAR(80) NOT NULL,
-    biography TEXT,
-    user_profile_picture BLOB
+    biography TEXT
 );
 CREATE TABLE IF NOT EXISTS genre (
     genre_name VARCHAR(20) PRIMARY KEY,
@@ -17,7 +16,7 @@ CREATE TABLE IF NOT EXISTS band (
     band_biography TEXT,
     band_genre VARCHAR(20) NOT NULL,
     max_members TINYINT UNSIGNED NOT NULL,
-    band_profile_picture BLOB,
+    band_profile_picture TEXT,
     PRIMARY KEY (id),
     CONSTRAINT FOREIGN KEY (band_genre) REFERENCES genre(genre_name)
 );
