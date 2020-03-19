@@ -50,10 +50,6 @@ module.exports = function({}) {
         biography: {
             type: DataTypes.TEXT,
             allowNull: true
-        },
-        user_profile_picture: {
-            type: DataTypes.TEXT,
-            allowNull: true
         }
     })
     const genre = sequelizeClient.define("genre", {
