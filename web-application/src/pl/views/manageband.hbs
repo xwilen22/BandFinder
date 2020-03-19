@@ -14,7 +14,7 @@
             <button class="btn btn-primary" value="DELETE">DELETE</button>
         </form>
         {{/if}}
-        <form class="form-group w-100" method="POST">
+        <form class="form-group w-100" method="POST" enctype="multipart/form-data">
             <div class="form-row">
                 <label>Band name</label>
                 <input class="form-control" type="text" name="bandNameText" value="{{bandname}}">
@@ -41,8 +41,8 @@
                 </select>
                 {{/if}}
             </div>
-            <input class="btn btn-primary my-2" type="submit" value="{{#if bandname}}Save changes{{else}}Create band{{/if}}">
             <input type="hidden" value="{{csrfToken}}" name="_csrf">
+            <input class="btn btn-primary my-2" type="submit" value="{{#if bandname}}Save changes{{else}}Create band{{/if}}">
         </form> 
     </div>
 </section>

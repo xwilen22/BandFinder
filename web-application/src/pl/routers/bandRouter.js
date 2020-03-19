@@ -194,30 +194,52 @@ module.exports = function ({bandManager, bandMembershipManager, genreManager, se
             }
         })
     })
-
-    router.post("/update/:bandId", function (request, response, next) {
+    const bandImageUpload = multer({
+        dest: "../public/images/profile",
+        limits: {
+            fileSize: 10000000, //1mb filesize limit upon upload
+            fieldNameSize: 50 //50 characters limit on filename
+        },
+        fileFilter: function (request, file, callback) {
+            if (file.mimetype != "image/png" && file.mimetype != "image/gif" && file.mimetype != "image/jpeg") {
+                validationError = new Error("Unsupported filetype!");
+                request.fileValidationError = validationError.message;
+                return callback(validationError, false)
+            }
+            return callback(null, true)
+        }
+    })
+    let bandProfileImageUpload = bandImageUpload.single("bandProfile")
+    router.post("/update/:bandId", bandProfileImageUpload, function (request, response, next) {
         const bandId = request.params.bandId
         const bandname = request.body.bandNameText
         const bio = request.body.bioText
         const genre = request.body.genre
-        
-        bandMembershipManager.getBandMembershipByBandId(bandId, function(membershipError, bandMembers){
-            if(membershipError){
+        console.log(bandname, bio, genre)
+        if(request.body._csrf != request.session.csrfToken) {
+            console.log("Hello? ", request.body._csrf, "!=" , request.session.csrfToken)
+            next({
+                code: "EBADCSRFTOKEN"
+            })
+            return
+        }
+        bandMembershipManager.getBandMembershipByBandId(bandId, function (membershipError, bandMembers) {
+            if (membershipError) {
                 response.send(membershipError)
             }
             else {
                 const validated = sessionValidation.validateCurrentUserBandLeader(bandMembers, request.session.loggedInUsername)
-                if(validated == true){
-                    bandManager.updateBandById(bandId, bio, bandname, genre, function(bandError, bandId){
-                        if(bandError){
+                if (validated == true) {
+                    bandManager.updateBandById(bandId, bio, bandname, genre, function (bandError, bandId) {
+                        if (bandError) {
                             response.send(bandError)
                         }
-                        else{
+                        else {
                             response.redirect(`/bands/view/${bandId}`)
                         }
                     })
                 }
-                else{
+                else {
                     next(errorGenerator.getHttpCodeError(401))
                 }
             }
@@ -238,32 +260,22 @@ module.exports = function ({bandManager, bandMembershipManager, genreManager, se
         })
         
     })
-
-    const bandImageUpload = multer({
-        dest: "../public/images/profile",
-        limits: {
-            fileSize: 10000000, //1mb filesize limit upon upload
-            fieldNameSize: 50 //50 characters limit on filename
-        },
-        fileFilter: function (request, file, callback) {
-            if (file.mimetype != "image/png" && file.mimetype != "image/gif" && file.mimetype != "image/jpeg") {
-                validationError = new Error("Unsupported filetype!");
-                request.fileValidationError = validationError.message;
-                return callback(validationError, false)
-            }
-            return callback(null, true)
-        }
-    })
-    let bandProfileImageUpload = bandImageUpload.single("bandProfile")
-    router.post("/create", bandProfileImageUpload, function (request, response) {
-        
+    router.post("/create", bandProfileImageUpload, function (request, response, next) {
         const bandname = request.body.bandNameText
         const username = request.session.loggedInUsername
         const bio = request.body.bioText
         const isBandLeader = true
         const genre = request.body.genre
         const maxMembers = 5
-        
+        console.log(bandname, username, bio)
+        if(request.body._csrf != request.session.csrfToken) {
+            console.log("Hello? ", request.body._csrf, "!=" , request.session.csrfToken)
+            next({
+                code: "EBADCSRFTOKEN"
+            })
+            return
+        }
+
         bandManager.createBand(bandname, bio, genre, maxMembers,function(bandError, bandId){
             if(bandError){
                 response.send(bandError)

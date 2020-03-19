@@ -122,8 +122,6 @@ container.register("bandRepository", awilix.asFunction(bandRepository))
 container.register("bandManager", awilix.asFunction(bandManager))
 container.register("bandRouter", awilix.asFunction(bandRouter))
 
-const theBandRouter = container.resolve("bandRouter")
-
 container.register("adminRouter", awilix.asFunction(adminRouter))
 const theAdminRouter = container.resolve("adminRouter")
 
@@ -167,10 +165,13 @@ app.use(function(request, response, next) {
     next()
 })
 
+//Keep above csrfProtection, since bands resource uses multipart forms
+const theBandRouter = container.resolve("bandRouter")
+app.use("/bands", theBandRouter)
+
 app.use(csrfProtection)
 
 app.use("/", theVariousRouter)
-app.use("/bands", theBandRouter)
 app.use("/account", theAccountRouter)
 app.use("/proficiencies", theProficiencyRouter)
 app.use("/applications", theApplicationRouter)
