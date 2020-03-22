@@ -49,7 +49,6 @@ module.exports = function ({}) {
             else {
                 retrievedHttpCode = httpResponseCode
             }
-            console.log("EROR", retrievedHttpCode)
             return {
                 code: retrievedHttpCode, 
                 messages:[],

@@ -24,7 +24,6 @@ module.exports = function({ errorGenerator }) {
                 id: username
             }
             jwt.sign(payload, serverSecret, function(error, accessToken) {
-                console.log(error, accessToken)
                 if(error) {
                     callback(errorGenerator.getInternalError(error))
                 }

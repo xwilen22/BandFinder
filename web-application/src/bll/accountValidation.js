@@ -29,7 +29,6 @@ module.exports = function ({}) {
             this.getNameValidationErrors(accountName).forEach(nameValidationError => validationErrors.push(nameValidationError))
             this.getPasswordValidationErrors(passwordPlain).forEach(passwordValidationError => validationErrors.push(passwordValidationError))
             
-            console.log(validationErrors)
             return validationErrors
         }
     }

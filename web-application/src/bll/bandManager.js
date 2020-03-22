@@ -51,7 +51,6 @@ module.exports = function ({ sessionValidation, bandRepository, bandValidation, 
         },
 
         searchAndGetBandByTitleAndGenre: function (bandName, genreName, callback) {
-            console.log("Band Name Length", String(bandName).length, " Genre name", genreName)
             if(String(bandName).length > 0) {
                 bandRepository.getBandsBySearchTitle(bandName, function(error, foundBands) {
                     if(error) {
@@ -79,7 +78,6 @@ module.exports = function ({ sessionValidation, bandRepository, bandValidation, 
         updateBandById: function (bandId, bandBio, bandName, bandGenre, callback) {
             bandRepository.updateBandById(bandId, bandName, bandBio, bandGenre, function (error, bandId) {
                 if (error) {
-                    console.log(error)
                     callback(errorGenerator.getInternalError(error))
                 }
                 else {
@@ -103,7 +101,6 @@ module.exports = function ({ sessionValidation, bandRepository, bandValidation, 
 }
 function getPairBandsWithGenre(bands, genreName) {
     let returningBands = []
-    console.log("Incoming bands ", bands, " Name length is ", genreName.length, " Is this true? ", (genreName.length > 0))
     if (genreName != undefined && genreName.length > 0) {
         for (band of bands) {
             if(band.band_genre == genreName) {
@@ -113,7 +110,6 @@ function getPairBandsWithGenre(bands, genreName) {
         return returningBands
     }
     else {
-        console.log("Returning wo genre ", bands)
         return bands
     }
 }

@@ -3,7 +3,6 @@ module.exports = function ({errorGenerator, proficiencyRepository, proficiencyVa
         createProficiency(username, instrumentName, proficiencyLevelNumber, callback) {
             proficiencyValidation.retrieveUsernameAndInstrumentName(username, instrumentName, function(formatedError, usernameAndInstrumentObject) {
                 if(formatedError) {
-                    console.log("Failed getting intrument and user")
                     callback(formatedError)
                 }
                 else {
@@ -72,7 +71,6 @@ module.exports = function ({errorGenerator, proficiencyRepository, proficiencyVa
                             callback(errorGenerator.getInternalError(error))
                         }
                         else {
-                            console.log("BLL PROF: ", proficiencies)
                             callback(errorGenerator.getSuccess(), proficiencies)
                         }
                     })
