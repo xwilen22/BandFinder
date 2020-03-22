@@ -24,6 +24,8 @@ function displayEditPageForUser(parentElement, username) {
                     proficiency_level: addProficiencyLevelNumberInput.value
                 }
                 addProficiencyToList(proficiency, proficiencyListItemTemplate, username)
+
+                document.getElementById("alert-holder").appendChild(getAlert("Proficiency added", "success"))
             }
             setLoadingPage(false)
         })
@@ -102,6 +104,9 @@ function addProficiencyToList(proficiencyObject, templateElement, username) {
             if (error) {
                 document.getElementById("alert-holder").appendChild(getAlert("Failed to update proficiency!", "danger"))
             }
+            else {
+                document.getElementById("alert-holder").appendChild(getAlert("Proficiency updated", "success"))
+            }
         })
     })
 
@@ -115,6 +120,7 @@ function addProficiencyToList(proficiencyObject, templateElement, username) {
             }
             else {
                 proficienciesUnorderedList.removeChild(proficiencyListItem)
+                document.getElementById("alert-holder").appendChild(getAlert("Proficiency deleted", "success"))
             }
         })
     })
