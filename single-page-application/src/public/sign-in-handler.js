@@ -1,4 +1,4 @@
-function signInToAccount(parentElement){
+function displaySignInToAccountPage(parentElement){
     const loginForm = document.querySelector("#signin")
     const alertHolder = document.getElementById("alert-holder")
     loginForm.addEventListener("submit",function(event){
@@ -21,14 +21,16 @@ function signInToAccount(parentElement){
     setLoadingPage(false)
 }
 function signOut(){
-    localStorage.accessToken = ""
-    localStorage.username = ""
-	document.body.classList.remove("showIfSignedIn")
-    document.body.classList.add("showIfSingedOut")
-
+    uiSignOutClearLocalStorage()
     moveTo("/")
 }
 
+function uiSignOutClearLocalStorage() {
+    localStorage.accessToken = ""
+    localStorage.username = ""
+    document.body.classList.remove("showIfSignedIn")
+    document.body.classList.add("showIfSingedOut")
+}
 
 function UiSignedInHelp(username){
     let userId = username

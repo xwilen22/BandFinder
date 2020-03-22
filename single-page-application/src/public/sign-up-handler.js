@@ -1,5 +1,5 @@
 
-function displaySignUpNewAccount(){
+function displaySignUpNewAccountPage(){
 
     const signUpForm = document.querySelector("#signup")
     const alertHolder = document.getElementById("alert-holder")
@@ -9,7 +9,6 @@ function displaySignUpNewAccount(){
         const password = event.srcElement.elements[1].value
         
         signUpAccount(username,password,function(error, createdUsername){
-            console.log("what is this error", error,"what is this username", createdUsername)
             if(error){
                 alertHolder.appendChild(getAlert("Failed to create account", "danger"))
             }

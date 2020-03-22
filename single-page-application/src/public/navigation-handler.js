@@ -5,13 +5,13 @@ const domains = {
 const currentDomain = domains.localhost
 
 document.addEventListener("DOMContentLoaded", function(){
-    moveTo(location.pathname)
     setLoadingPage(true)
+    moveTo(location.pathname)
     if(localStorage.accessToken != undefined && localStorage.accessToken.length > 0){
         UiSignedInHelp(localStorage.username)
     }
     else {
-        signOut()
+        uiSignOutClearLocalStorage()
     }
 
     const destinationAnchors = document.getElementsByTagName("a")
@@ -26,8 +26,8 @@ document.addEventListener("DOMContentLoaded", function(){
 const staticPageDestinations = [
     //Destinations
     {uri: "/", method: displayHomePage, methodOnly: false},
-    {uri: "/account/signin", method: displaySignInToAccount, methodOnly: false},
-    {uri: "/account/signup", method: displaySignUpNewAccount, methodOnly: false},
+    {uri: "/account/signin", method: displaySignInToAccountPage, methodOnly: false},
+    {uri: "/account/signup", method: displaySignUpNewAccountPage, methodOnly: false},
     //Actions
     {uri: "/account/signout", method: signOut, methodOnly: true}
 ]
@@ -37,8 +37,8 @@ window.addEventListener("popstate",function(event) {
 	moveToPage(uri)
 })
 
-function moveTo(uri){
-    console.log("Move to: ", moveTo.caller)
+function moveTo(uri) {
+    console.log("Caller is ", moveTo.caller)
     history.pushState({}, "", uri)
     moveToPage(uri)
 }
@@ -50,12 +50,13 @@ function moveToPage(uri){
     errorPage.innerHTML = ""
     const currentPage = document.getElementsByClassName("current-page")[0]
     
+    console.log("URI IS ", uri)
+
     if(currentPage){
         currentPage.classList.remove("current-page")
     }
     const staticDestinationIndex = staticPageDestinations.findIndex((element) => element.uri == uri)
     //If URI is "dynamic" i.e. references specific resource
-    console.log("Navigation handler uri", uri, " Index" ,staticDestinationIndex, " Calling from ", moveToPage.caller)
     if (staticDestinationIndex == -1) {
         if(new RegExp("account\/view\/.+").test(uri)) {
             const parentElement = document.getElementById("/account/view/")
@@ -68,7 +69,9 @@ function moveToPage(uri){
             parentElement.classList.add("current-page")
         }
         else {
-            console.log("Nothing here 404")
+            errorPage.appendChild(getErrorPage("Can't find requested page", 404))
+            errorPage.classList.add("current-page")
+            setLoadingPage(false)
         }
     }
     else {
@@ -78,7 +81,6 @@ function moveToPage(uri){
             staticPageDestinations[staticDestinationIndex].method(parentElement)
         }
         else{
-            console.log("Doing this")
             staticPageDestinations[staticDestinationIndex].method()
         }
     }

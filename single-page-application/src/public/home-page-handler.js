@@ -1,7 +1,7 @@
 function displayHomePage(parentElement) {
     const userUnOrderedList = parentElement.getElementsByTagName("ul")[0]
     const errorPage = document.getElementById("error-page")
-    setLoadingPage(true)
+
     //Empties list
     userUnOrderedList.innerHTML = ""
     console.log("THIS IS MY LIST :) ", userUnOrderedList.children)
