@@ -141,11 +141,9 @@ const theApiInstrumentRouter = container.resolve("apiInstrumentRouter")
 container.register("apiProficiencyRouter", awilix.asFunction(apiProficiencyRouter))
 const theApiProficiencyRouter = container.resolve("apiProficiencyRouter")
 
-// TODO: Not a good idea to open up to entire world.
-// Better to only target the frontend application.
 app.use("/api*", function(request, response, next){
-	response.setHeader("Access-Control-Allow-Origin", "*")
-	response.setHeader("Access-Control-Allow-Methods", "*")
+	response.setHeader("Access-Control-Allow-Origin", "http://localhost:3030")
+	response.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
 	response.setHeader("Access-Control-Allow-Headers", "*")
 	response.setHeader("Access-Control-Expose-Headers", "*")
 	next()
@@ -233,9 +231,11 @@ app.use(function(errorModel, request, response, next) {
         next()
     }
 })
+//Calling an URI that does not exist
 app.use(function(request, response) {
     const errorModel = {
-        code: 404
+        code: 404,
+        messages: ["Page not found"]
     }
     response.status(errorModel.code).render("error.hbs", errorModel)
 })

@@ -1,4 +1,8 @@
-<h3 class="display-3">That's a {{code}}</h3>
-{{#each messages}}
-<p>{{this}}</p>
-{{/each}}
+<h3 class="display-3">That's a {{#if code}}{{code}}{{else}}500{{/if}}</h3>
+{{#if messages}}
+    {{#each messages}}
+    <p>{{this}}</p>
+    {{/each}}
+{{else}}
+<p>An unkown error occured</p>
+{{/if}}

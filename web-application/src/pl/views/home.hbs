@@ -14,4 +14,6 @@
     </li>
     {{/each}}
 </ul>
+{{else}}
+<p>There are no bands here currently, why don't you {{#if loggedInUsername}}go ahead and <a href="/bands/create">create one!</a>{{else}}<a href="/account/signup">sign up</a> or <a href="/account/signin">sign in</a> and create one!{{/if}}</p>
 {{/if}}
