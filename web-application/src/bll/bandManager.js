@@ -22,12 +22,15 @@ module.exports = function ({ sessionValidation, bandRepository, bandValidation, 
             const bandIdValidationErrors = bandValidation.getBandIdValidationErrors(bandId)
 
             if(bandIdValidationErrors.length > 0) {
-                callback(bandIdValidationErrors)
+                callback(errorGenerator.getClientError(bandIdValidationErrors))
             }
             else {
                 bandRepository.getBandById(bandId, function (error, bandObject) {
                     if (error) {
                         callback(errorGenerator.getInternalError(error))
+                    }
+                    else if(bandObject == undefined) {
+                        callback(errorGenerator.getClientError(["Band not found!"], 404))
                     }
                     else {
                         callback(errorGenerator.getSuccess(), bandObject)
@@ -47,8 +50,30 @@ module.exports = function ({ sessionValidation, bandRepository, bandValidation, 
             })
         },
 
-        searchAndGetBandByTitleOrGenre: function (bandname, genre) {
-            //TODO search and get genre & title in repo
+        searchAndGetBandByTitleAndGenre: function (bandName, genreName, callback) {
+            console.log("Band Name Length", String(bandName).length, " Genre name", genreName)
+            if(String(bandName).length > 0) {
+                bandRepository.getBandsBySearchTitle(bandName, function(error, foundBands) {
+                    if(error) {
+                        errorGenerator.getInternalError(error)
+                    }
+                    else {
+                        const returningBands = getPairBandsWithGenre(foundBands, genreName)
+                        callback(errorGenerator.getSuccess(), returningBands)
+                    }
+                })
+            }
+            else {
+                bandRepository.getAllBands(function (error, allBands) {
+                    if(error) {
+                        callback(errorGenerator.getInternalError(error))
+                    }
+                    else {
+                        const returningBands = getPairBandsWithGenre(allBands, genreName)
+                        callback(errorGenerator.getSuccess(), returningBands)
+                    }
+                })
+            }
         },
 
         updateBandById: function (bandId, bandBio, bandName, bandGenre, callback) {
@@ -73,13 +98,22 @@ module.exports = function ({ sessionValidation, bandRepository, bandValidation, 
                     callback(errorGenerator.getSuccess())
                 }
             })
-            /*if (sessionValidation.validateAccountnameInSession(accountname, sessionAccountName) == true) {
-           
-            }
-            else {
-                let errorUnauthorized = "Forbidden"
-                callback(errorUnauthorized)
-            }*/
         }
+    }
+}
+function getPairBandsWithGenre(bands, genreName) {
+    let returningBands = []
+    console.log("Incoming bands ", bands, " Name length is ", genreName.length, " Is this true? ", (genreName.length > 0))
+    if (genreName != undefined && genreName.length > 0) {
+        for (band of bands) {
+            if(band.band_genre == genreName) {
+                returningBands.push(band)
+            }
+        }
+        return returningBands
+    }
+    else {
+        console.log("Returning wo genre ", bands)
+        return bands
     }
 }

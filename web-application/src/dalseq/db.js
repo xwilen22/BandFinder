@@ -1,4 +1,6 @@
 let connectionAuthenticated = false
+let databaseSynced = false
+
 const waitTimeMilliseconds = 1000
 
 module.exports = function({}) {
@@ -11,16 +13,28 @@ module.exports = function({}) {
         omitNull: true
     })
     
-    sequelizeClient.authenticate()
+    function awaitSync() {
+        sequelizeClient.authenticate()
         .then(() => {
             console.log("POSTGRESQL & SEQUELIZE IS ALIVE!")
             connectionAuthenticated = true
+
+            sequelizeClient.sync()
+            .then(() => {
+                sequelizeClient.query(`ALTER TABLE bands ADD COLUMN IF NOT EXISTS tsv tsvector`)
+                console.log("SYNCED")
+            })
+            .catch(err => {
+                console.error(`POSTGRESQL ERROR: ${err}`)
+            })
         })
         .catch(err => {
             console.error(`POSTGRESQL ERROR: ${err}`)
+            setTimeout(awaitSync, waitTimeMilliseconds)
         })
-        
-    setTimeout(wait, waitTimeMilliseconds)
+    }
+    
+    setTimeout(awaitSync, waitTimeMilliseconds)
 
     //TABLES INITALIZING
     const user = sequelizeClient.define("user", {
@@ -34,10 +48,6 @@ module.exports = function({}) {
             allowNull: false
         },
         biography: {
-            type: DataTypes.TEXT,
-            allowNull: true
-        },
-        user_profile_picture: {
             type: DataTypes.TEXT,
             allowNull: true
         }
@@ -161,15 +171,7 @@ module.exports = function({}) {
             }
         }
     })
-
-    sequelizeClient.sync()
-        .then(() => {
-            console.log("SYNCED")
-        })
-        .catch(err => {
-            console.error(`POSTGRESQL ERROR: ${err}`)
-        })
-
+    
     return sequelizeClient
 }
 function wait() {

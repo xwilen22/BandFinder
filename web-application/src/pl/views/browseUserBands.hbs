@@ -1,23 +1,27 @@
 {{#if bandMemberships}}
+<a class="btn btn-primary my-2" href="/bands/create">Create new band</a>
 <h2>My bands</h2>
-
-<a class="btn btn-primary" href="/bands/create">Create Band</a>
-
-<section class="row p-2 container-fluid">
+<section class="row m-0 container-fluid">
     <ul class="list-group w-100">
         {{#each bandMemberships}}
-        <li class="list-group-item row">
-            <img class="col-2 img-thumbnail m-0" src="/images/PLACEHOLDER.JPG">
+        <li class="list-group-item">
             <div class="col-10 m-0">
                 <p class="h3" class="card-title"><a href="/bands/view/{{this.id}}" class="stretched-link">{{this.band_name}}</a></p>
-                <p class="text-break">Bio: {{this.band_biography}}</p>
-                <p class="text-break">Genre: {{this.band_genre}}</p>
+                <p class="lead">{{this.band_genre}}</p>
+            </div>
+            <div class="col-2">
+                {{#if this.is_band_leader}}
+                <a class="btn btn-primary" href="/bands/edit/{{this.id}}">Edit</a>
+                {{else}}
+                <form method="POST" action="/bands/removemember/{{this.id}}/{{../loggedInUsername}}">
+                    <input type="hidden" value="{{../csrfToken}}" name="_csrf">
+                    <input class="btn btn-warning" type="submit" value="Leave band"></input>
+                </form>
+                {{/if}}
             </div>
         </li>
         {{/each}}
     </ul>
-    <div>
-    </div>
 </section>
 {{else}}
 <meta http-equiv="refresh" content="0; url = /bands/noband" />

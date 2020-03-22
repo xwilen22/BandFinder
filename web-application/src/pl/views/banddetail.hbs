@@ -1,6 +1,8 @@
 <section class="row container-fluid">
-    <img src="/images/PLACEHOLDER.jpg" class="img-thumbnail img-fluid band-detail-image">
-    <div class="col p-2">
+    <div class="col-md-2">
+        <img src="/images/placeholder.png" class="img-thumbnail img-fluid">
+    </div>
+    <div class="col-md-7 p-2">
         <h2>{{bandname}}</h2>
         <p class="lead">{{bandGenre}}</p>
         <p class="text-break">
@@ -8,15 +10,18 @@
         </p>
     </div>
     {{#if isCurrentUserBandLeader}}
-     <div class="col">
-        <a class="btn btn-primary" href="/bands/update/{{bandId}}">EDIT</a>
-        <ul class="list-group">
+     <div class="col-md-3 border-left border-primary bg-light p-2">
+        <p class="h4">Leader dashboard</p>
+        <a class="btn btn-secondary" href="/bands/update/{{bandId}}">Edit band</a>
+        <p class="h5 my-3">Applications</p>
+        {{#if bandApplications}}
+        <ul class="list-group my-2">
             {{#each bandApplications}}
             <li class="list-group-item">
-                <a href="/account/view/{{this.username}}">{{this.username}}</a> wants to join!
-                <div class="float-right">
+                <p><a href="/account/view/{{this.username}}">{{this.username}}</a> wants to join!</p>
+                <div class="form-row">
                     <form method="POST" action="/bands/addMember/{{../bandId}}">
-                        <input type="submit" value="Accept" class="btn btn-success">
+                        <input type="submit" value="Accept" class="btn btn-success mx-2">
                         <input type="hidden" value="{{this.username}}" name="username">
                         <input type="hidden" value="{{../csrfToken}}" name="_csrf">
                     </form>
@@ -28,21 +33,38 @@
             </li>
             {{/each}}
         </ul>
+        {{else}}
+        <p>No applications yet!</p>
+        {{/if}}
     </div>
+    {{else}}
+    {{#if (contains bandMembers loggedInUsername "username")}}
+    <form method="POST" action="/bands/removemember/{{bandId}}/{{loggedInUsername}}">
+        <input type="hidden" value="{{csrfToken}}" name="_csrf">
+        <input class="btn btn-warning" type="submit" value="Leave band"></input>
+    </form>
+    {{/if}}
     {{/if}}
 </section>
 <section class="row container-fluid p-4">
-    <p class="h3">Members</p>
+    <h3>Members</h3>
     <div class="col-12">
-        <ul class="list-unstyled list-inline">
+        <ul class="list-unstyled list-inline my-2">
             {{#each bandMembers}}
             <li class="list-inline-item">
-                <div class="card membercard">
-                    <img src="/images/PLACEHOLDER.jpg" class="card-img-top">
+                <div class="card bandmembercard">
                     <div class="card-body">
                         <h5 class="card-title"><a href="/account/view/{{this.username}}">{{this.username}}</a></h5>
                         {{#if this.is_band_leader}}
-                        <p class="text-break">Band Leader</p>
+                        <p class="card-text">Band Leader</p>
+                        {{/if}}
+                        {{#if ../isCurrentUserBandLeader}}
+                        {{#unless (compare this.username "==" ../loggedInUsername)}}
+                        <form method="POST" action="/bands/removemember/{{../bandId}}/{{this.username}}">
+                            <input type="submit" class="btn btn-danger" value="Kick">
+                            <input type="hidden" value="{{../csrfToken}}" name="_csrf">
+                        </form>
+                        {{/unless}}
                         {{/if}}
                     </div>
                 </div>

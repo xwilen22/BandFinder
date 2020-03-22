@@ -1,10 +1,11 @@
 const Express = require("express")
 const adminPassword = "$2b$10$HhNGA6nmc1i4j.6J.gUUm.SJurOj3Ac6JnGUyEuiKe3TUa0jmg3fe"
 const adminName = "Foo"
+
 module.exports = function ({instrumentManager, errorGenerator, sessionValidation, passwordManager,genreManager}){
     const router = Express.Router()
     router.get("/", function(request, response){
-        response.redirect("login")
+        response.redirect("admin/login")
     })
     router.get("/login", function(request, response){
         response.render("adminlogon.hbs")
@@ -65,7 +66,7 @@ module.exports = function ({instrumentManager, errorGenerator, sessionValidation
                 next(error)
             }
             else{
-                response.redirect("admindashboard")
+                response.redirect("dashboard")
             }
         })
     })
@@ -76,7 +77,7 @@ module.exports = function ({instrumentManager, errorGenerator, sessionValidation
                 next(error)
             }
             else{
-                response.redirect("admindashboard")
+                response.redirect("dashboard")
             }
         })
     })

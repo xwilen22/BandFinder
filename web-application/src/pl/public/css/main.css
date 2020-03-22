@@ -1,11 +1,20 @@
 nav {
-    min-height: 5%;
+    min-height: 7%;
+    position: sticky;
 }
 main {
-    min-height: 90%;
+    min-height: 87%;
 }
 footer {
     min-height: 5%;
+}
+body {
+    width: 100%;
+    height: 100%;
+}
+html {
+    width: 100%;
+    height: 100%;
 }
 .bandcard {
     margin-top: 1rem;
@@ -13,13 +22,19 @@ footer {
 }
 .membercard {
     margin-top: 1rem;
-    max-width: 12rem;
+    max-width: 100%;
 }
 .keepaspectratio {
     width: 100%;
     height: auto;
 }
-.band-detail-image {
-    height: 200px;
-    width: 200px
+.bandmembercard {
+    max-width: 20em;
+    min-height: 8em;
+}
+.optionParent {
+    font-weight: bold;
+}
+.optionChild {
+    font-weight: lighter;
 }

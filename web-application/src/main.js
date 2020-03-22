@@ -38,7 +38,7 @@ const dalFolders = {
     MYSQL:"dal",
     SEQUELIZE:"dalseq"
 }
-const dalSource = dalFolders.MYSQL
+const dalSource = dalFolders.SEQUELIZE
 
 const proficiencyRepository = require(`./${dalSource}/proficiencyRepository`)
 const accountRepository = require(`./${dalSource}/accountRepository`)
@@ -68,7 +68,6 @@ const applicationManager = require("./bll/applicationManager")
 ///PRESENTATION LAYER
 const adminRouter = require("./pl/routers/adminRouter")
 const accountRouter = require("./pl/routers/accountRouter")
-const instrumentRouter = require("./pl/routers/instrumentRouter")
 const bandRouter = require("./pl/routers/bandRouter")
 const variousRouter = require("./pl/routers/variousRouter")
 const proficiencyRouter = require("./pl/routers/proficiencyRouter")
@@ -93,7 +92,6 @@ container.register("sessionValidation", awilix.asFunction(sessionValidation))
 
 container.register("instrumentRepository", awilix.asFunction(instrumentRepository))
 container.register("instrumentManager", awilix.asFunction(instrumentManager))
-container.register("instrumentRouter", awilix.asFunction(instrumentRouter))
 
 container.register("accountRepository", awilix.asFunction(accountRepository))
 container.register("accountManager", awilix.asFunction(accountManager))
@@ -107,7 +105,6 @@ container.register("proficiencyRouter", awilix.asFunction(proficiencyRouter))
 const theProficiencyRouter = container.resolve("proficiencyRouter")
 
 const theAccountRouter = container.resolve("accountRouter")
-const theInstrumentRouter = container.resolve("instrumentRouter")
 
 container.register("genreValidation", awilix.asFunction(genreValidation))
 container.register("genreRepository", awilix.asFunction(genreRepository))
@@ -175,7 +172,6 @@ app.use(csrfProtection)
 app.use("/", theVariousRouter)
 app.use("/bands", theBandRouter)
 app.use("/account", theAccountRouter)
-app.use("/instruments", theInstrumentRouter)
 app.use("/proficiencies", theProficiencyRouter)
 app.use("/applications", theApplicationRouter)
 app.use("/admin", theAdminRouter)
@@ -189,8 +185,7 @@ app.engine("hbs", expressHandlebars({
     defaultLayout: "main.hbs"
 }))
 
-handlebars.registerHelper('compare', function (leftVal, comparision, rightVal) {
-    console.log("HELPER VALS: " , leftVal, rightVal)
+handlebars.registerHelper("compare", function (leftVal, comparision, rightVal) {
     switch (comparision.toString()) {
 		case ">":
 			return (leftVal > rightVal)
@@ -211,14 +206,38 @@ handlebars.registerHelper('compare', function (leftVal, comparision, rightVal) {
 	}
 })
 
+handlebars.registerHelper("contains", function(array, value, optionalObjectKey) {
+    console.log("Contains: ", array, value)
+    if (Array.isArray(array) == false) {
+        console.log("HANDLEBARS ERROR! Invalid array in contains")
+    }
+    
+    if(optionalObjectKey == undefined || optionalObjectKey == null) {
+        console.log("Contains is ", array.includes(value))
+        return array.includes(value)
+    }
+    else {
+        let arrayForKey = []
+        for (element of array) {
+            arrayForKey.push(element[optionalObjectKey])
+        }
+        return arrayForKey.includes(value)
+    }
+})
+//Error is specific
 app.use(function(errorModel, request, response, next) {
-    if(errorModel != undefined || errorModel != null) {
+    if(errorModel) {
         response.status(errorModel.code).render("error.hbs", errorModel)
     }
     else {
-        const fatalModel = errorGenerator.getInternalError(`UNHANDLED ERROR! A NULL ERROR MODEL RETRIEVED`)
-        response.status(fatalModel.code).render("error.hbs", fatalModel)
+        next()
     }
+})
+app.use(function(request, response) {
+    const errorModel = {
+        code: 404
+    }
+    response.status(errorModel.code).render("error.hbs", errorModel)
 })
 
 app.listen(listenPort, function() {
