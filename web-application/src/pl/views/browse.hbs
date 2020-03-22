@@ -7,10 +7,11 @@
         <select class="form-control" name="genreName" id="genre">
             <option value="">All genres</option>
             {{#each genres}}
-            <option class="optionParent" value={{this.headGenreName}} {{#if (compare this.headGenreName "==" ../genreName)}}selected{{/if}}>{{this.headGenreName}}</option>
+            <optgroup label={{this.headGenreName}}>
                 {{#each this.subGenres}}
-                <option class="optionChild" {{#if (compare this "==" ../../genreName)}}selected{{/if}} value={{this}}>-   {{this}}</option>
+                <option {{#if (compare this "==" ../../genreName)}}selected{{/if}} value={{this}}>{{this}}</option>
                 {{/each}}
+            </optgroup>
             {{/each}}
         </select>
         {{/if}}
