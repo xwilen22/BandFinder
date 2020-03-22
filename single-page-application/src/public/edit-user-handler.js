@@ -12,6 +12,7 @@ function displayEditPageForUser(parentElement, username) {
 
     proficiencyAddForm.addEventListener("submit", function(event) {
         event.preventDefault()
+        setLoadingPage(true)
         addResourceAuth(`proficiencies`, {instrumentName: instrumentsSelect.value, skillLevelNumber:addProficiencyLevelNumberInput.value, username}, function(error) {
             if(error) {
                 document.getElementById("alert-holder").innerHTML = ""
@@ -24,6 +25,7 @@ function displayEditPageForUser(parentElement, username) {
                 }
                 addProficiencyToList(proficiency, proficiencyListItemTemplate, username)
             }
+            setLoadingPage(false)
         })
     })
 
@@ -48,6 +50,7 @@ function displayEditPageForUser(parentElement, username) {
                 })
             })
         }
+        setLoadingPage(false)
     })
 
     instrumentsSelect.innerHTML = ""

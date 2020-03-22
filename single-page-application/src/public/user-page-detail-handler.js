@@ -7,15 +7,14 @@ function displayUserDetailPageForUsername(parentElement, username) {
 
     fetchResource(`account/${decodeURIComponent(username)}`, function(error, accountInformationObject) {
         if(error) {
-            console.log("Uh oh stinky")
             errorPage.appendChild(getErrorPage("Couldn't fetch the user, sorry about that!", error.status))
         }
         else {
-            console.log("uername", username)
             usernameHeader.innerText = accountInformationObject.username
             bioparagraphElement.innerText = accountInformationObject.biography
             editUserAnchor.href = `/account/edit/${accountInformationObject.username}`
         }
+        setLoadingPage(false)
     })
 }
 

@@ -2,13 +2,13 @@ const domains = {
     localhost: "http://localhost:8080",
     dockerIp: "http://192.168.99.100:8080"
 }
-const currentDomain = domains.dockerIp
+const currentDomain = domains.localhost
 
 document.addEventListener("DOMContentLoaded", function(){
     moveTo(location.pathname)
     setLoadingPage(true)
-    if(localStorage.accessToken){
-        UiSignedInHelp()
+    if(localStorage.accessToken != undefined){
+        UiSignedInHelp(localStorage.username)
     }
     else{
         signOut()
@@ -38,6 +38,7 @@ window.addEventListener("popstate",function(event){
 })
 
 function moveTo(uri){
+    console.log("Move to: ", moveTo.caller)
     history.pushState({}, "", uri)
     moveToPage(uri)
 }
@@ -54,6 +55,7 @@ function moveToPage(uri){
     }
     const staticDestinationIndex = staticPageDestinations.findIndex((element) => element.uri == uri)
     //If URI is "dynamic" i.e. references specific resource
+    console.log("Navigation handler uri", uri, " Index" ,staticDestinationIndex, " Calling from ", moveToPage.caller)
     if (staticDestinationIndex == -1) {
         if(new RegExp("account\/view\/.+").test(uri)) {
             const parentElement = document.getElementById("/account/view/")

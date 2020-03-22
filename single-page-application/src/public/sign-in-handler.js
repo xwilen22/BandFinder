@@ -47,6 +47,7 @@ function UiSignedInHelp(username, googleUserId){
     if(googleUserId != undefined){
         userId = googleUserId
     }
+    
     const accountAnchor = document.querySelector("#account")
     accountAnchor.href = `/account/view/${userId}`
     accountAnchor.innerText = username
