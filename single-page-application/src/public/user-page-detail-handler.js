@@ -3,15 +3,15 @@ function displayUserDetailPageForUsername(parentElement, username) {
     const bioparagraphElement = parentElement.getElementsByTagName("p")[0]
     const editUserAnchor = parentElement.getElementsByTagName("a")[0]
     const errorPage = document.getElementById("error-page")
-    console.log("uername", username)
     editUserAnchor.hidden = (decodeURIComponent(username) != localStorage.username)
 
-    fetchResource(`account/${username}`, function(error, accountInformationObject) {
+    fetchResource(`account/${decodeURIComponent(username)}`, function(error, accountInformationObject) {
         if(error) {
             console.log("Uh oh stinky")
             errorPage.appendChild(getErrorPage("Couldn't fetch the user, sorry about that!", error.status))
         }
         else {
+            console.log("uername", username)
             usernameHeader.innerText = accountInformationObject.username
             bioparagraphElement.innerText = accountInformationObject.biography
             editUserAnchor.href = `/account/edit/${accountInformationObject.username}`
