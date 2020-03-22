@@ -1,8 +1,6 @@
-function signUpNewAccount(){
-    const apiUrl = {
-        localhost: "http://localhost:8080/api/account",
-        dockerIp: "http://192.168.99.100:8080/api/account"
-    }
+
+function displaySignUpNewAccountPage(){
+
     const signUpForm = document.querySelector("#signup")
     const alertHolder = document.getElementById("alert-holder")
     signUpForm.addEventListener("submit", function(event){
@@ -21,13 +19,14 @@ function signUpNewAccount(){
                         signOut()
                     }
                     else {
-                        UiSignedInHelp()
-                        moveToPage(`/account/view/${username}`)
+                        UiSignedInHelp(username)
+                        moveTo(`/account/view/${username}`)
                     }
                 })
             }
         })
     })
+    setLoadingPage(false)
 }
 function signUpAccount(username, password, callback){
     fetch(`${currentDomain}/api/account`, {
@@ -41,10 +40,10 @@ function signUpAccount(username, password, callback){
         if(response.status == 201){
             response.json()
             .then(createdUsername => {
-              return createdUsername
+                callback(undefined,createdUsername)
             })
             .catch(error => {
-                callback(error)
+                callback(error,undefined)
             })
         }
         else {

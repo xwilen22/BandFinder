@@ -22,6 +22,7 @@ function  getAlert(message, type){
 
     return alertDiv
 }
+
 function getErrorPage(message, errorCode){
     let errorDiv = document.createElement("div")
     let errorHeader = document.createElement("h2")
@@ -35,6 +36,7 @@ function getErrorPage(message, errorCode){
     
     return errorDiv
 }
+
 function setLoadingPage(activate) {
     document.getElementById("loading-indicator-page").style.opacity = (activate ? 1 : 0)
 }

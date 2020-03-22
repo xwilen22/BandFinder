@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/css/index.css" type="text/css">
     <script src="/resource-handler.js"></script>
 
+    
     <script src="/edit-user-handler.js"></script>
     <script src="/user-page-detail-handler.js"></script>
     <script src="/sign-up-handler.js"></script>
@@ -17,11 +18,10 @@
     <script src="/error-message-generator.js"></script>
     <!--KEEP AT BOTTOM-->
     <script src="/navigation-handler.js"></script>
-
+   
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-
     <title>Band Together</title>
 </head>
 <body class="h-100 w-100">
@@ -33,8 +33,7 @@
             </section>
             <section class="nav justify-content-right">
                 <a class="nav-link showIfSignedIn" href="/account/view/" id="account">Test</a>
-                <a class="nav-link btn btn-primary btn-sm showIfSignedIn" href="/account/signout" >Sign out</a>
-                
+                <a class="nav-link btn btn-primary btn-sm showIfSignedIn" href="/account/signout" id="sign-out-anchor">Sign out</a>
                 <a class="nav-link btn btn-secondary btn-sm mx-1 showIfSingedOut" href="/account/signin" >Sign in</a>
                 <a class="nav-link btn btn-primary btn-sm mx-1 showIfSingedOut" href="/account/signup" >Sign up</a>
             </section>
@@ -45,7 +44,7 @@
             <p>Here are some funny users</p>
             <ul>
             </ul>
-        </div> 
+        </div>
 		<div id="/account/signin">
 			<h1>Sign In</h1>
 			<form id="signin" action="">
@@ -72,8 +71,19 @@
         </div>
         <div id="/account/view/">
             <a class="btn btn-primary showIfSignedIn">Edit</a>
-            <h2></h2>
-            <p></p>
+            <h2><!--USERNAME--></h2>
+            <p><!--BIO--></p>
+
+            <section class="row container-fluid p-4">
+                <p class="h3">Proficiencies</p>
+                <div class="col-12">
+                    <ul class="list-unstyled list-inline" id="view-proficiency-ul">
+                        <li class="list-inline-item bg-light p-2 viewProficiencyItem">
+                        </li>
+                    </ul>
+                    <p id="view-proficiency-if-empty">Nothing here but us rats!</p>
+                </div>
+            </section>
         </div>
         <div id="/account/edit/">
             <h2></h2>

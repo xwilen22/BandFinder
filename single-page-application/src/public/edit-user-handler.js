@@ -12,6 +12,7 @@ function displayEditPageForUser(parentElement, username) {
 
     proficiencyAddForm.addEventListener("submit", function(event) {
         event.preventDefault()
+        setLoadingPage(true)
         addResourceAuth(`proficiencies`, {instrumentName: instrumentsSelect.value, skillLevelNumber:addProficiencyLevelNumberInput.value, username}, function(error) {
             if(error) {
                 document.getElementById("alert-holder").innerHTML = ""
@@ -23,7 +24,10 @@ function displayEditPageForUser(parentElement, username) {
                     proficiency_level: addProficiencyLevelNumberInput.value
                 }
                 addProficiencyToList(proficiency, proficiencyListItemTemplate, username)
+
+                document.getElementById("alert-holder").appendChild(getAlert("Proficiency added", "success"))
             }
+            setLoadingPage(false)
         })
     })
 
@@ -48,6 +52,7 @@ function displayEditPageForUser(parentElement, username) {
                 })
             })
         }
+        setLoadingPage(false)
     })
 
     instrumentsSelect.innerHTML = ""
@@ -99,6 +104,9 @@ function addProficiencyToList(proficiencyObject, templateElement, username) {
             if (error) {
                 document.getElementById("alert-holder").appendChild(getAlert("Failed to update proficiency!", "danger"))
             }
+            else {
+                document.getElementById("alert-holder").appendChild(getAlert("Proficiency updated", "success"))
+            }
         })
     })
 
@@ -112,6 +120,7 @@ function addProficiencyToList(proficiencyObject, templateElement, username) {
             }
             else {
                 proficienciesUnorderedList.removeChild(proficiencyListItem)
+                document.getElementById("alert-holder").appendChild(getAlert("Proficiency deleted", "success"))
             }
         })
     })

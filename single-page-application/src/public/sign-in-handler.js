@@ -1,4 +1,4 @@
-function signInToAccount(parentElement){
+function displaySignInToAccountPage(parentElement){
     const loginForm = document.querySelector("#signin")
     const alertHolder = document.getElementById("alert-holder")
     loginForm.addEventListener("submit",function(event){
@@ -13,23 +13,31 @@ function signInToAccount(parentElement){
                 signOut()
             }
             else {
-                UiSignedInHelp()
-                moveToPage(`/account/view/${username}`)
+                UiSignedInHelp(username)
+                moveTo(`/account/view/${username}`)
             }
         })
     })
+    setLoadingPage(false)
 }
 function signOut(){
-    localStorage.accessToken = ""
-    localStorage.username = ""
-	document.body.classList.remove("showIfSignedIn")
-	document.body.classList.add("showIfSingedOut")
+    uiSignOutClearLocalStorage()
+    moveTo("/")
 }
 
-function UiSignedInHelp(){
+function uiSignOutClearLocalStorage() {
+    localStorage.accessToken = ""
+    localStorage.username = ""
+    document.body.classList.remove("showIfSignedIn")
+    document.body.classList.add("showIfSingedOut")
+}
+
+function UiSignedInHelp(username){
+    let userId = username
+    
     const accountAnchor = document.querySelector("#account")
-    accountAnchor.href = `/account/view/${localStorage.username}`
-    accountAnchor.innerText = localStorage.username
+    accountAnchor.href = `/account/view/${userId}`
+    accountAnchor.innerText = username
     document.body.classList.remove("showIfSingedOut")
     document.body.classList.add("showIfSignedIn")
 }
