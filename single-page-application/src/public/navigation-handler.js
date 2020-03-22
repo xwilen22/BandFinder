@@ -7,10 +7,10 @@ const currentDomain = domains.localhost
 document.addEventListener("DOMContentLoaded", function(){
     moveTo(location.pathname)
     setLoadingPage(true)
-    if(localStorage.accessToken != undefined){
+    if(localStorage.accessToken != undefined && localStorage.accessToken.length > 0){
         UiSignedInHelp(localStorage.username)
     }
-    else{
+    else {
         signOut()
     }
 
@@ -26,13 +26,13 @@ document.addEventListener("DOMContentLoaded", function(){
 const staticPageDestinations = [
     //Destinations
     {uri: "/", method: displayHomePage, methodOnly: false},
-    {uri: "/account/signin", method: signInToAccount, methodOnly: false},
-    {uri: "/account/signup", method: signUpNewAccount, methodOnly: false},
+    {uri: "/account/signin", method: displaySignInToAccount, methodOnly: false},
+    {uri: "/account/signup", method: displaySignUpNewAccount, methodOnly: false},
     //Actions
     {uri: "/account/signout", method: signOut, methodOnly: true}
 ]
 
-window.addEventListener("popstate",function(event){
+window.addEventListener("popstate",function(event) {
     const uri = location.pathname
 	moveToPage(uri)
 })

@@ -5,7 +5,7 @@ function onLoad() {
     })
 }
 
-function signInToAccount(parentElement){
+function displaySignInToAccount(parentElement) {
     const loginForm = document.querySelector("#signin")
     const alertHolder = document.getElementById("alert-holder")
     loginForm.addEventListener("submit",function(event){
@@ -25,6 +25,7 @@ function signInToAccount(parentElement){
             }
         })
     })
+    setLoadingPage(false)
 }
 function signOut(){
     localStorage.accessToken = ""

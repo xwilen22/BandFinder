@@ -1,9 +1,6 @@
 
-function signUpNewAccount(){
-    const apiUrl = {
-        localhost: "http://localhost:8080/api/account",
-        dockerIp: "http://192.168.99.100:8080/api/account"
-    }
+function displaySignUpNewAccount(){
+
     const signUpForm = document.querySelector("#signup")
     const alertHolder = document.getElementById("alert-holder")
     signUpForm.addEventListener("submit", function(event){
@@ -30,6 +27,7 @@ function signUpNewAccount(){
             }
         })
     })
+    setLoadingPage(false)
 }
 function signUpAccount(username, password, callback){
     fetch(`${currentDomain}/api/account`, {
