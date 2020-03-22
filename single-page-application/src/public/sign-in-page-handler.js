@@ -13,7 +13,7 @@ function displaySignInToAccountPage(parentElement){
                 signOut()
             }
             else {
-                UiSignedInHelp(username)
+                uiSignedInHelp(username)
                 moveTo(`/account/view/${username}`)
             }
         })
@@ -32,7 +32,7 @@ function uiSignOutClearLocalStorage() {
     document.body.classList.add("showIfSingedOut")
 }
 
-function UiSignedInHelp(username){
+function uiSignedInHelp(username){
     let userId = username
     
     const accountAnchor = document.querySelector("#account")
