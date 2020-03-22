@@ -46,12 +46,12 @@
                     {{/if}}
                 {{/each}}
                 {{#unless (contains ../memberships this.id "band_id")}}
-                {{#unless (contains ../applications this.id "band_id")}}
-                <form method="POST" action="/applications/create/{{../loggedInUsername}}/{{this.id}}">
-                    <input type="submit" value="Apply" class="btn btn-success">
-                    <input type="hidden" value="{{../csrfToken}}" name="_csrf">
-                </form>
-                {{/unless}}
+                    {{#unless (contains ../applications this.id "band_id")}}
+                    <form method="POST" action="/applications/create/{{../loggedInUsername}}/{{this.id}}">
+                        <input type="submit" value="Apply" class="btn btn-success">
+                        <input type="hidden" value="{{../csrfToken}}" name="_csrf">
+                    </form>
+                    {{/unless}}
                 {{/unless}}
             {{/if}}
         </li>
