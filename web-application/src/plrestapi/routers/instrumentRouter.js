@@ -6,6 +6,7 @@ module.exports = function ({ instrumentManager }) {
     router.get("/", function (request, response) {
         instrumentManager.getAllInstruments(function(error, instruments) {
             if(error) {
+                console.log(error)
                 response.status(error.code).end()
             }
             else {
@@ -18,6 +19,7 @@ module.exports = function ({ instrumentManager }) {
 
         instrumentManager.getInstrumentByName(instrumentName, function(error, instrument) {
             if(error) {
+                console.log(error)
                 response.status(error.code).end()
             }
             else {

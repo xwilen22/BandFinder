@@ -8,8 +8,6 @@ module.exports = function ({ proficiencyManager }) {
         const instrumentName = request.body.instrument
         const proficiencySkillLevel = request.body.skillLevel
 
-        console.log("CREATING PROF: ", username, instrumentName, proficiencySkillLevel)
-
         proficiencyManager.createProficiency(username, instrumentName, proficiencySkillLevel, function(error) {
             if(error) {
                 next(error)

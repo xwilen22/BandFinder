@@ -91,6 +91,7 @@ module.exports = function ({accountManager, accountValidation, restApiManager, s
         if(sessionValidation.validateAccountNameInSession(username, request.userId) == true) {
             accountManager.updateAccountBiography(username, biographyText, function(error) {
                 if(error) {
+                    console.log(error)
                     response.status(error.code).end()
                 }
                 else {
@@ -110,6 +111,7 @@ module.exports = function ({accountManager, accountValidation, restApiManager, s
         if(sessionValidation.validateAccountNameInSession(username, request.userId) == true) {
             accountManager.deleteAccount(username, password, function(error) {
                 if(error) {
+                    console.log(error)
                     response.status(error.code).end()
                 }
             })

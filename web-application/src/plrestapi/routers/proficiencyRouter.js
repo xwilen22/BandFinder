@@ -11,6 +11,7 @@ module.exports = function ({ proficiencyManager, restApiManager, sessionValidati
         if (sessionValidation.validateAccountNameInSession(username, request.userId) == true) {
             proficiencyManager.createProficiency(username, instrumentName, skillLevelNumber, function (error) {
                 if (error) {
+                    console.log(error)
                     response.status(error.code).end()
                 }
                 else {
@@ -28,6 +29,7 @@ module.exports = function ({ proficiencyManager, restApiManager, sessionValidati
         const username = request.params.username
         proficiencyManager.getAllProficienciesForUser(username, function(error, proficiencies) {
             if(error) {
+                console.log(error)
                 response.status(error.code).end()
             }
             else {
@@ -43,6 +45,7 @@ module.exports = function ({ proficiencyManager, restApiManager, sessionValidati
         if (sessionValidation.validateAccountNameInSession(username, request.userId) == true) {
             proficiencyManager.updateProficiencyLevelForUser(username, instrumentName, skillLevelNumber, function (error) {
                 if (error) {
+                    console.log(error)
                     response.status(error.code).end()
                 }
                 else {
@@ -61,6 +64,7 @@ module.exports = function ({ proficiencyManager, restApiManager, sessionValidati
         if (sessionValidation.validateAccountNameInSession(username, request.userId) == true) {
             proficiencyManager.deleteProficiencyForUser(username, instrumentName, function (error) {
                 if (error) {
+                    console.log(error)
                     response.status(error.code).end()
                 }
                 else {

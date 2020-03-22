@@ -153,7 +153,6 @@ module.exports = function ({bandManager, bandMembershipManager, genreManager, se
             }
             else {
                 const validated = sessionValidation.validateCurrentUserBandLeader(bandMembers, request.session.loggedInUsername)
-                console.log(validated)
                 if (validated == true) {
                     bandManager.deleteBand(bandId, function (bandError) {
                         if (bandError) {
