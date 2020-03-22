@@ -15,10 +15,9 @@ module.exports = function ({ db }) {
             })
         },
 
-        updateUserInfoByUsername: function (username, bio, userPicture, callback) {
+        updateUserInfoByUsername: function (username, bio, callback) {
             userModel.update({
-                biography: bio, 
-                user_profile_picture: userPicture
+                biography: bio
             },{
                 where: {
                     username
@@ -53,8 +52,7 @@ module.exports = function ({ db }) {
                 raw: true,
                 attributes: [
                     "username",
-                    "biography",
-                    "user_profile_picture"
+                    "biography"
                 ]
             })
             .then(users => {
@@ -87,8 +85,7 @@ module.exports = function ({ db }) {
                 },
                 attributes: [
                     "username",
-                    "biography",
-                    "user_profile_picture"
+                    "biography"
                 ],
                 raw: true
             })

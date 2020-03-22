@@ -28,12 +28,6 @@ module.exports = function ({ db }) {
         },
 
         getBandMembershipByUsername: function(username,callback){
-            /*let query = `SELECT band_membership.band_id, band.band_name, 
-                         band.band_biography
-                         FROM band_membership
-                         INNER JOIN band 
-                         ON band_membership.band_id = band.band_id 
-                         WHERE band_membership.username = ?`*/
             let query = `SELECT * FROM band_membership AS membership 
                          INNER JOIN band ON membership.band_id = band.id
                          WHERE membership.username = ?`
@@ -44,7 +38,7 @@ module.exports = function ({ db }) {
         },
 
         deleteBandMembership: function (username, bandId, callback) {
-            let query = `DELETE * FROM band_membership 
+            let query = `DELETE FROM band_membership 
                          WHERE username = ? AND band_id = ?`
             let values = [username, bandId]
             db.query(query, values, function (error) {

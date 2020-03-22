@@ -4,36 +4,44 @@
 <h2>Create Band</h2>
 {{/if}}
 <section class="row container-fluid">
-    <div class="col-md-12 p-2 row">
-        <img class="img-thumbnail membercard" src="/images/PLACEHOLDER.jpg">
+    <div class="col-md-2">
+        <img class="img-thumbnail membercard" src="/images/placeholder.png">
+    </div>
+    <div class="col-md-10 row">
         {{#if bandname}}
         <form method="POST" action="/bands/delete/{{bandId}}">
             <input type="hidden" value="{{csrfToken}}" name="_csrf">
-            <button class="btn btn-primary" value="DELETE">DELETE</button>
+            <input class="btn btn-primary" type="submit" value="Delete band">
         </form>
         {{/if}}
-        <form class="form-group col-md-10" method="POST">
-            <label>Edit Band name</label>
-            <input class="form-control" type="text" name="bandNameText" value="{{bandname}}">
-            <section>
-                <label class="keepaspectratio" for="thumbImageSelect">Replace band image</label>
+        <form class="form-group w-100" method="POST">
+            <div class="form-row">
+                <label>Band name</label>
+                <input class="form-control" type="text" name="bandNameText" value="{{bandname}}">
+            </div>
+            <div class="form-row">
+                <label class="keepaspectratio" for="thumbImageSelect">Band image</label>
                 <input class="form-control" type="file">
-            </section>
-            <label for="bioEditText">Edit band bio</label>
-            <input class="form-control" type="text" id="bioEditText" name="bioText" value="{{biography}}">
-            <input class="btn btn-primary" type="submit" value="Save changes">
-            <section>
-                <label for="genreChoose">Choose your genre</label>
-                <select name="genre" id="genre">
+            </div>
+            <div class="form-row">
+                <label for="bioEditText">Band biography</label>
+                <textarea class="form-control w-100" type="text" id="bioEditText" name="bioText" rows="4">{{biography}}</textarea>
+            </div>
+            <div class="form-row">
+                <label for="genreChoose">Select genre</label>
+                {{#if genres}}
+                <select class="form-control" name="genre" id="genre">
                     {{#each genres}}
-                        <optgroup label={{this.headGenreName}}>
-                            {{#each this.subGenres}}
-                                <option value={{this}}>{{this}}</option>
-                            {{/each}}
-                        </optgroup>
+                    <optgroup label={{this.headGenreName}}>
+                        {{#each this.subGenres}}
+                        <option value={{this}}>{{this}}</option>
+                        {{/each}}
+                    </optgroup>
                     {{/each}}
                 </select>
-            </section>
+                {{/if}}
+            </div>
+            <input class="btn btn-primary my-2" type="submit" value="{{#if bandname}}Save changes{{else}}Create band{{/if}}">
             <input type="hidden" value="{{csrfToken}}" name="_csrf">
         </form> 
     </div>

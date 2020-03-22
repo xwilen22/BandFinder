@@ -1,13 +1,17 @@
-<h2>Welcome</h2>
+<h2>Welcome{{#if loggedInUsername}} back {{loggedInUsername}}!{{/if}}</h2>
+{{#if bands}}
 <p>Here are some featured bands</p>
 <ul class="list-unstyled list-inline">
+    {{#each bands}}
     <li class="list-inline-item">
         <div class="card bandcard">
-            <img src="/images/PLACEHOLDER.jpg" class="card-img-top" alt="...">
+            <img src="/images/placeholder.png" class="card-img-top">
             <div class="card-body">
-                <h5 class="card-title">BAND NAME</h5>
-                <a href="/bands/view/1" class="btn btn-primary">View</a>
+                <h5 class="card-title">{{this.band_name}}</h5>
+                <a href="/bands/view/{{this.id}}" class="btn btn-primary">View</a>
             </div>
         </div>
     </li>
+    {{/each}}
 </ul>
+{{/if}}

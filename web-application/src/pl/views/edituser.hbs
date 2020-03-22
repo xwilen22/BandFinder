@@ -1,58 +1,65 @@
-<h2>{{username}}</h2>
-<section class="row container-fluid">
-    <div>
-        <a class="btn btn-danger" href="/account/delete/{{loggedInUsername}}">Delete</a>
-    </div>
+<h2 class="display-4">{{username}}</h2>
+<div class="row container">
+    <a class="btn btn-danger" href="/account/delete/{{loggedInUsername}}">Delete account</a>
+</div>
+<section class="row container-fluid m-2 p-3 border border-primary rounded-lg">
+    <h3>Edit biography</h3>
     <div class="col-md-12 p-2 row">
-        <img class="img-thumbnail membercard" src="/images/PLACEHOLDER.jpg">
-        <form method="POST" class="form-group col-md-10">
-            <section>
-                <label class="keepaspectratio" for="thumbImageSelect">Replace profile image</label>
-                <input class="form-control" type="file">
-            </section>
-            <label for="bioEditText">Bio</label>
-            <textarea class="form-control" type="text" id="bioEditText" name="biography" rows="4">{{biography}}</textarea>
-
-            <input class="btn btn-primary" type="submit" value="Save changes">
-            <input type="hidden" value="{{csrfToken}}" name="_csrf">
+        <form method="POST" class="form-group col-md-12">
+            <div class="form-row">
+                <label for="bioEditText">Biography</label>
+                <textarea class="form-control w-100" type="text" id="bioEditText" name="biography" rows="4">{{biography}}</textarea>
+            </div>
+            <div class="form-row">
+                <input class="btn btn-primary my-2" type="submit" value="Save changes">
+                <input type="hidden" value="{{csrfToken}}" name="_csrf">
+            </div>
         </form>
     </div>
 </section>
 {{#if instruments}}
-<section class="row container-fluid">
-    <form method="POST" class="form-group" action="/proficiencies/create/{{username}}">
-        <label for="instrumentSelect">Instrument</label>
-        <select id="instrumentSelect" name="instrument">
-            {{#each instruments}}
-            <option>{{this}}</option>
-            {{/each}}
-        </select>
-        <label for="skillLevelNumber">Skill level</label>
-        <input type="number" min="1" , max="5" value="1" id="skillLevelNumber" name="skillLevel">
-        <input class="btn btn-secondary" type="submit" value="Add proficiency">
-        <input type="hidden" value="{{csrfToken}}" name="_csrf">
+<section class="row container-fluid m-2 p-3 border border-primary rounded-lg">
+    <h3>Add proficiency</h3>
+    <form method="POST" class="form-group col-12" action="/proficiencies/create/{{username}}">
+        <div class="form-row">
+            <div class="form-group col">
+                <label for="instrumentSelect">Instrument</label>
+                <select class="form-control" id="instrumentSelect" name="instrument">
+                    {{#each instruments}}
+                    <option>{{this}}</option>
+                    {{/each}}
+                </select>
+            </div>
+            <div class="form-group col">
+                <label for="skillLevelNumber">Skill level</label>
+                <input class="form-control" type="number" min="1" , max="5" value="1" id="skillLevelNumber" name="skillLevel">
+            </div>
+        </div>
+        <div class="form-row">
+            <input class="btn btn-secondary" type="submit" value="Add proficiency">
+            <input type="hidden" value="{{csrfToken}}" name="_csrf">
+        </div>
     </form>
 </section>
 {{/if}}
-<section class="row container-fluid p-4">
-    <p class="h3">Proficiencies</p>
+<section class="row container-fluid m-2 p-3">
+    <h3>My proficiencies</h3>
     <div class="col-12">
         {{#if proficiencies}}
         <ul class="list-unstyled list-inline">
             {{#each proficiencies}}
             <li class="list-inline-item bg-light p-2">
-                <div class="inline">
-                    {{this.instrument_name}} 
+                <p class="my-1 h6">{{this.instrument_name}}</p>
                     <form method="POST" action="/proficiencies/update/{{username}}/{{this.instrument_name}}">
-                        <input type="number" min="1" , max="5" value="{{this.proficiency_level}}" name="skillLevel">
-                        <input type="submit" value="Update skill" class="btn btn-primary">
+                        <label for="skillLevel">Skill level</label>
+                        <input class="form-control col" type="number" min="1" , max="5" value="{{this.proficiency_level}}" name="skillLevel" id="skillLevel">
+                        <input class="btn btn-primary col" type="submit" value="Update skill">
                         <input type="hidden" value="{{../csrfToken}}" name="_csrf">
                     </form>
                     <form method="POST" action="/proficiencies/delete/{{username}}/{{this.instrument_name}}">
-                        <input type="submit" value="Delete" class="btn btn-warning">
+                        <input class="btn btn-warning col" type="submit" value="Delete">
                         <input type="hidden" value="{{../csrfToken}}" name="_csrf">
                     </form>
-                </div>
             </li>
             {{/each}}
         </ul>

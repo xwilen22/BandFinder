@@ -6,9 +6,9 @@ module.exports = function ({bandManager, bandMembershipManager, genreManager, se
     //Get all
     router.get("/", function (request, response, next) {
         const sessionUsername = request.session.loggedInUsername
-        bandManager.getAllBands(function(error, bands) {
-            if(error) {
-                next(error)
+        bandManager.getAllBands(function(retrieveError, bands) {
+            if(retrieveError) {
+                next(retrieveError)
             }
             else {
                 bandMembershipManager.getBandMembershipByUsername(sessionUsername, function(membershipError, memberships) {
@@ -21,17 +21,66 @@ module.exports = function ({bandManager, bandMembershipManager, genreManager, se
                                 next(applicationError)
                             }
                             else {
-                                console.log("Bands: ", bands, " Memberships: ", memberships, " Application: ", applications)
-                                const model = {
-                                    bands,
-                                    memberships,
-                                    applications
-                                }
-                                response.render("browse.hbs", model)
+                                genreManager.getAllGenres(function(genreError, genres) {
+                                    if(genreError) {
+                                        next(genreError)
+                                    }
+                                    else {
+                                        const model = {
+                                            bands,
+                                            memberships,
+                                            applications,
+                                            genres
+                                        }
+                                        response.render("browse.hbs", model)
+                                    }
+                                })
                             }
                         })
                     }
                 })
+            }
+        })
+    })
+    router.get("/search?:query", function(request, response, next) {
+        const bandName = request.query.bandName
+        const genreName = request.query.genreName
+        const sessionUsername = request.session.loggedInUsername
+        bandManager.searchAndGetBandByTitleAndGenre(bandName, genreName, function(retrieveError, foundBands) {
+            if(retrieveError) {
+                next(retrieveError)
+            }
+            else {
+                bandMembershipManager.getBandMembershipByUsername(sessionUsername, function(membershipError, memberships) {
+                    if(membershipError) {
+                        next(membershipError)
+                    }
+                    else {
+                        applicationManager.getApplicationsByUsername(sessionUsername, function(applicationError, applications) {
+                            if(applicationError) {
+                                next(applicationError)
+                            }
+                            else {
+                                genreManager.getAllGenres(function(genreError, genres) {
+                                    if(genreError) {
+                                        next(genreError)
+                                    }
+                                    else {
+                                        const model = {
+                                            bands: foundBands,
+                                            memberships,
+                                            applications,
+                                            genres,
+                                            bandName,
+                                            genreName
+                                        }
+                                        response.render("browse.hbs", model)
+                                    }
+                                })
+                            }
+                        })
+                    }
+                }) 
             }
         })
     })
@@ -100,7 +149,7 @@ module.exports = function ({bandManager, bandMembershipManager, genreManager, se
         const bandId = request.params.bandId
         bandMembershipManager.getBandMembershipByBandId(bandId, function (membershipError, bandMembers) {
             if (membershipError) {
-                response.send(membershipError)
+                next(membershipError)
             }
             else {
                 const validated = sessionValidation.validateCurrentUserBandLeader(bandMembers, request.session.loggedInUsername)
@@ -108,7 +157,7 @@ module.exports = function ({bandManager, bandMembershipManager, genreManager, se
                 if (validated == true) {
                     bandManager.deleteBand(bandId, function (bandError) {
                         if (bandError) {
-                            response.send(bandError)
+                            next(bandError)
                         }
                         else {
                             response.redirect("/bands/browseuserbands")
@@ -153,14 +202,14 @@ module.exports = function ({bandManager, bandMembershipManager, genreManager, se
         
         bandMembershipManager.getBandMembershipByBandId(bandId, function(membershipError, bandMembers){
             if(membershipError){
-                response.send(membershipError)
+                next(membershipError)
             }
             else {
                 const validated = sessionValidation.validateCurrentUserBandLeader(bandMembers, request.session.loggedInUsername)
                 if(validated == true){
                     bandManager.updateBandById(bandId, bio, bandname, genre, function(bandError, bandId){
                         if(bandError){
-                            response.send(bandError)
+                            next(bandError)
                         }
                         else{
                             response.redirect(`/bands/view/${bandId}`)
@@ -174,10 +223,10 @@ module.exports = function ({bandManager, bandMembershipManager, genreManager, se
         })
     })
 
-    router.get("/create", function (request, response) {
+    router.get("/create", function (request, response, next) {
         genreManager.getAllGenres(function(error, genres){
             if(error){
-                response.send(error)
+                next(error)
             }
             else{
                 const model = {
@@ -189,8 +238,7 @@ module.exports = function ({bandManager, bandMembershipManager, genreManager, se
         
     })
 
-    router.post("/create", function (request, response) {
-        
+    router.post("/create", function (request, response, next) {
         const bandname = request.body.bandNameText
         const username = request.session.loggedInUsername
         const bio = request.body.bioText
@@ -200,12 +248,30 @@ module.exports = function ({bandManager, bandMembershipManager, genreManager, se
         
         bandManager.createBand(bandname, bio, genre, maxMembers,function(bandError, bandId){
             if(bandError){
-                response.send(bandError)
+                if(bandError.retainPage == true) {
+                    genreManager.getAllGenres(function(genreError, genres){
+                        if(genreError){
+                            next(genreError)
+                        }
+                        else{
+                            const model = {
+                                bandname,
+                                biography: bio,
+                                genre,
+                                genres
+                            }
+                            response.render("manageband.hbs", model)
+                        }
+                    })
+                }
+                else {
+                    next(bandError)
+                }
             }
             else{
                 bandMembershipManager.createBandMembership(username, bandId, isBandLeader, function(bandMembershipError){
                     if(bandMembershipError){
-                        response.send(bandMembershipError)
+                        next(bandMembershipError)
                     }
                     else{
                         response.redirect(`view/${bandId}`)
@@ -218,23 +284,62 @@ module.exports = function ({bandManager, bandMembershipManager, genreManager, se
         const username = request.body.username
         const bandId = request.params.forBandId
         const isBandLeader = false
-        //username, bandId, callback
-        applicationManager.deleteApplication(username, bandId, function(applicationError) {
-            if(applicationError) {
-                next(applicationError)
+        
+        bandMembershipManager.getBandMembershipByBandId(bandId, function(membershipError, bandMembers) {
+            if(membershipError){
+                next(membershipError)
             }
             else {
-                bandMembershipManager.createBandMembership(username, bandId, isBandLeader, function(bandMembershipError) {
-                    if(bandMembershipError) {
-                        next(bandMembershipError)
-                    }
-                    else {
-                        response.redirect("back")
-                    }
-                })
+                const validated = sessionValidation.validateCurrentUserBandLeader(bandMembers, request.session.loggedInUsername)
+                if (validated == true) {
+                    //username, bandId, callback
+                    applicationManager.deleteApplication(username, bandId, function (applicationError) {
+                        if (applicationError) {
+                            next(applicationError)
+                        }
+                        else {
+                            bandMembershipManager.createBandMembership(username, bandId, isBandLeader, function (bandMembershipError) {
+                                if (bandMembershipError) {
+                                    next(bandMembershipError)
+                                }
+                                else {
+                                    response.redirect("back")
+                                }
+                            })
+                        }
+                    })
+                }
+                else{
+                    next(errorGenerator.getHttpCodeError(401))
+                }
             }
         })
+    })
+    router.post("/removemember/:forBandId/:username", function(request, response, next) {
+        const username = request.params.username
+        const bandId = request.params.forBandId
 
+        bandMembershipManager.getBandMembershipByBandId(bandId, function(membershipError, bandMembers){
+            if(membershipError){
+                next(membershipError)
+            }
+            else {
+                const validated = sessionValidation.validateCurrentUserBandLeader(bandMembers, request.session.loggedInUsername) || sessionValidation.validateAccountNameInSession(username, request.session.loggedInUsername)
+                if(validated == true){
+                    bandMembershipManager.deleteBandMembership(username, bandId, function(error) {
+                        if(error) {
+                            next(error)
+                        }
+                        else {
+                            response.redirect("back")
+                        }
+                    })
+                }
+                else{
+                    next(errorGenerator.getHttpCodeError(401))
+                }
+            }
+        })
     })
 
     return router
