@@ -17,7 +17,7 @@ function displayHomePage(parentElement) {
                 const userPageAnchor = document.createElement("a")
                 userPageAnchor.addEventListener("click", function(event) {
                     event.preventDefault()
-                    moveToPage(event.target.getAttribute("href"))
+                    moveTo(event.target.getAttribute("href"))
                 })
                 userPageAnchor.href = `/account/view/${account.username}`
                 userPageAnchor.innerText = account.username

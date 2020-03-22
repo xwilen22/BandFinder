@@ -1,3 +1,4 @@
+
 function signUpNewAccount(){
     const apiUrl = {
         localhost: "http://localhost:8080/api/account",
@@ -11,6 +12,7 @@ function signUpNewAccount(){
         const password = event.srcElement.elements[1].value
         
         signUpAccount(username,password,function(error, createdUsername){
+            console.log("what is this error", error,"what is this username", createdUsername)
             if(error){
                 alertHolder.appendChild(getAlert("Failed to create account", "danger"))
             }
@@ -21,8 +23,8 @@ function signUpNewAccount(){
                         signOut()
                     }
                     else {
-                        UiSignedInHelp()
-                        moveToPage(`/account/view/${username}`)
+                        UiSignedInHelp(username)
+                        moveTo(`/account/view/${username}`)
                     }
                 })
             }
@@ -41,10 +43,10 @@ function signUpAccount(username, password, callback){
         if(response.status == 201){
             response.json()
             .then(createdUsername => {
-              return createdUsername
+                callback(undefined,createdUsername)
             })
             .catch(error => {
-                callback(error)
+                callback(error,undefined)
             })
         }
         else {
