@@ -8,6 +8,8 @@ function displayUserDetailPageForUsername(parentElement, username) {
 
     editUserAnchor.hidden = (requestedUsername != localStorage.username)
 
+    const templateClasses = "list-inline-item bg-light p-2"
+
     fetchResource(`account/${requestedUsername}`, function(error, accountInformationObject) {
         if(error) {
             console.log(error)
@@ -32,16 +34,16 @@ function displayUserDetailPageForUsername(parentElement, username) {
         }
         else {
             const proficiencyList = document.getElementById("view-proficiency-ul")
+            proficiencyList.innerHTML = ""
 
             //Appends proficiencies by template
             if(proficiencies.length > 0) {
                 proficiencyList.hidden = false
 
-                const proficiencyListElementTemplate = document.getElementsByClassName("viewProficiencyItem")[0]
-                proficiencyListElementTemplate.hidden = true
-                
                 for(proficiency of proficiencies) {
-                    const proficiencyListItem = proficiencyListElementTemplate.cloneNode(true)
+                    const proficiencyListItem = document.createElement("li") //proficiencyListElementTemplate.cloneNode(true)
+                    proficiencyListItem.className = templateClasses
+
                     const proficiencyContentParagraph = document.createElement("p")
 
                     proficiencyListItem.hidden = false
@@ -51,7 +53,6 @@ function displayUserDetailPageForUsername(parentElement, username) {
 
                     proficiencyList.appendChild(proficiencyListItem)
                 }
-
                 document.getElementById("view-proficiency-if-empty").hidden = true
             }
             else {
