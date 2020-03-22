@@ -30,3 +30,11 @@ services:
       - POSTGRES_DB=postDatabase
     ports:
       - "5432:5432"
+  single-page-application:
+    build: ./single-page-application
+    ports:
+      - "3030:3030"
+    volumes:
+      - "./single-page-application/src:/single-page-application/src"
+    depends_on:
+      - web-application

@@ -76,7 +76,7 @@ module.exports = function ({ accountRepository, accountValidation, passwordManag
             })
         },
         updateAccountBiography: function (username, newBiography, callback) {
-            accountRepository.updateUserInfoByUsername(username, newBiography, "", function (error) {
+            accountRepository.updateUserInfoByUsername(username, newBiography, function (error) {
                 if (error) {
                     callback(errorGenerator.getInternalError(error))
                 }

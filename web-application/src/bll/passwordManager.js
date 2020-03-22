@@ -45,6 +45,14 @@ module.exports = function ({errorGenerator}) {
                     callback(errorGenerator.getSuccess(), success)
                 }
             })
+        },
+        comparePasswordPlainToPlain: function(password, passwordRepeat, callback) {
+            if (password == passwordRepeat) {
+                callback(errorGenerator.getSuccess())
+            }
+            else {
+                callback(errorGenerator.getClientError(["Passwords don't match!"]))
+            }
         }
     }
 }
