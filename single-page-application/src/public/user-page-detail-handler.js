@@ -31,9 +31,10 @@ function displayUserDetailPageForUsername(parentElement, username) {
             document.getElementById("alert-holder").appendChild(getAlert("Failed to fetch proficiencies!", "danger"))
         }
         else {
+            const proficiencyList = document.getElementById("view-proficiency-ul")
+
             //Appends proficiencies by template
             if(proficiencies.length > 0) {
-                const proficiencyList = document.getElementById("view-proficiency-ul")
                 proficiencyList.hidden = false
 
                 const proficiencyListElementTemplate = document.getElementsByClassName("viewProficiencyItem")[0]

@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function(){
     setLoadingPage(true)
     moveTo(location.pathname)
     if(localStorage.accessToken != undefined && localStorage.accessToken.length > 0){
-        UiSignedInHelp(localStorage.username)
+        uiSignedInHelp(localStorage.username)
     }
     else {
         uiSignOutClearLocalStorage()
@@ -32,13 +32,12 @@ const staticPageDestinations = [
     {uri: "/account/signout", method: signOut, methodOnly: true}
 ]
 
-window.addEventListener("popstate",function(event) {
+window.addEventListener("popstate", function(event) {
     const uri = location.pathname
 	moveToPage(uri)
 })
 
 function moveTo(uri) {
-    console.log("Caller is ", moveTo.caller)
     history.pushState({}, "", uri)
     moveToPage(uri)
 }
@@ -50,8 +49,6 @@ function moveToPage(uri){
     errorPage.innerHTML = ""
     const currentPage = document.getElementsByClassName("current-page")[0]
     
-    console.log("URI IS ", uri)
-
     if(currentPage){
         currentPage.classList.remove("current-page")
     }
