@@ -21,7 +21,7 @@ function signInToAccount(parentElement){
             }
             else {
                 UiSignedInHelp(username)
-                moveToPage(`/account/view/${username}`)
+                moveTo(`/account/view/${username}`)
             }
         })
     })

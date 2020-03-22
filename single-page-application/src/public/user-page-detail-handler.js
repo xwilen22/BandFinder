@@ -3,6 +3,7 @@ function displayUserDetailPageForUsername(parentElement, username) {
     const bioparagraphElement = parentElement.getElementsByTagName("p")[0]
     const editUserAnchor = parentElement.getElementsByTagName("a")[0]
     const errorPage = document.getElementById("error-page")
+    console.log("uername", username)
     editUserAnchor.hidden = (decodeURIComponent(username) != localStorage.username)
 
     fetchResource(`account/${username}`, function(error, accountInformationObject) {
